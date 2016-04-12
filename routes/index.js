@@ -1,13 +1,11 @@
 var path = require('path');
-var Placas = require('../model/placasBases.js'),
-	Procesadores = require('../model/procesadores.js');
+var Productos = require('../model/productos.js');
 module.exports = function(app){
 	llistarPlacas = function (req, res){
-		Placas.find(function (err,PlacasBases){
+		Productos.find(function (err,ProductosTienda){
 			if(!err){
 				console.log('Mostrando pelicules');
-				console.log(PlacasBases);
-				res.render('placas', {placas: PlacasBases});
+				res.render('productos', {productos: ProductosTienda});
 			}else{
 				console.log('Error');
 			}
@@ -68,6 +66,7 @@ module.exports = function(app){
 	app.get(
 		'/',function (req,res) {
 			res.sendFile(path.resolve(__dirname+'../public/index.html'));
+			/*res.render('angelito',{angel:"¡¿Angelito, qué te pasaaaa?!"});*/
 		}
 	);
 	/*app.get('/videoclub/buscar/:codpeli',llistPeliBuscada);
