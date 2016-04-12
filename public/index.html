@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prova bootstrap and font-awesome</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+</head>
+<body data-spy="scroll" data-target="#navbar-example">
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Mostrar Menú</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">AlKa</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menú <span class="glyphicon glyphicon-collapse-down"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Componentes <span class="glyphicon glyphicon-expand"></span></a>
+								<ul class="dropdown-menu" rol="menu">
+									<li><a href="#" tabindex="-1">Placa Base</a></li>
+									<li><a href="#" tabindex="-1">Procesadores</a></li>
+								</ul>
+							</li>
+							<li class="divider"></li>
+							<li><a href="#">Configuracia tu PC</a></li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<div class="navbar-form navbar-left">
+						<div class="input-group">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button">Buscar</button>
+							</span>
+							<input type="text" class="form-control">
+						</div>
+						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-key"> Sign in</i></button>
+					</div>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Sign In</h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<ul class="nav nav-pills nav-pills-success col-lg-offset-3 col-lg-6">
+							<li role="presentation" class="active col-lg-5"><a data-toggle="tab" href="#login">Log In</a></li>
+							<li role="presentation" class="col-lg-5"><a data-toggle="tab" href="#register">Register</a></li>
+						</ul>
+						<div class="tab-content col-lg-12">
+							<div id="login" class="tab-pane fade in active">
+								<br/>
+								<form action="/login" method="post">
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
+										<input type="text" id="usermail" class="form-control" placeholder="usuario/E-mail" aria-describedby="sizing-addon3">
+									</div>
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+										<input type="password" class="form-control" placeholder="Contraseña" aria-describedby="sizing-addon3">
+									</div>
+									<br/>
+									<input type="submit" value="Entrar" id="login" class="btn btn-success">
+								</form>
+							</div>
+							<div id="register" class="tab-pane fade">
+								<br/>
+								<form action="/register" method="POST">
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
+										<input type="text" class="form-control" placeholder="Usuari" aria-describedby="sizing-addon3">
+									</div>
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+										<input type="password" class="form-control" placeholder="Contraseña" aria-describedby="sizing-addon3">
+									</div>
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-envelope"></span></span>
+										<input type="text" class="form-control" placeholder="Correo" aria-describedby="sizing-addon3">
+									</div>
+									<br/>
+									<input type="submit" value="Registrarse" id="registrar" class="btn btn-success">
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div id="about" class="container marketing">
+			<h1>About</h1>
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<img class="img-square" src="skin/img/user1.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<img class="img-square" src="skin/img/user2.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<img class="img-square" src="skin/img/user3.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<img class="img-square" src="skin/img/user4.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 col-lg-offset-3">
+					<img class="img-square" src="skin/img/user5.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<img class="img-square" src="skin/img/user6.jpg" height="140" width="140">
+					<h2>Heading</h2>
+					<p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+					<p><a class="btn btn-default" href="#" role="button">View details »</a></p>
+				</div>
+			</div>
+		</div>
+
+	<!-- Bootstrap core JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			$('.dropdown-toggle').dropdown();
+			$('.dropdown-submenu > a').submenupicker();
+		});
+	</script>
+
+</body>
+</html>
