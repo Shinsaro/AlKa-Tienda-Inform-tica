@@ -1,16 +1,5 @@
-var path = require('path');
 var Productos = require('../model/productos.js');
 module.exports = function(app){
-	llistarPlacas = function (req, res){
-		Productos.find(function (err,ProductosTienda){
-			if(!err){
-				console.log('Mostrando pelicules');
-				res.render('productos', {productos: ProductosTienda});
-			}else{
-				console.log('Error');
-			}
-		});
-	}
 	/*llistPeliBuscada = function (req,res){
 		Pelis.find({codpeli: req.params.codpeli}, function (err,result){
 			if (result.length == 0){
@@ -33,7 +22,24 @@ module.exports = function(app){
 		});
 	}*/
 	indexWebLogin = function (req,res){
-		res.render('menu_piedepagina');
+		Productos.find(function (err,ProductosTienda){
+			if(!err){
+				console.log('Mostrando pelicules');
+				res.render('index', {productos: ProductosTienda});
+			}else{
+				console.log('Error');
+			}
+		});
+	}
+	productosWeb = function (req,res){
+		Productos.find({tipo: req.params.producto}, function (err,ProductosTienda){
+			if(!err){
+				console.log('Mostrando productos');
+				res.render('productos', {productos: ProductosTienda,titulo:req.params.producto});
+			}else{
+				console.log('Error');
+			}
+		});
 	}
 	/*formulariActualitzarPeli = function (req,res){
 		res.render('formPeliActualizar');
@@ -62,13 +68,9 @@ module.exports = function(app){
     	});
     }*/
 
-	app.post('/login',llistarPlacas);
-	app.get(
-		'/',function (req,res) {
-			res.sendFile(path.resolve(__dirname+'../public/index.html'));
-			/*res.render('angelito',{angel:"¡¿Angelito, qué te pasaaaa?!"});*/
-		}
-	);
+	app.get('/',indexWebLogin);
+	app.get('/:producto',productosWeb);
+
 	/*app.get('/videoclub/buscar/:codpeli',llistPeliBuscada);
 	app.get('/videoclub/eliminar/:codpeli',eliminarPeli);
 	app.get('/videoclub/afegir/',formulariAfegirPeli);

@@ -10,7 +10,7 @@ var app = express();
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+/*app.set('views', path.join(__dirname, 'views'));*/
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -22,7 +22,7 @@ var routes = require('./routes/index')(app);
 
  mongoose.connect('mongodb://localhost:27017/AlKaTiendaInformatica',function (err,res){
   if(!err)
-    console.log('conectado a la base de datos');
+    console.log('Conectado a la base de datos AlKaTiendaInformatica');
   else
     console.log('error : ' + err);
 });
