@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ./header %>
+</head>
+<body data-spy="scroll" data-target="#navbar-example">
+	<%- include ./menu %>
+	<h1>Realizar Pedido</h1>
+
+	<!--<nav class="navbar navbar-inverse">-->
+	<div class="container">
+	  	<ul class="nav nav-tabs nav-tabs-justified nav-tabs-success col-lg-12">
+			<li id="tabcesta" role="presentation" class="col-lg-3 active"><a data-toggle="tab" href="#cesta"><b>CESTA</b></a></li>
+			<li id="tabenvioypago" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#envioypago"><b>ENVÍO Y PAGO</b></a></li>
+			<li id="tabresumen" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#resumen"><b>RESUMEN</b></a></li>
+			<li id="tabfinalizar" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#finalizar"><b>FINALIZAR</b></a></li>
+		</ul>
+		<div class="tab-content col-lg-12">
+			<div id="cesta" class="tab-pane fade in active">
+			<br>
+				<div class="panel panel-warning">
+					<div class="panel-body">
+						Presupuesto calculado sin impuestos ni gastos de envío.
+					</div>
+				</div>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Artículo</th>
+							<th>Unidades</th>
+							<th>Precio</th>
+							<th>Total</th>
+							<th>Descarta</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+								<a class="detail-icon" href="bbb" title="detail">
+									<span class="glyphicon glyphicon-chevron-down"></span>
+								</a>
+								&nbsp placa 1
+							</td>
+							<td>2</td>
+							<td>5.5</td>
+							<td>11</td>
+							<td>
+								<a class="remove" href="aaa" title="remove">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<a class="detail-icon" href="bbb" title="detail">
+									<span class="glyphicon glyphicon-chevron-down"></span>
+								</a>
+								&nbsp procesador 1
+							</td>
+							<td>3</td>
+							<td>10</td>
+							<td>30</td>
+							<td>
+								<a class="remove" href="aaa" title="remove">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<a class="detail-icon" href="bbb" title="detail">
+									<span class="glyphicon glyphicon-chevron-down"></span>
+								</a>
+								&nbsp placa 2
+							</td>
+							<td>1</td>
+							<td>7.3</td>
+							<td>7.3</td>
+							<td>
+								<a class="remove" href="aaa" title="remove">
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td><h4>Total</h4></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><h4>suma</h4></td>
+						</tr>
+					</tfoot>
+				</table>
+				<div>
+					<ul class="pager">
+					    <li class="disabled" style="float: left"><a data-toggle="tab"href="#">Anterior</a></li>
+					    <li id="botonpagcesta"style="float: right"><a data-toggle="tab" href="#envioypago">Siguiente</a></li>
+					</ul>
+				</div>
+				<div id="prova"></div>
+			</div>
+			<div id="envioypago" class="tab-pane fade">
+				<br>
+				<form action="/pedido/envioypago" method="post">
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">Envío</h3>
+						</div>
+						<div class="panel-body">
+							<p>Selecciona la dirección de envío.</p>
+							<!-- foreach con ejs utilizando la bbdd de los users -->
+							<select class="form-control" style="border-radius">
+								<option>aaa</option>
+								<option>bbb</option>
+								<option>ccc</option>
+								<option>ddd</option>
+							</select>
+							<br>
+							<div>
+								<a class="edit" href="aaa" title="edit">
+									<span class="glyphicon glyphicon-pencil"></span>
+									Edita la dirección &nbsp
+								</a>
+								<a class="add" href="aaa" title="add">
+									<span class="glyphicon glyphicon-plus"></span>
+									Añade una nueva dirección
+								</a>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">Facturación</h3>	
+						</div>
+						<div class="panel-body">
+							<p>Selecciona la dirección de facturación.</p>
+                            <select class="form-control" style="border-radius">
+								<% if( usuarios.nombre==="ana" ){ %>
+                                     <option><%= usuarios.direccion.calle %></option>
+                                <% } %>
+							</select>
+							<br>
+							<div>
+								<a class="edit" href="aaa" title="edit">
+									<span class="glyphicon glyphicon-pencil"></span>
+									Edita la dirección &nbsp 
+								</a>
+								<a class="add" href="aaa" title="add">
+									<span class="glyphicon glyphicon-plus"></span>
+									Añade una nueva dirección
+								</a>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="panel panel-success">
+						<div class="panel-heading">
+							<h3 class="panel-title">Pago</h3>	
+						</div>
+						<div class="panel-body">
+							
+						</div>
+					</div>
+					<div id="paginacion">
+						<ul class="pager">
+					    	<li id="botonpagenvio1" style="float: left"><a data-toggle="tab" href="#cesta">Anterior</a></li>
+					    	<li id="botonpagenvio2" style="float: right"><a data-toggle="tab" href="#resumen">Siguiente</a></li>
+					  	</ul>
+					</div>
+				</form>
+			</div>
+			<div id="resumen" class="tab-pane fade">
+				<ul class="pager">
+				   	<li id="botonpagresumen1" style="float: left"><a data-toggle="tab" href="#envioypago">Anterior</a></li>
+				   	<li id="botonpagresumen2" style="float: right"><a data-toggle="tab" href="#finalizar">Siguiente</a></li>
+				</ul>
+			</div>
+			<div id="finalizar" class="tab-pane fade">
+				<ul class="pager">
+				    <li id="botonpagfinalizar" style="float: left"><a data-toggle="tab" href="#resumen">Anterior</a></li>
+				    <li class="disabled" style="float: right"><a data-toggle="tab" href="#">Siguiente</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+    <%- include("./footer") %>
+</body>
+</html>
