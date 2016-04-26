@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ./header %>
+</head>
+<body>
+	<%- include ./menu %>
+	<div class="container-fluid miperfil">
+		<form class="form-horizontal container-fluid col-lg-offset-2 col-lg-12 col-md-6" method="POST" action="/user/home/user/home/miperfil/actualizarDatos">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Foto perfil:</label>
+				<div class="col-sm-2">
+					<img src="<%= fotoPerfil %>" height="50%" width="50%"/>
+					<button type="button" class="btn btn-success" data-toggle="modal" data-target="#uploadPictureModal">Cambiar foto</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Alias</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="text" value="<%= alias %>">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Nombre</label>
+				<div class="col-sm-4">
+					<% if (nombre != undefined) {%>
+						<input class="form-control" type="text" name="nombre" value="<%= nombre %>">
+					<% } else { %>
+						<input class="form-control" type="text" name="nombre" placeholder="Escribe tu nombre">
+					<% } %>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Apellidos</label>
+				<div class="col-sm-4">
+					<% if (apellidos != undefined) {%>
+						<input class="form-control" type="text" name="apellidos" value="<%= apellidos %>">
+					<% } else { %>
+						<input class="form-control" type="text" name="apellidos" placeholder="Escribe tus apellidos">
+					<% } %>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label telefonoCorreo">Teléfono</label>
+				<div class="input-group col-sm-3">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+					<% if (telefono != undefined) {%>
+						<input class="form-control" type="text" name="telefono" value="<%= telefono %>">
+					<% } else { %>
+						<input class="form-control" type="text" name="telefono" placeholder="Introduce tu numero de telefono">
+					<% } %>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label telefonoCorreo">Correo electrónico</label>
+				<div class="input-group col-sm-3">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+					<input class="form-control" type="text" value="<%= correo %>">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Dirección</label>
+				<% if (calle != undefined && numero != undefined && piso != undefined && cp != undefined) {%>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="calle" value="<%= calle %>">
+						<input class="form-control" type="text" name="numero" value="<%= numero %>">
+						<input class="form-control" type="text" name="piso" value="<%= piso %>">
+						<input class="form-control" type="text" name="cp" value="<%= cp %>">
+					</div>
+				<% } else { %>
+					<div class="col-sm-2">
+						<input class="form-control" type="text" name="calle" placeholder="Escribe el nombre de tu calle">
+						<input class="form-control" type="text" name="numero" placeholder="Escribe el numero de tu portal">
+						<input class="form-control" type="text" name="piso" placeholder="Escribe el numero de tu piso">
+						<input class="form-control" type="text" name="cp" placeholder="Escribe tu codigo postal">
+					</div>
+				<% } %>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Metodo Pago</label>
+				<div class="col-sm-4">
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+						<i class="fa fa-paypal fa-2x" aria-hidden="true"></i> PayPal
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="optradio">
+							<i class="fa fa-cc-visa fa-2x" aria-hidden="true"></i> Visa
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="formGroup"></label>
+				<div class="col-sm-4">
+					<button type="submit" class="btn btn-success btn-md"><span class="glyphicon glyphicon-floppy-saved"></span> Guardar</button>
+				</div>
+			</div>
+		</form>	
+		<div class="container">
+		<div class="modal fade" id="uploadPictureModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Cambiar foto perfil</h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<form action="/user/home/miperfil/upload" method='POST' enctype='multipart/form-data'>
+							<div class="input-group">
+								<input type="file" name='archivo'>
+					   			<input type="submit" class="btn btn-success" value='Subir'>	
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	<%- include("./footer") %>
+</body>
+</html>

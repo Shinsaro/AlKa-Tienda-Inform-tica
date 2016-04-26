@@ -1,11 +1,14 @@
-var express = require('express');
-var path = require('path');
-var mongoose = require('mongoose');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-
+var express = require('express'),
+path = require('path'),
+mongoose = require('mongoose'),
+favicon = require('serve-favicon'),
+logger = require('morgan'),
+cookieParser = require('cookie-parser'),
+bodyParser = require('body-parser'),
+expressSession = require('express-session'),
+flash = require('connect-flash'),
+passport = require('passport'),
+multipart = require('connect-multiparty');
 var app = express();
 
 
@@ -17,8 +20,18 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(multipart());
 
-var routes = require('./routes/index')(app);
+// Express Session
+app.use(expressSession({secret: 'AlKaTiendaInformatica',resave: true,saveUninitialized: true,}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+var routes = require('./routes/controller')(app,passport);
+require('./routes/passport')(passport);
 
  mongoose.connect('mongodb://localhost:27017/AlKaTiendaInformatica',function (err,res){
   if(!err)

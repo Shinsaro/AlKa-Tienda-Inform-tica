@@ -8,7 +8,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">AlKa</a>
+				<a class="navbar-brand" href="<%= home %>">AlKa</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -18,8 +18,8 @@
 							<li class="dropdown-submenu" role="menu">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Componentes</a>
 								<ul class="dropdown-menu">
-									<li><a href="/placa base" tabindex="-1">Placa Base</a></li>
-									<li><a href="/procesadores" tabindex="-1">Procesadores</a></li>
+									<li><a href="<%= placaBase %> " tabindex="-1">Placa Base</a></li>
+									<li><a href="<%= procesadores %>" tabindex="-1">Procesadores</a></li>
 								</ul>
 							</li>
 							<li class="divider"></li>
@@ -31,12 +31,12 @@
 					<div class="navbar-form navbar-left">
 						<div class="input-group">
 							<span class="input-group-btn">
-								<button class="btn btn-default" type="button">Buscar</button>
+								<button class="btn btn-success" type="button">Buscar</button>
 							</span>
 							<input type="text" class="form-control">
 						</div>
-						<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-key"> Sign in</i></button>
-						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"><i class="fa fa-shopping-cart"></i></button>
+						<button type="button" class="btn btn-success" data-toggle="<%= modal %>" data-target="<%= nameTarget %>"><i class="fa fa-key"> <%= entrarSalir %></i></button>
+						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button"><i class="fa fa-shopping-cart" aria-hidden="true"></i> </button>
 						<div class="dropdown-menu" role="menu">
 							<h3 class="dropdown-header"><b>Carrito</b></h3>
 						</div>
@@ -61,39 +61,88 @@
 						<div class="tab-content col-lg-12">
 							<div id="login" class="tab-pane fade in active">
 								<br/>
-								<form action="/login" method="post">
+								<% if (message.length > 0) { %>
+									<div class="alert alert-danger"><%= message %></div>
+								<% } %>
+								<form action="/home/login" method="post" id="formLogin" role="form" data-toggle="validator">
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
-										<input type="text" id="usermail" class="form-control" placeholder="usuario/E-mail" aria-describedby="sizing-addon3">
+										<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
 									</div>
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
-										<input type="password" class="form-control" placeholder="Contraseña" aria-describedby="sizing-addon3">
+										<input type="password" class="form-control" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
 									</div>
 									<br/>
-									<input type="submit" value="Entrar" id="login" class="btn btn-success">
+									<input type="submit" value="Entrar" id="login" name="login" class="btn btn-success">
+									<div id="mensajes"></div>
 								</form>
 							</div>
 							<div id="register" class="tab-pane fade">
 								<br/>
-								<form action="/register" method="POST">
+								<% if (message.length > 0) { %>
+									<div class="alert alert-danger"><%= message %></div>
+								<% } %>
+								<form role="form" data-toggle="validator" action="/home/register" method="POST" id="formRegister">
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
-										<input type="text" class="form-control" placeholder="Usuari" aria-describedby="sizing-addon3">
+										<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
 									</div>
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
-										<input type="password" class="form-control" placeholder="Contraseña" aria-describedby="sizing-addon3">
+										<input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
+									</div>
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+										<input type="password" class="form-control" name="contrasena2" placeholder="Repite la contraseña" aria-describedby="sizing-addon3">
 									</div>
 									<div class="input-group input-group-sm">
 										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-envelope"></span></span>
-										<input type="text" class="form-control" placeholder="Correo" aria-describedby="sizing-addon3">
+										<input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" aria-describedby="sizing-addon3">
 									</div>
-									<br/>
-									<input type="submit" value="Registrarse" id="registrar" class="btn btn-success">
+									<div class="form-group">
+								        <div class="col-md-9 col-md-offset-3">
+								            <div id="mensajes"></div>
+								        </div>
+								    </div>
+									<input type="submit" value="Registrarse" id="registrar" name="registrar" class="btn btn-success">
 								</form>
 							</div>
 						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="modal fade" id="profileModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Bienvenido <%= alias %></h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<div class="list-group">
+							<a href="/user/home/miperfil" class="list-group-item">
+								<i class="fa fa-user fa-2x" aria-hidden="true"></i>
+								Editar mi perfil
+							</a>
+							<a href="/user/home/mispedidos" class="list-group-item">
+								<i class="fa fa-cubes fa-2x" aria-hidden="true"></i>
+								Mis pedidos
+							</a>
+							<a href="/user/home/mispuntos" class="list-group-item">
+
+								Mis puntos
+							</a>
+						</div>
+						<form action="/user/home/logout" method="get" accept-charset="utf-8">
+							<button type="submit" class="btn btn-danger">Log Out</button>
+						</form>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

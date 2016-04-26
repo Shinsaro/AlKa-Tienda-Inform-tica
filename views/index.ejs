@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>AlKa Tienda Informatica</title>
-	<link rel="stylesheet" type="text/css" href="stylesheets/style.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<%- include ./header %>
 </head>
 <body data-spy="scroll" data-target="#navbar-example">
-	<%- include("./menu") %>
+	<%- include ./menu %>
 	<div id="myCarousel" class="carousel slide" data-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators">
@@ -34,7 +29,7 @@
 			</div>
 
 			<div class="item">
-			<img src="https://gaming.msi.com/wp-content/uploads/2015/02/msi-r9_390-hitman_bundle-frontpage_banner-1920x550-1.jpg" alt="oferta placa base">
+				<img src="https://gaming.msi.com/wp-content/uploads/2015/02/msi-r9_390-hitman_bundle-frontpage_banner-1920x550-1.jpg" alt="oferta placa base">
 			</div>
 		</div>
 
@@ -60,22 +55,6 @@
 				<% }); %>
 		</div>
 	</div>
-
-	<!-- Bootstrap core JavaScript
-	================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="./bootstrap-hover-dropdown-master/bootstrap-hover-dropdown.min.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('.dropdown-toggle').dropdown();
-		});
-	</script>
-
+	<%- include("./footer") %>
 </body>
 </html>

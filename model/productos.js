@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 //Esquema del objecte
 var schemaProductos = new schema ({
-				codigo: Number,
 				nombre: String,
 				descripcion: String,
 				tipo : String,

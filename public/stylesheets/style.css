@@ -1,10 +1,45 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
+#about{
+  position: relative;
+  margin-top: 3em;
+}
+.miperfil{
+  margin-top: 5em;
+}
+.fa-paypal {
+  font-size: 2em;
+}
+.fa-cc-visa{
+  font-size: 2em;
+}
+.telefonoCorreo{
+  margin-right: 1em;
+}
 a {
   color: #00B7FF;
+}
+.glyphicon-ok{
+  color: green;
+}
+.glyphicon-remove{
+  color: red;
+}
+.navbar-static-bottom{
+  position: relative;
+  top: 0px;
+}
+.redirigir{
+  position: relative;
+  margin-top: 5em;   
+}
+.fa-shopping-cart{
+  font-size: 1.5em;
+}
+#myCarousel{
+  position: relative;
+  margin: 5em 1em 0em 1em;
 }
 #myCarousel .carousel-indicators li {
   background-color: red;
@@ -17,52 +52,57 @@ a {
   border-radius: 5%;
 }
 #myCarousel .glyphicon{
-    color: blue;
+  color: blue;
 }
 .dropdown-submenu {
-    position: relative;
+  position: relative;
 }
 
 .dropdown-submenu>.dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -6px;
-    margin-left: -1px;
-    -webkit-border-radius: 0 6px 6px 6px;
-    -moz-border-radius: 0 6px 6px;
-    border-radius: 0 6px 6px 6px;
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
 }
 
 .dropdown-submenu:hover>.dropdown-menu {
-    display: block;
+  display: block;
 }
 
 .dropdown-submenu>a:after {
-    display: block;
-    content: " ";
-    float: right;
-    width: 0;
-    height: 0;
-    border-color: transparent;
-    border-style: solid;
-    border-width: 5px 0 5px 5px;
-    border-left-color: #ccc;
-    margin-top: 5px;
-    margin-right: -10px;
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #ccc;
+  margin-top: 5px;
+  margin-right: -10px;
 }
 
 .dropdown-submenu:hover>a:after {
-    border-left-color: #fff;
+  border-left-color: #fff;
 }
 
 .dropdown-submenu.pull-left {
-    float: none;
+  float: none;
 }
 
 .dropdown-submenu.pull-left>.dropdown-menu {
-    left: -100%;
-    margin-left: 10px;
-    -webkit-border-radius: 6px 0 6px 6px;
-    -moz-border-radius: 6px 0 6px 6px;
-    border-radius: 6px 0 6px 6px;
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
+}
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+  .telefonoCorreo{
+    margin-right: 5em;
+  }
 }
