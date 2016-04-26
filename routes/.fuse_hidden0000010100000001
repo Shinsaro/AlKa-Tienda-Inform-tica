@@ -1,7 +1,5 @@
 var Productos = require('../model/productos.js');
 var Usuarios = require('../model/usuarios.js');
-var Carrito = require('../model/carrito.js');
-
 module.exports = function(app,passport){
 	/*
 	eliminarPeli = function (req,res){
@@ -190,52 +188,6 @@ module.exports = function(app,passport){
         req.logout();
         res.redirect('/home');
     };
-    
-    
-    realizarPedido = function (req,res){
-		// Función que envía los productos...
-		Productos.find(function (err,ProductosTienda){
-			if(!err){
-				console.log('Mostrando productos añadidos al pedido');
-				res.render('pedido', {productos: ProductosTienda});
-			}else{
-				console.log('Error al mostrar los productos añadidos al pedido. '+err);
-			}
-		});
-	}
-    
-    // Funciones del carrito
-    
-    // Función que añade un producto al carrito
-    anadirProductoCarrito = function (req,res){
-        console.log("Añadiendo producto al carrito");
-        var cookie = req.cookies;
-        var session = req.session;
-        console.log("nombre producto: cookie : "+cookie);
-        console.log("nombre producto: session : "+session);
-    }
-    
-    // Función que permmite ver los productos añadidos al carrito
-    verCarrito = function (req,res){
-        
-    }
-    
-    // Función que borra un producto del carrito
-    quitarProductoCarrito = function (req,res){
-        
-    }
-    
-    // Función que cierra el carrito
-    cerrarCarrito = function (req,res){
-        
-    }
-    
-    // Función que lista los carritos
-    listarCarritos = function (req,res){
-        
-    }
-    
-    
 
 	/*
     actualitzarPeli = function (req,res){
@@ -258,16 +210,6 @@ module.exports = function(app,passport){
 	app.post('/user/home/miperfil/upload',isLoggedIn,subirFoto);
 	app.post('/home/login',passport.authenticate('local-login',{ successRedirect : '/user/home', failureRedirect : '/home', failureFlash : true }),loginWeb);
 	app.post('/home/register',passport.authenticate('local-register',{ successRedirect : '/home', failureRedirect : '/home', failureFlash : true }),registerWeb);
-    
-    
-    
-    app.get('/pedido',realizarPedido);
-    app.post('/anadeProductoCarrito', anadirProductoCarrito);
-    app.get('/carrito', verCarrito);
-    app.delete('/quitaProductoCarrito', quitarProductoCarrito);
-    app.post('/cierraCarrito', cerrarCarrito);
-    app.get('/listaCarritos', listarCarritos);
-    
 
 	/*app.get('/videoclub/buscar/:codpeli',llistPeliBuscada);
 	app.get('/videoclub/actualitzar/',formulariActualitzarPeli);
