@@ -239,28 +239,7 @@ module.exports = function(app,passport){
         		res.redirect('back');
         	});
     	});
-    }
-    // Función que permmite ver los productos añadidos al carrito
-    verCarrito = function (req,res){
-        
-    }
-    
-    // Función que borra un producto del carrito
-    quitarProductoCarrito = function (req,res){
-        
-    }
-    
-    // Función que cierra el carrito
-    cerrarCarrito = function (req,res){
-        
-    }
-    
-    // Función que lista los carritos
-    listarCarritos = function (req,res){
-        
-    }
-    
-    
+    }    
 
 	/*
     actualitzarPeli = function (req,res){
@@ -283,16 +262,9 @@ module.exports = function(app,passport){
 	app.post('/user/home/miperfil/upload',isLoggedIn,subirFoto);
 	app.post('/home/login',passport.authenticate('local-login',{ successRedirect : '/user/home', failureRedirect : '/home', failureFlash : true }),loginWeb);
 	app.post('/home/register',passport.authenticate('local-register',{ successRedirect : '/home', failureRedirect : '/home', failureFlash : true }),registerWeb);
-    
-    
-    
     app.get('/pedido',realizarPedido);
     app.post('/anadeProductoCarrito', isLoggedIn, anadirProductoCarrito);
-    app.get('/carrito', verCarrito);
-    app.delete('/quitaProductoCarrito', quitarProductoCarrito);
-    app.post('/cierraCarrito', cerrarCarrito);
-    app.get('/listaCarritos', listarCarritos);
-    
+    app.delete('/quitaProductoCarrito', quitarProductoCarrito);    
 
 	/*app.get('/videoclub/buscar/:codpeli',llistPeliBuscada);
 	app.get('/videoclub/actualitzar/',formulariActualitzarPeli);
