@@ -1,13 +1,13 @@
 $(function(){
 	$('#formRegister').bootstrapValidator({
-        container: '#mensajes',
+        framework: 'bootstrap',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            usuario: {
+            alias: {
                 validators: {
                     notEmpty: {
                         message: 'El nombre no puede estar vacio.'
@@ -46,14 +46,14 @@ $(function(){
     });
 	$('#formLogin').bootstrapValidator({
         framework: 'bootstrap',
-        container: '#messages',
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            usuario: {
+            alias: {
+                row: '.col-xs-8',
                 validators: {
                     notEmpty: {
                         message: 'El nombre no puede estar vacio.'

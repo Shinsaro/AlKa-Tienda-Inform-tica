@@ -22,8 +22,9 @@ module.exports = function(app,passport){
 					titulo: "AlKa Tienda Informatica",
 					alias:"",
 					home : "/home" ,
-					message: "",
-					productos: ProductosTienda,modal:"modal",
+					carrito: "",
+					productos: ProductosTienda,
+					modal:"modal",
 					nameTarget: "#myModal",
 					entrarSalir: "Log In",
 					placaBase:"/home/category/placa base",procesadores:"/home/category/procesadores"
@@ -34,15 +35,18 @@ module.exports = function(app,passport){
 		});
 	}
 	indexWebLogin = function (req,res){
-		Productos.find(function (err,ProductosTienda){
+		var carritoDelUsuario = "";
+		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+			carritoDelUsuario = carritoUsuario;
+			Productos.find(function (err,ProductosTienda){
 			if(!err){
 				console.log('Mostrando pelicules');
 				res.render('index', {
 					titulo: "AlKa Tienda Informatica",
 					home : "/user/home" ,
 					alias:req.user.alias,
-					message: req.flash('loginMessage'),
 					productos: ProductosTienda,
+					carrito: carritoDelUsuario,
 					modal:"modal",
 					nameTarget:"#profileModal",
 					entrarSalir: "Mi perfil",
@@ -53,6 +57,7 @@ module.exports = function(app,passport){
 				console.log('Error');
 			}
 		});
+		});
 	}
 	productosWeb = function (req,res){
 		Productos.find({tipo: req.params.producto}, function (err,ProductosTienda){
@@ -61,7 +66,7 @@ module.exports = function(app,passport){
 				res.render('productos', {
 					alias:"",
 					home : "/home" ,
-					message: "",
+					carrito: "",
 					productos: ProductosTienda,
 					titulo:req.params.producto,
 					modal:"modal",
@@ -76,14 +81,18 @@ module.exports = function(app,passport){
 		});
 	}
 	productosWebLogin = function (req,res){
+		var carritoDelUsuario = "";
+		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+			carritoDelUsuario = carritoUsuario;
+		});
 		Productos.find({tipo: req.params.producto}, function (err,ProductosTienda){
 			if(!err){
 				console.log('Mostrando productos');
 				res.render('productos', {
 					home : "/user/home/" ,
 					alias:req.user.alias,
-					message: "",
 					productos: ProductosTienda,
+					carrito: carritoDelUsuario,
 					titulo:req.params.producto,
 					modal:"modal",
 					nameTarget:"#profileModal",
@@ -109,7 +118,6 @@ module.exports = function(app,passport){
 			fotoPerfil: req.user.foto,
 			alias: req.user.alias,
 			home : "/user/home",
-			message: "",
 			titulo:"Mi perfil",
 			modal:"modal",
 			nameTarget: "#profileModal",
@@ -162,7 +170,6 @@ module.exports = function(app,passport){
 		res.render('redirigir',{
 			alias:"",
 			home : "/home" ,
-			message: req.flash('signupMessage'),
 			titulo:"Registro correcto",
 			texto:"Cuenta creada con exito, por favor proceda a loguearse ahora.",
 			modal:"modal",
@@ -177,7 +184,6 @@ module.exports = function(app,passport){
 		res.render('redirigir',{
 			alias:req.user.alias,
 			home : "/user/home" ,
-			message: req.flash('loginMessage'),
 			titulo:"Log In",
 			texto:"Proceda a loguearse.",
 			nameTarget:"#profileModal",
@@ -208,13 +214,20 @@ module.exports = function(app,passport){
     
     // Función que añade un producto al carrito
     anadirProductoCarrito = function (req,res){
-        console.log("Añadiendo producto al carrito");
-        var cookie = req.cookies;
-        var session = req.session;
-        console.log("nombre producto: cookie : "+cookie);
-        console.log("nombre producto: session : "+session);
+        /*console.log("Añadiendo producto al carrito");*/
+        var usuarioObjID = "";
+        console.log("body de objeto que añadoir al carro : " + req.body.id);
+        Usuarios.find({correo:req.user.correo},function (err,usuarioID){
+        	usuarioObjID = usuarioID[0]._id;
+        	var carrito = new Carrito ({
+        		idProducto:req.body.id,
+        		idUsuario: usuarioObjID
+        	});
+        	carrito.save({idProducto:req.body.id,idUsuario:usuarioObjID},function (err,carritoProductos){
+        		console.log(carritoProductos);
+        	});
+    	});
     }
-    
     // Función que permmite ver los productos añadidos al carrito
     verCarrito = function (req,res){
         
@@ -262,7 +275,7 @@ module.exports = function(app,passport){
     
     
     app.get('/pedido',realizarPedido);
-    app.post('/anadeProductoCarrito', anadirProductoCarrito);
+    app.post('/anadeProductoCarrito', isLoggedIn, anadirProductoCarrito);
     app.get('/carrito', verCarrito);
     app.delete('/quitaProductoCarrito', quitarProductoCarrito);
     app.post('/cierraCarrito', cerrarCarrito);

@@ -8,7 +8,12 @@
 	<!-- Parrilla de fotos -->
 	<div id="about" class="container marketing">
 		<!-- Título de la página -->
-		<h1><%= titulo %></h1>
+		<h1 id="titulo"><%= titulo %></h1>
+        <script type="text/javascript">
+        $('h1').click(function() {
+          alert( "Handler for .click() called." );
+        });
+        </script>
 	    <div class="row">
             <% productos.forEach( function( producto ){ %>
                 <form action='/anadeProductoCarrito' method='POST'>

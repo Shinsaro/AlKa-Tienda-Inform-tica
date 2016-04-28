@@ -43,8 +43,8 @@
 						<ul class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuDivider">
                             <li class="dropdown-header"><h4><b>Carrito</b></h4></li>
                             <li role="separator" class="divider"></li>
-							<!-- <li>
-								
+							<!-- <li>											
+							
 							</li> -->
 							<li role="separator" class="divider"></li>
                             <li><a href="/pedido" tabindex="-1">Realizar Pedido</a></li>
@@ -70,50 +70,49 @@
 						<div class="tab-content col-lg-12">
 							<div id="login" class="tab-pane fade in active">
 								<br/>
-								<% if (message.length > 0) { %>
-									<div class="alert alert-danger"><%= message %></div>
-								<% } %>
 								<form action="/home/login" method="post" id="formLogin" role="form" data-toggle="validator">
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
-										<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
+											<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
-										<input type="password" class="form-control" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+											<input type="password" class="form-control" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<br/>
 									<input type="submit" value="Entrar" id="login" name="login" class="btn btn-success">
-									<div id="mensajes"></div>
 								</form>
 							</div>
 							<div id="register" class="tab-pane fade">
 								<br/>
-								<% if (message.length > 0) { %>
-									<div class="alert alert-danger"><%= message %></div>
-								<% } %>
 								<form role="form" data-toggle="validator" action="/home/register" method="POST" id="formRegister">
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
-										<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-user"></span></span>
+											<input type="text" class="form-control" name="alias" placeholder="Usuari" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
-										<input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+											<input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
-										<input type="password" class="form-control" name="contrasena2" placeholder="Repite la contraseña" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-asterisk"></span></span>
+											<input type="password" class="form-control" name="contrasena2" placeholder="Repite la contraseña" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<div class="input-group input-group-sm">
-										<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-envelope"></span></span>
-										<input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" aria-describedby="sizing-addon3">
+									<div class="form-group form-group-sm">
+										<div class="input-group form-group-sm">
+											<span class="input-group-addon" id="sizing-addon3"><span class="glyphicon glyphicon-envelope"></span></span>
+											<input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" aria-describedby="sizing-addon3">
+										</div>
 									</div>
-									<div class="form-group">
-								        <div class="col-md-9 col-md-offset-3">
-								            <div id="mensajes"></div>
-								        </div>
-								    </div>
 									<input type="submit" value="Registrarse" id="registrar" name="registrar" class="btn btn-success">
 								</form>
 							</div>
