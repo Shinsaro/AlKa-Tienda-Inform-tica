@@ -9,4 +9,4 @@ var schemaCarrito = new schema ({
 				fechaCreacionCarrito: { type: Date, default: Date.now }
 			    });
 // Lo modulamos y lo hacemos público
-module.exports = mongoose.model('carrito',schemaCarrito);
+module.exports = mongoose.model('carritos',schemaCarrito);

@@ -1,7 +1,6 @@
 var Productos = require('../model/productos.js');
 var Usuarios = require('../model/usuarios.js');
 var Carrito = require('../model/carrito.js');
-var mongoose = require('mongoose');
 
 module.exports = function(app,passport){
 	/*
@@ -36,34 +35,28 @@ module.exports = function(app,passport){
 		});
 	}
 	indexWebLogin = function (req,res){
-		if (idProductoCarrito == undefined) {
-			var idProductoCarrito = [];
-		}
+		var carritoDelUsuario = "";
 		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
-			for (var i = 0; i < carritoUsuario.length; i++) {
-				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
-			}
-			Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
-				Productos.find(function (err,ProductosTienda){
-					if(!err){
-						console.log('Mostrando pelicules');
-						res.render('index', {
-							titulo: "AlKa Tienda Informatica",
-							home : "/user/home" ,
-							alias:req.user.alias,
-							productos: ProductosTienda,
-							carrito: ProductosCarrito,
-							modal:"modal",
-							nameTarget:"#profileModal",
-							entrarSalir: "Mi perfil",
-							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores"
-						});
-					}else{
-						console.log('Error');
-					}
+			carritoDelUsuario = carritoUsuario;
+			Productos.find(function (err,ProductosTienda){
+			if(!err){
+				console.log('Mostrando pelicules');
+				res.render('index', {
+					titulo: "AlKa Tienda Informatica",
+					home : "/user/home" ,
+					alias:req.user.alias,
+					productos: ProductosTienda,
+					carrito: carritoDelUsuario,
+					modal:"modal",
+					nameTarget:"#profileModal",
+					entrarSalir: "Mi perfil",
+					placaBase:"/user/home/category/placa base",
+					procesadores:"/user/home/category/procesadores"
 				});
-			});
+			}else{
+				console.log('Error');
+			}
+		});
 		});
 	}
 	productosWeb = function (req,res){
@@ -88,34 +81,28 @@ module.exports = function(app,passport){
 		});
 	}
 	productosWebLogin = function (req,res){
-		if (idProductoCarrito == undefined) {
-			var idProductoCarrito = [];
-		}
+		var carritoDelUsuario = "";
 		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
-			for (var i = 0; i < carritoUsuario.length; i++) {
-				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
-			}
-			Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
-				Productos.find(function (err,ProductosTienda){
-					if(!err){
-						console.log('Mostrando productos');
-						res.render('productos', {
-							home : "/user/home/" ,
-							alias:req.user.alias,
-							productos: ProductosTienda,
-							carrito: ProductosCarrito,
-							titulo:req.params.producto,
-							modal:"modal",
-							nameTarget:"#profileModal",
-							entrarSalir: "Mi perfil",
-							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores"
-						});
-					}else{
-						console.log('Error');
-					}
+			carritoDelUsuario = carritoUsuario;
+		});
+		Productos.find({tipo: req.params.producto}, function (err,ProductosTienda){
+			if(!err){
+				console.log('Mostrando productos');
+				res.render('productos', {
+					home : "/user/home/" ,
+					alias:req.user.alias,
+					productos: ProductosTienda,
+					carrito: carritoDelUsuario,
+					titulo:req.params.producto,
+					modal:"modal",
+					nameTarget:"#profileModal",
+					entrarSalir: "Mi perfil",
+					placaBase:"/user/home/category/placa base",
+					procesadores:"/user/home/category/procesadores"
 				});
-			});
+			}else{
+				console.log('Error');
+			}
 		});
 	}
 	miperfil = function (req,res){
@@ -209,6 +196,8 @@ module.exports = function(app,passport){
         req.logout();
         res.redirect('/home');
     };
+    
+    
     realizarPedido = function (req,res){
 		// Función que envía los productos...
 		Productos.find(function (err,ProductosTienda){
@@ -228,15 +217,14 @@ module.exports = function(app,passport){
         /*console.log("Añadiendo producto al carrito");*/
         var usuarioObjID = "";
         console.log("body de objeto que añadoir al carro : " + req.body.id);
-        Usuarios.findOne({correo:req.user.correo},function (err,usuarioID){
-        	usuarioObjID = usuarioID._id;
+        Usuarios.find({correo:req.user.correo},function (err,usuarioID){
+        	usuarioObjID = usuarioID[0]._id;
         	var carrito = new Carrito ({
         		idProducto:req.body.id,
         		idUsuario: usuarioObjID
         	});
         	carrito.save({idProducto:req.body.id,idUsuario:usuarioObjID},function (err,carritoProductos){
         		console.log(carritoProductos);
-        		res.redirect('back');
         	});
     	});
     }

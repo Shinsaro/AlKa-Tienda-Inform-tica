@@ -20,12 +20,6 @@ body {
 a {
   color: #00B7FF;
 }
-.glyphicon-ok{
-  color: green;
-}
-.glyphicon-remove{
-  color: red;
-}
 .navbar-static-bottom{
   position: relative;
   top: 0px;
