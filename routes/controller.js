@@ -611,7 +611,7 @@ module.exports = function(app,passport){
 			res.redirect('back');
 		});
     }
-
+    app.get('/',indexWeb);
 	app.get('/home',indexWeb);
 	app.get('/user/home',isLoggedIn,indexWebLogin);
 	app.get('/user/home/listarProductosForm',isLoggedIn,listarProductosForm);
