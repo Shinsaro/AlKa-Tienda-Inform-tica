@@ -33,7 +33,15 @@ app.use(flash());
 var routes = require('./routes/controller')(app,passport);
 require('./routes/passport')(passport);
 
- mongoose.connect('mongodb://localhost:27017/AlKaTiendaInformatica',function (err,res){
+
+//provide a sensible default for local development
+mongodb_connection_string = 'mongodb://localhost:27017/AlKaTiendaInformatica';
+//take advantage of openshift env vars when available:
+if(process.env.OPENSHIFT_MONGODB_DB_URL){
+  mongodb_connection_string = process.env.OPENSHIFT_MONGODB_DB_URL + "AlKaTiendaInformatica";
+}
+
+mongoose.connect( mongodb_connection_string,function (err,res){
   if(!err)
     console.log('Conectado a la base de datos AlKaTiendaInformatica');
   else

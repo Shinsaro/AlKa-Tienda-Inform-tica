@@ -9,7 +9,7 @@ var User = require('../model/usuarios');
 module.exports = function(passport) {
 
     // =========================================================================
-    // passport session setup ==================================================
+    // =======================Passport Session Setup ===========================
     // =========================================================================
     // required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
@@ -57,6 +57,7 @@ module.exports = function(passport) {
                     usuarioNuevo.correo = correo;
                     usuarioNuevo.contrasena = usuarioNuevo.generateHash(contrasena);
                     usuarioNuevo.alias = alias;
+                    usuarioNuevo.admin = false;
                     // hacemos un save en mongodb
                     usuarioNuevo.save(function(err) {
                         if (err)

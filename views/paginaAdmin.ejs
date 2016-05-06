@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%- include ./header %>
+	</head>
+	<body data-spy="scroll" data-target="#navbar-example">
+		<%- include ./menu %>
+		<% 
+			var secciones = ["Productos","Marcas","Usuarios"],
+			icons = ["fa fa-cubes fa-2x","fa fa-desktop fa-2x","fa fa-user fa-2x"],
+			productos = ["/user/home/anadirProductoForm","/user/home/listarProductosForm"], 
+			marcas = ["/user/home/anadirMarcaForm","/user/home/listarMarcasForm"],
+			usuarios = ["/user/home/anadirUsuario","/user/home/listarUsuarios"],
+			enlaceAcciones = [];
+			for (var x = 0; x < secciones.length;x++){ 
+				if (secciones[x] == "Productos"){
+					enlaceAcciones = productos;
+				} else if (secciones[x] == "Marcas"){
+					enlaceAcciones = marcas;
+				} else {
+					enlaceAcciones = usuarios;
+				}
+		%>
+				<div class="container-fluid col-lg-2 col-lg-offset-1" style="margin-top:80px">
+					<table class="table table-bordered">
+						<thead class="primary" style="background-color:#286090;color:white;border:2px;border-style:solid;border-color:#286090">
+							<tr>
+								<th colspan="3" class="text-center" style="vertical-align: center;"><i class="<%= icons[x] %>" aria-hidden="true"></i> <%= secciones[x] %></th>
+							</tr>
+						</thead>
+						<tbody style="border:2px;border-style:solid;border-color:#286090">
+							<tr>
+								<td style="border:2px;border-style:solid;border-color:#286090">
+									<form action="<%= enlaceAcciones[0] %>" method="get">
+										<button type="submit" class="btn btn-primary" name="<%= secciones[x] %>">Administrar <%= secciones[x] %></button>
+									</form>
+								</td>
+								<td style="border:2px;border-style:solid;border-color:#286090">
+									<form action="<%= enlaceAcciones[1] %>" method="get">
+										<button type="submit" class="btn btn-primary" name="<%= secciones[x] %>">Listar <%= secciones[x] %></button>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		<% 	} %>
+		<%- include ./footer %>
+	</body>
+</html>

@@ -1,9 +1,29 @@
-body {
+html {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100%;
+  position: relative;
+}
+#formFormularioAdminAnadir{
+  position: relative;
+  margin-top: 20px;
+}
+#titulo{
+  text-transform:capitalize;
+}
+#footer {
+  position: absolute;
+  bottom: -100px;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: black;
+}
+.footer-block{
+  color: white;
 }
 #about{
   position: relative;
-  margin-top: 3em;
+  margin-top: 5em;
 }
 .miperfil{
   margin-top: 5em;
@@ -17,12 +37,40 @@ body {
 .telefonoCorreo{
   margin-right: 1em;
 }
+.dropdown-header{
+  text-align: center;
+}
 a {
   color: #00B7FF;
 }
-.navbar-static-bottom{
-  position: relative;
-  top: 0px;
+.panel-heading{
+  margin-top: 0px;
+}
+@font-face {
+  font-family: fontAlKa;
+  src: url("/fonts/13misa/13_Misa.TTF");
+}
+#AlKa{
+  font-family: fontAlKa;
+  float: left;
+  height: 50px;
+  padding: 30px;
+  font-size: 50px;
+  line-height: 5px;
+  padding-left: 10px;
+  color: #286090;
+}
+.navbar-fixed-top {
+  height: auto;
+}
+.table-responsive tr td{
+  width: 100px;
+}
+.precioCarrito{
+  font-size: 20px;
+}
+.menu {
+  font-size: 20px;
 }
 .redirigir{
   position: relative;

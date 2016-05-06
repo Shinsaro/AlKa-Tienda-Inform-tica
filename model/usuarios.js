@@ -3,6 +3,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var schema = mongoose.Schema;
 //Esquema del objecte
 var schemaUsuarios = new schema ({
+	admin: Boolean,
 	alias: String,
 	nombre: String,
 	apellidos: String,
