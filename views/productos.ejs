@@ -6,31 +6,54 @@
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu  %>
 	<!-- Parrilla de fotos -->
+    <aside style="float:left; margin-top: 250px;margin-left: 50px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Marcas</th>
+                </tr>
+            </thead>
+            <tbody >
+                <form method="post" action="<%= accionFiltrar %>">
+                    <%  var marcado = "", yaMarcado = true;
+                        for( i = 0; i < marcas.length; i++){
+                    %>
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="marcas" value="<%= marcas[i].nombre %>" <%= marcasMarcadas[i] %>/><b><%= marcas[i].nombre %></b>
+                            </td>
+                        </tr>
+                    <% 
+                        }
+                    %>
+            </tbody>
+        </table>
+                    <input type="submit" value="Filtrar" id="filtrar" name="filtrar" class="btn btn-primary">
+                </form>
+    </aside>
 	<div id="about" class="container marketing">
 		<!-- Título de la página -->
 		<h1 id="titulo"><%= titulo %></h1>
-        <script type="text/javascript">
-        $('h1').click(function() {
-          alert( "Handler for .click() called." );
-        });
-        </script>
 	    <div class="row">
-            <% productos.forEach( function( producto ){ %>
-                <form action='/anadeProductoCarrito' method='POST'>
+            <%productos.forEach( function (producto){ %>
+                <form action='/user/home/anadeProductoCarrito' method='POST'>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                        <img class="img-circle" src="<%= producto.foto %>" height="140" width="140">
-                        <h2 class="nombreProducto"><%= producto.nombre %></h2>
-                        <p><%= producto.descripcion %></p>
+                        <input name="id" class="text-hide" value="<%= producto._id %>">
+                        <img class="img-square" src="<%= producto.foto %>" height="280" width="280">
+                        <h4><%= producto.nombre %></h4>
+                        <p hidden><%= producto.descripcion %></p>
                         <p>
                             <h2><span class="label label-success" style="float: left"><%= producto.precio %>€</span></h2>
-                            <a title="detalles del producto" class="btn btn-default" href="#" role="button" style="float: right">más»</a>
-                        <button class="btn btn-default" style="float: right" id="comprar" value="comprar">Comprar</button>
+                            <button title="detalles del producto" class="btn btn-primary botonProducto" style="float: right" type="button" data-toggle="modal" data-target="#productoModal">más»</button>
+                            <% if (alias != ""){ %>
+                                <button type="submit" class="btn btn-primary" style="float: right" id="comprar" value="comprar"><i class="fa fa-shopping-cart"></i></button>
+                            <% } %>
                         </p>
                     </div>
                 </form>
             <% }); %>
 	    </div>
     </div>
-    <%- include("./footer") %>
+    <%- include ./footer %>
 </body>
 </html>

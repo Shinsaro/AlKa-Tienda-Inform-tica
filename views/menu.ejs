@@ -8,22 +8,22 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<%= home %>">AlKa</a>
+				<a class="navbar-brand" id="AlKa" href="<%= home %>">AlKa</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li>
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menú <span class="glyphicon glyphicon-collapse-down"></span></a>
+						<a class="dropdown-toggle menu" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Menú <span class="glyphicon glyphicon-collapse-down"></span></a>
 						<ul class="dropdown-menu multi-level" role="menu">
-							<li class="dropdown-submenu" role="menu">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Componentes</a>
+							<li class="dropdown-submenu menu" role="menu">
+								<a href="<%= componentes %> " class="dropdown-hover">Componentes</a>
 								<ul class="dropdown-menu">
-									<li><a href="<%= placaBase %> " tabindex="-1">Placa Base</a></li>
-									<li><a href="<%= procesadores %>" tabindex="-1">Procesadores</a></li>
+									<li><a href="<%= placaBase %> " class="menu" tabindex="-1">Placa Base</a></li>
+									<li><a href="<%= procesadores %>" class="menu" tabindex="-1">Procesadores</a></li>
 								</ul>
 							</li>
 							<li class="divider"></li>
-							<li><a href="#">Configuracia tu PC</a></li>
+							<li><a href="#" class="menu">Configuracia tu PC</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -31,36 +31,69 @@
 					<div class="navbar-form navbar-left">
 						<div class="input-group">
 							<span class="input-group-btn">
-								<button class="btn btn-success" type="button">Buscar</button>
+								<button class="btn btn-primary btn-lg" type="button">Buscar</button>
 							</span>
-							<input type="text" class="form-control">
+							<input type="text" class="form-control input-lg">
 						</div>
-						<button type="button" class="btn btn-success" data-toggle="<%= modal %>" data-target="<%= nameTarget %>"><i class="fa fa-key"> <%= entrarSalir %></i></button>
-						<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button">
+						<button type="button" class="btn btn-primary btn-lg" data-toggle="<%= modal %>" data-target="<%= nameTarget %>"><i class="fa fa-key"> <%= entrarSalir %></i></button>
+						<button type="button" class="btn btn-lg btn-primary dropdown-toggle carritoBtn" data-toggle="dropdown" data-hover="dropdown" role="button">
 							<i class="fa fa-shopping-cart">&nbsp</i>
-							<span class="badge">4</span>
+							<%if (carrito != undefined){%>
+								<span class="badge"><%= carrito.length%></span>
+							<%}%>
 						</button>
-						<ul class="dropdown-menu container-fluid" aria-labelledby="dropdownMenuDivider">
-                            <li class="dropdown-header"><h4><b>Carrito</b></h4></li>
-                            <li role="separator" class="divider"></li>
-							<li>											
+						<div class="dropdown-menu container-fluid panel panel-primary">
+							<div class="panel-heading text-center"><h4><b>Carrito</b></h4></div>
 								<%if (carrito != undefined){%>
-									<% for (var i = 0; i < carrito.length; i++){ %>
-										<h4><%= carrito[i].nombre %><span class="label label-success" style="float: right"><%= carrito[i].precio %>€</span></h4>
-										<p><%= carrito[i].descripcion %></p>
-									<%}%>
-								<%}%>
-							</li>
-							<li role="separator" class="divider"></li>
-                            <li><a href="/pedido" tabindex="-1">Realizar Pedido</a></li>
-						</ul>
+									<table class="table table-responsive">
+										<thead>
+											<tr>
+												<th>Foto</th>
+												<th colspan="3">Nombre</th>
+												<th>Precio</th>
+												<th>Descartar</th>
+											</tr>
+										</thead>
+										<tbody >
+											<% for (var i = 0; i < carrito.length; i++){ %>
+												<form method="POST" action="/user/home/quitarProductoCarrito">
+													<input type="text" class="text-hide" name="idProductoCarrito" value="<%= carrito[i]._id %>">
+													<tr>
+														<td>
+															<img src="<%= carrito[i].foto %>" width="125%" height="125%" display="block"/>
+														</td>
+														<td colspan="3">
+															<h4><%= carrito[i].nombre %></h4>
+														</td>
+														<td>
+															<p class="precioCarrito"><%= carrito[i].precio %>€</p>
+														</td>
+														<td>
+															<button class="btn btn-danger col-lg-12" type="submit">
+															  <i class="fa fa-trash-o" title="Delete" aria-hidden="true"></i>
+															</button>	
+														</td>
+													</tr>
+												</form>
+											<%}%>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="5">
+													<button href="/user/home/pedido" class="btn btn-default">Realizar Pedido</button>
+												</td>
+											</tr>
+										</tfoot>
+									</table>
+								<%}%>                            
+						</div>
 					</div>
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<div class="container">
-		<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -68,7 +101,7 @@
 						<h4 class="modal-title">Sign In</h4>
 					</div>
 					<div class="modal-body col-lg-12">
-						<ul class="nav nav-pills nav-pills-success col-lg-offset-3 col-lg-6">
+						<ul class="nav nav-pills nav-pills-primary col-lg-offset-3 col-lg-6">
 							<li role="presentation" class="active col-lg-5"><a data-toggle="tab" href="#login">Log In</a></li>
 							<li role="presentation" class="col-lg-5"><a data-toggle="tab" href="#register">Register</a></li>
 						</ul>
@@ -88,7 +121,7 @@
 											<input type="password" class="form-control" name="contrasena" placeholder="Contraseña" aria-describedby="sizing-addon3">
 										</div>
 									</div>
-									<input type="submit" value="Entrar" id="login" name="login" class="btn btn-success">
+									<input type="submit" value="Entrar" id="login" name="login" class="btn btn-primary">
 								</form>
 							</div>
 							<div id="register" class="tab-pane fade">
@@ -118,7 +151,7 @@
 											<input type="text" class="form-control" name="correo" id="correo" placeholder="Correo" aria-describedby="sizing-addon3">
 										</div>
 									</div>
-									<input type="submit" value="Registrarse" id="registrar" name="registrar" class="btn btn-success">
+									<input type="submit" value="Registrarse" id="registrar" name="registrar" class="btn btn-primary">
 								</form>
 							</div>
 						</div>
@@ -131,7 +164,7 @@
 		</div>
 	</div>
 	<div class="container">
-		<div class="modal fade" id="profileModal" role="dialog">
+		<div class="modal fade" id="profileModal" role="dialog" data-backdrop="static" data-keyboard="false">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">

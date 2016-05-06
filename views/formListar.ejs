@@ -1,0 +1,16 @@
+<form method="post" action="/user/home/listarMarcaEscojida">
+	<%- include ./formListarForm %>
+	<div class="container">
+		<%for( var k = 0; k < productos.length; k++){ %>
+			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+				<input name="id" class="text-hide" value="<%= productos[k]._id %>">
+				<img class="img-square" src="<%= productos[k].foto %>" height="280" width="280">
+				<h4><%= productos[k].nombre %></h4>
+				<p hidden><%= productos[k].descripcion %></p>
+				<p>
+                    <h2><span class="label label-success" style="float: left"><%= productos[k].precio %>€</span></h2>
+                </p>
+			</div>
+		<% } %>
+	</div>
+</form>
