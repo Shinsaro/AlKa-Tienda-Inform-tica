@@ -94,6 +94,7 @@ module.exports = function(app,passport){
 						}
 					}
 				}
+				tituloSeccion = req.params.producto.substring(0,1).toUpperCase() + req.params.producto.substring(1);
 				Productos.find({tipo: req.params.producto,marca: {$in : arrayMarcasNombres}},function (err,ProductosMarcasTienda){
 					if(!err){
 						console.log('Mostrando productos');
@@ -105,7 +106,7 @@ module.exports = function(app,passport){
 							marcas: MarcasTienda,
 							marcasMarcadas: arrayMarcasMarcadas,
 							accionFiltrar: req.url,
-							titulo:req.params.producto,
+							titulo:tituloSeccion,
 							modal:"modal",
 							nameTarget:"#myModal",
 							entrarSalir: "Log In",
@@ -148,6 +149,7 @@ module.exports = function(app,passport){
 								}
 							}
 						}
+						tituloSeccion = req.params.producto.substring(0,1).toUpperCase() + req.params.producto.substring(1);
 						Productos.find({tipo: req.params.producto,marca: {$in : arrayMarcasNombres}},function (err,ProductosMarcasTienda){
 							if(!err){
 								console.log('Mostrando productos');
@@ -159,7 +161,7 @@ module.exports = function(app,passport){
 									marcas: MarcasTienda,
 									marcasMarcadas: arrayMarcasMarcadas,
 									accionFiltrar: req.url,
-									titulo:req.params.producto,
+									titulo:tituloSeccion,
 									modal:"modal",
 									nameTarget:"#profileModal",
 									entrarSalir: "Mi perfil",

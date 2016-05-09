@@ -7,6 +7,9 @@ html {
   position: relative;
   margin-top: 20px;
 }
+.row{
+  padding-left: 15px;
+}
 #titulo{
   text-transform:capitalize;
 }
