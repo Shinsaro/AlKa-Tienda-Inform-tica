@@ -15,6 +15,7 @@ var schemaUsuarios = new schema ({
 		calle: String,
 		numero: Number,
 		piso:Number,
+		puerta:Number,
 		cp: Number
 	},
 	direccionFacturacion : [{
