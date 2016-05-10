@@ -1,9 +1,15 @@
 <%var x = "formMarca" ; if (x == formulario ) { %>
-	<form role="form" data-toggle="validator" action="/user/home/anadirMarca" method="POST" id="formAdminMarca">
+	<form role="form" data-toggle="validator" action="/user/home/actualizarProducto" method="POST" id="formAdminMarca" class="col-lg-offet-2 col-lg-6">
+		<label>Asignar marca al producto</label>
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-usb" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="nombre" placeholder="Nombre marca" aria-describedby="sizing-addon3">
+				<select class="form-control selectpicker" id="marca" name="marca" aria-describedby="sizing-addon3">
+					<option selected="selected">Escoje una marca</option>
+					<% marcas.forEach( function (marcas){ %>
+						<option value="<%= marcas._id %>"><%= marcas.nombre %></option>
+					<% }); %>
+				</select>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
@@ -11,15 +17,31 @@
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-list" aria-hidden="true"></i></span>
 				<select class="form-control selectpicker" id="producto" name="producto" aria-describedby="sizing-addon3" multiple>
 					<% productos.forEach( function (producto){ %>
-						<option value="<%= producto._id %>"><%= producto.nombre %></option>}
-					<% }); %> 
+						<% x = 0; if(producto.foto == undefined){ %>
+							<option value="<%= producto._id %>"><%= producto.nombre %></option>
+							<% x++; %>
+						<% } %>
+					<% }); %>
+					<% if (x == 0) { %>
+						<option>No hay productos sin foto</option>
+					<% } %>
 				</select>
 			</div>
 		</div>
 		<input type="submit" value="Crear marca" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
 	</form>
+	<form role="form" data-toggle="validator" action="/user/home/anadirMarca" method="POST" id="formAdminProducto" class="col-lg-offet-2 col-lg-6">
+		<label>Crear marca</label>
+		<div class="form-group form-group-sm">
+			<div class="input-group form-group-sm">
+				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
+				<input type="text" class="form-control" name="marcaNombre" placeholder="Marca producto" aria-describedby="sizing-addon3">
+			</div>
+		</div>
+		<input type="submit" value="Asignar marca producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
+	</form>
 <% } else { %>
-	<form role="form" data-toggle="validator" action="/user/home/anadirProducto" method="POST" id="formAdminProducto" class="col-lg-6">
+	<form role="form" data-toggle="validator" action="/user/home/anadirProducto" method="POST" id="formAdminProducto" class="col-lg-12">
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
@@ -29,7 +51,7 @@
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="descripcion" placeholder="Descripción producto" aria-describedby="sizing-addon3">
+				<textarea type="text" class="form-control" name="descripcion" placeholder="Descripción producto" aria-describedby="sizing-addon3"></textarea>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
@@ -41,7 +63,12 @@
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="marca" placeholder="Marca producto" aria-describedby="sizing-addon3">
+				<select class="form-control selectpicker" id="marca" name="marca" aria-describedby="sizing-addon3">
+					<option selected="selected">Escoje una marca</option>
+					<% marcas.forEach( function (marcas){ %>
+						<option value="<%= marcas._id %>"><%= marcas.nombre %></option>
+					<% }); %>
+				</select>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
@@ -50,31 +77,44 @@
 				<input type="text" class="form-control" name="tipo" placeholder="Tipo producto" aria-describedby="sizing-addon3">
 			</div>
 		</div>
-		<div class="form-group form-group-sm">
-			<div class="input-group form-group-sm">
-				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="foto" placeholder="URL foto producto" aria-describedby="sizing-addon3">
-			</div>
-		</div>
 		<input type="submit" value="Crear producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
+		<div class="input-group form-group-sm col-xs-12 divSubirFotoProducto">
+			<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
+			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#uploadPictureModal">Cambiar foto</button>				
+		</div>
 	</form>
-	<form role="form" data-toggle="validator" action="/user/home/actualizarProducto" method="POST" id="formAdminProducto" class="col-lg-offet-2 col-lg-6">
-		<div class="form-group form-group-sm">
-			<div class="input-group form-group-sm">
-				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-				<input type="text" class="form-control" name="marcaNombre" placeholder="Marca producto" aria-describedby="sizing-addon3">
+	<div class="container">
+			<div class="modal fade" id="uploadPictureModal" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Cambiar foto perfil</h4>
+						</div>
+						<div class="modal-body col-lg-12">
+							<form action="/user/home/producto/upload" method='POST' enctype='multipart/form-data'>
+								<div class="input-group">
+									<select class="form-control selectpicker" id="fotoProducto" name="fotoProducto" aria-describedby="sizing-addon3">
+										<% productos.forEach( function (producto){ %>
+											<% x = 0; if(producto.foto == undefined){ %>
+												<option value="<%= producto._id %>"><%= producto.nombre %></option>
+												<% x++; %>
+											<% } %>
+										<% }); %>
+										<% if (x == 0) { %>
+											<option>No hay productos sin foto</option>
+										<% } %>
+									</select>
+									<input type="file" name='archivo'>
+						   			<input type="submit" class="btn btn-success" value='Subir'>	
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="form-group form-group-sm">
-			<div class="input-group form-group-sm">
-				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-list" aria-hidden="true"></i></span>
-				<select class="form-control selectpicker" id="productos" name="productos" aria-describedby="sizing-addon3" multiple>
-					<% productos.forEach( function (producto){ %>
-						<option value="<%= producto.nombre %>"><%= producto.nombre %></option>}
-					<% }); %> 
-				</select>
-			</div>
-		</div>
-		<input type="submit" value="Asignar marca producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
-	</form>
 <% } %>

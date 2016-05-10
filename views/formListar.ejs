@@ -1,16 +1,51 @@
-<form method="post" action="/user/home/listarMarcaEscojida">
-	<%- include ./formListarForm %>
-	<div class="container">
-		<%for( var k = 0; k < productos.length; k++){ %>
-			<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-				<input name="id" class="text-hide" value="<%= productos[k]._id %>">
-				<img class="img-square" src="<%= productos[k].foto %>" height="280" width="280">
-				<h4><%= productos[k].nombre %></h4>
-				<p hidden><%= productos[k].descripcion %></p>
-				<p>
-                    <h2><span class="label label-success" style="float: left"><%= productos[k].precio %>€</span></h2>
-                </p>
-			</div>
-		<% } %>
-	</div>
-</form>
+<%var x = "formProductos" ; if (x == formulario ) { %>	
+	<form method="post" action="/user/home/listarMarcaEscojida">
+		<%- include ./formListarForm %>
+		<div class="container">
+			<%for( var k = 0; k < productos.length; k++){ %>
+				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+					<input name="id" class="text-hide" value="<%= productos[k]._id %>">
+					<img class="img-square" src="<%= productos[k].foto %>" height="280" width="280">
+					<h4><%= productos[k].nombre %></h4>
+					<p hidden><%= productos[k].descripcion %></p>
+					<p>
+	                    <h2><span class="label label-success" style="float: left"><%= productos[k].precio %>€</span></h2>
+	                </p>
+				</div>
+			<% } %>
+		</div>
+	</form>
+<% } else { %>
+	<table class="table table-responsive">
+		<thead>
+			<tr>
+				<th>Foto</th>
+				<th>Alias</th>
+				<th>Nombre</th>
+				<th>Apellidos</th>
+				<th>Metodo de pago</th>
+			</tr>
+		</thead>
+		<tbody >
+			<% for (var i = 0; i < usuarios.length; i++){ %>
+				<tr>
+					<td>
+						<img src="<%= usuarios[i].foto %>" width="100" height="100" display="block"/>
+					</td>
+					<td>
+						<h4><%= usuarios[i].alias %></h4>
+					</td>
+					<td>
+						<h4><%= usuarios[i].nombre %></h4>
+					</td>
+					<td>
+						<h4><%= usuarios[i].apellidos %></h4>
+					</td>
+					<td>
+						<h4><%= usuarios[i].metodoPago %></h4>
+					</td>
+				</tr>
+			<%}%>
+		</tbody>
+	</table>
+<% } %>

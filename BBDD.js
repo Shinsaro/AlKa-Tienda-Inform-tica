@@ -16,7 +16,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"placa base",
-		foto:"http://www.gigabyte.com/fileupload/product/2/5158/11077_big.jpg"
+		foto:"/images/fotosProductos/gigabyte_h81m_s2h"
 	},
 	{
 		nombre:"MSI H81M-E33",
@@ -25,7 +25,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"placa base",
-		foto:"http://fotos.pccomponentes.com/placas_base/placas_base_intel_socket_1150/msi_h81m_e33.jpg"
+		foto:"/images/fotosProductos/msi_h81m_e33-compressor.jpg"
 	},
 	{
 		nombre:"MSI 970 Gaming",
@@ -34,7 +34,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"placa base",
-		foto:"http://fotos.pccomponentes.com/placas_base/placas_base_amd_socket_am3/msi_970_gaming.jpg"
+		foto:"/images/fotosProductos/msi_970_gaming"
 	},
 	{
 		nombre:"Asus H61M-K",
@@ -43,7 +43,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"placa base",
-		foto:"http://fotos.pccomponentes.com/placas_base/placas_base_intel_socket_1155/asus_h61m_k.jpg"
+		foto:"/images/fotosProductos/asus_h61m_k-compressor"
 	},
 	{
 		nombre:"Intel Core i5-6500 3.2Ghz Box",
@@ -52,7 +52,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"procesadores",
-		foto:"http://fotos.pccomponentes.com/procesadores/procesadores_intel_socket_1151/intel_core_i5_6500_3_2ghz_box.jpg"
+		foto:"/images/fotosProductos/intel_core_i5_6500_3_2ghz_box-compressor"
 	},
 	{
 		nombre:"Intel i7-6700K 4.0Ghz Box",
@@ -61,6 +61,6 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"procesadores",
-		foto:"http://fotos.pccomponentes.com/procesadores/procesadores_intel_socket_1151/intel_i7_6700k_4_0ghz_box.jpg"
+		foto:"/images/fotosProductos/intel_i7_6700k_4_0ghz_box-compressor"
 	}
 ]);

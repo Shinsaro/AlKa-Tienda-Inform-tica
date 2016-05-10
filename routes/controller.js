@@ -374,6 +374,24 @@ module.exports = function(app,passport){
 	   		res.redirect('/user/home/miperfil');
 	   });
 	};
+	subirFotoProducto = function(req, res) {
+	   //El modulo 'fs' (File System) que provee Nodejs nos permite manejar los archivos
+	   var ruta = require('path');
+	   var fs = require('fs'), path = req.files.archivo.path;
+	   var newPath = ruta.join(__dirname,'../public/images/fotosProductos/'+req.body.archivo);
+	   var is = fs.createReadStream(path);
+	   var os = fs.createWriteStream(newPath);
+	   is.pipe(os);
+	   is.on('end', function() {
+	      //eliminamos el archivo temporal
+	      fs.unlinkSync(path);
+	   });
+	   var foto = "/images/fotosProductos/"+req.body.archivo;
+	   Productos.update({_id:req.body.fotoProducto},{$set:{foto:foto}},function(err,result){
+	   		console.log('Foto actualitzada en el documento del producto');
+	   		res.redirect('back');
+	   });
+	};
 	registerWeb = function (req,res){
 		res.render('redirigir',{
 			alias:"",
@@ -408,34 +426,62 @@ module.exports = function(app,passport){
     };
     anadirProductoForm = function (req,res){
     	Productos.find(function (err,ProductosTienda){
-    		if(!err){
-    			res.render('formularioAdminAñadir',{
-    				small : "Añadir y Actualizar productos",
-    				formulario: "formProductos",
-    				titulo: "Añadir producto formulario",
-    				home : "/user/home",
-    				productos: ProductosTienda,
-    				modal: "modal",
-    				carrito: "",
-    				alias: req.user.alias,
-    				nameTarget:"#profileModal",
-					entrarSalir: "Mi perfil",
-					componentes: "/home/category/componentes",
-					placaBase:"/user/home/category/placa base",
-					procesadores:"/user/home/category/procesadores"
-    			});
-    		}
+    		Marcas.find(function (err,MarcasTienda){
+	    		if(!err){
+	    			res.render('formularioAdminAñadir',{
+	    				small : "Añadir y Actualizar productos",
+	    				formulario: "formProductos",
+	    				titulo: "Añadir producto formulario",
+	    				home : "/user/home",
+	    				productos: ProductosTienda,
+	    				marcas: MarcasTienda,
+	    				modal: "modal",
+	    				carrito: "",
+	    				foto : "",
+	    				alias: req.user.alias,
+	    				nameTarget:"#profileModal",
+						entrarSalir: "Mi perfil",
+						componentes: "/home/category/componentes",
+						placaBase:"/user/home/category/placa base",
+						procesadores:"/user/home/category/procesadores"
+	    			});
+	    		}
+	    	});
     	});
     }
     anadirMarcaForm = function (req,res){
     	Productos.find(function (err,ProductosTienda){
+    		Marcas.find(function (err,MarcasTienda){
+	    		if(!err){
+	    			res.render('formularioAdminAñadir',{
+	    				small : "Añadir marcas con sus productos",
+	    				formulario: "formMarca",
+	    				titulo: "Añadir marca formulario",
+	    				home : "/user/home",
+	    				productos: ProductosTienda,
+	    				marcas: MarcasTienda,
+	    				modal: "modal",
+	    				carrito: "",
+	    				alias: req.user.alias,
+	    				nameTarget:"#profileModal",
+						entrarSalir: "Mi perfil",
+						componentes: "/home/category/componentes",
+						placaBase:"/user/home/category/placa base",
+						procesadores:"/user/home/category/procesadores"
+	    			});
+	    		}
+    		});
+    	});
+    }
+    listarUsuariosForm = function (req,res){
+    	Usuarios.find(function (err,UsuariosTienda){
     		if(!err){
-    			res.render('formularioAdminAñadir',{
-    				small : "Añadir marcas con sus productos",
-    				formulario: "formMarca",
-    				titulo: "Añadir marca formulario",
+    			res.render('formularioAdminListar',{
+    				small : "Listar usuarios",
+    				formulario: "formUsuarios",
+    				titulo: "Lista de productos",
     				home : "/user/home",
-    				productos: ProductosTienda,
+    				usuarios: UsuariosTienda,
     				modal: "modal",
     				carrito: "",
     				alias: req.user.alias,
@@ -448,7 +494,7 @@ module.exports = function(app,passport){
     		}
     	});
     }
-   listarProductosForm = function (req,res){
+   	listarProductosForm = function (req,res){
     	Productos.find(function (err,ProductosTienda){
     		if(!err){
     			res.render('formularioAdminListar',{
@@ -526,7 +572,6 @@ module.exports = function(app,passport){
 	        		precio = req.body.precio,
 	        		marca = req.body.marca,
 					tipo  = req.body.tipo,
-					foto = req.body.foto,
 					valoracion = 0;
 				Marcas.findOne({nombre: req.body.marca},function (err,Marca){
 					if (Marca){
@@ -537,9 +582,8 @@ module.exports = function(app,passport){
 							marca : Marca._id,
 							valoracion: 0,
 							tipo : req.body.tipo,
-							foto: req.body.foto
 						});
-						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: foto},function (err,ProductoAñadido){
+						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: ""},function (err,ProductoAñadido){
 							if (!err)
 								res.redirect('back');
 						});
@@ -571,16 +615,16 @@ module.exports = function(app,passport){
     }
     anadirMarca = function (req,res){
     	console.log("Añadiendo producto a la base de datos");
-        Usuarios.findOne({_id:req.body.nombre},function (err,Marca){
+        Marcas.findOne({nombre:req.body.marca},function (err,Marca){
         	if (!Marca){
-        		var nombre = req.body.nombre,
+        		var nombre = req.body.marca,
         			productos = req.body.producto;
         		if (productos == undefined){
         			productos = [];
         		}
 	        	var marca = new Marcas ({
 	        		idProducto : productos,
-	        		nombre: nombre	        		
+	        		nombre: nombre        		
 	        	});
         		marca.save({nombre: nombre, idProducto: productos},function (err,MarcaAñadida){
 	        		if (!err)
@@ -638,6 +682,7 @@ module.exports = function(app,passport){
 	app.get('/home',indexWeb);
 	app.get('/user/home',isLoggedIn,indexWebLogin);
 	app.get('/user/home/listarProductosForm',isLoggedIn,listarProductosForm);
+	app.get('/user/home/listarUsuariosForm',isLoggedIn,listarUsuariosForm);
 	app.get('/user/home/listarMarcasForm',isLoggedIn,listarMarcasForm);
 	app.post('/user/home/listarMarcaEscojida',isLoggedIn,listarMarca);
 	app.get('/user/home/anadirProductoForm',isLoggedIn,anadirProductoForm);
@@ -653,6 +698,7 @@ module.exports = function(app,passport){
 	app.get('/user/home/miperfil',isLoggedIn,miperfil);
 	app.post('/user/home/user/home/miperfil/actualizarDatos',isLoggedIn,actualitzarPerfil);
 	app.post('/user/home/miperfil/upload',isLoggedIn,subirFoto);
+	app.post('/user/home/producto/upload',isLoggedIn,subirFotoProducto);
 	app.post('/home/login',passport.authenticate('local-login',{ successRedirect : '/user/home', failureRedirect : '/home', failureFlash : true }),loginWeb);
 	app.post('/home/register',passport.authenticate('local-register',{ successRedirect : '/home', failureRedirect : '/home', failureFlash : true }),registerWeb);
     app.get('/user/home/pedido',realizarPedido);
