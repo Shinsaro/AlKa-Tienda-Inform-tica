@@ -4,7 +4,7 @@
 			<div class="modal-content col-lg-12 col-sm-12 col-xs-12">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Producto <b id="productoTitulo"></b></h4>
+					<h4 class="modal-title">Producto <b id="productoTitulo"></b> <span class="label label-success"><b id="productoPrecio"></b></span></h4>
 				</div>
 				<div class="modal-body">
 					<div class="container col-lg-12 col-sm-12 col-xs-12">
@@ -16,8 +16,7 @@
 							<p id="productoDescripcion"></p>
 						</div>
 						<div class="col-lg-12 col-sm-12 col-xs-12">
-							<h2><span class="label label-success" style="position:relative;float:left"><b id="productoPrecio"></b></span></h2>
-                        	<button type="submit" class="btn btn-primary" id="comprar" value="comprar" style="margin-left:5%">Ver ficha producto</button>
+							<button type="submit" class="btn btn-primary" id="comprar" value="comprar">Ver ficha producto</button>
                         </div>
 					</div>
 				</div>
@@ -54,7 +53,7 @@
 		$('.botonProducto').click(function(){
 			$('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).prev().prev().prev().prev().prev().next().first().text() +"</b>");
 			$('#productoNombre').replaceWith("<b id='productoNombre'>" + $(this).prev().prev().prev().prev().prev().next().first().text() +"</b>");
-			$('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-2" height="200" width="200" src="' + $(this).prev().prev().prev().prev().prev().children().first().attr('src') + '">');
+			$('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-0" height="200" width="200" src="' + $(this).prev().prev().prev().prev().prev().children().first().attr('src') + '">');
 			$('#productoDescripcion').replaceWith("<p id='productoDescripcion' class='text-justify col-lg-12'>" + $(this).prev().prev().prev().prev().prev().next().next().first().text() + "</p>");
 			$('#productoPrecio').replaceWith("<span id='productoPrecio'>" + $(this).prev().first().text() + "</span>");
 		});

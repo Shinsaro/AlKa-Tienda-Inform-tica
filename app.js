@@ -8,9 +8,10 @@ bodyParser = require('body-parser'),
 expressSession = require('express-session'),
 flash = require('connect-flash'),
 passport = require('passport'),
+compress = require('compression');
 multipart = require('connect-multiparty');
 var app = express();
-
+app.use(compress());
 
 // view engine setup
 /*app.set('views', path.join(__dirname, 'views'));*/

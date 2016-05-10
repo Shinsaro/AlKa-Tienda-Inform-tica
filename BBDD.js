@@ -25,7 +25,7 @@ db.productos.insertMany([
 		marca: "",
 		valoracion:0,
 		tipo:"placa base",
-		foto:"https://asset.msi.com/resize/image/global/product/five_pictures1_2902_20140407165936.png62405b38c58fe0f07fcef2367d8a9ba1/1024.png"
+		foto:"http://fotos.pccomponentes.com/placas_base/placas_base_intel_socket_1150/msi_h81m_e33.jpg"
 	},
 	{
 		nombre:"MSI 970 Gaming",

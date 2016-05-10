@@ -15,13 +15,13 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Alias</label>
+				<label class="col-sm-2 control-label"><i class="fa fa-user-secret" aria-hidden="true"></i> Alias</label>
 				<div class="col-sm-2">
 					<input class="form-control" type="text" value="<%= alias %>">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Nombre</label>
+				<label class="col-sm-2 control-label"> <i class="fa fa-user" aria-hidden="true"></i> Nombre</label>
 				<div class="col-sm-4">
 					<% if (nombre != undefined) {%>
 						<input class="form-control" type="text" name="nombre" value="<%= nombre %>">
@@ -31,9 +31,9 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Apellidos</label>
+				<label class="col-sm-2 control-label"> <i class="fa fa-user" aria-hidden="true"></i> Apellidos</label>
 				<div class="col-sm-4">
-					<% if (apellidos != ("" && undefined)) {%>
+					<% if (apellidos != undefined) {%>
 						<input class="form-control" type="text" name="apellidos" value="<%= apellidos %>">
 					<% } else { %>
 						<input class="form-control" type="text" name="apellidos" placeholder="Escribe tus apellidos">
@@ -41,9 +41,8 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label telefonoCorreo">Teléfono</label>
-				<div class="input-group col-sm-3">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+				<label class="col-sm-2 control-label"><i class="fa fa-phone-square" aria-hidden="true"></i> Teléfono</label>
+				<div class="col-sm-4">
 					<% if (telefono != undefined) {%>
 						<input class="form-control" type="text" name="telefono" value="<%= telefono %>">
 					<% } else { %>
@@ -52,14 +51,13 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label telefonoCorreo">Correo electrónico</label>
-				<div class="input-group col-sm-3">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+				<label class="col-sm-2 control-label"><i class="fa fa-envelope" aria-hidden="true"></i> Correo electrónico</label>
+				<div class="col-sm-4">
 					<input class="form-control" type="text" value="<%= correo %>">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Dirección</label>
+				<label class="col-sm-2 control-label"><i class="fa fa-location-arrow" aria-hidden="true"></i> Dirección</label>
 				<% if (calle != undefined && numero != undefined && piso != undefined && cp != undefined) {%>
 					<div class="col-sm-3">
 						<input class="form-control" type="text" name="calle" value="<%= calle %>">
@@ -79,14 +77,14 @@
 				<% } %>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-2 control-label">Metodo Pago</label>
+				<label class="col-sm-2 control-label"><i class="fa fa-money" aria-hidden="true"></i> Metodo Pago</label>
 				<div class="col-sm-4">
 					<label class="radio-inline">
-						<input type="radio" name="optradio">
+						<input type="radio" name="optradio" value="payPal" <%= payPal %>>
 						<i class="fa fa-paypal fa-2x" aria-hidden="true"></i> PayPal
 					</label>
 					<label class="radio-inline">
-						<input type="radio" name="optradio">
+						<input type="radio" name="optradio" value="visa" <%= visa %>>
 							<i class="fa fa-cc-visa fa-2x" aria-hidden="true"></i> Visa
 					</label>
 				</div>

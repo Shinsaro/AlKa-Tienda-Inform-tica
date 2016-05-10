@@ -289,8 +289,24 @@ module.exports = function(app,passport){
 				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 			}
 			Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
+				var payPalSeleccionado = "", visaSeleccionado = "";
+				if (req.user.metodoPago == "payPal"){
+					payPalSeleccionado = "checked";
+					visaSeleccionado = "";
+				} else {
+					payPalSeleccionado = "";
+					visaSeleccionado = "checked";
+				}
+				if (req.user.nombre == ""){
+					req.user.nombre = undefined;
+				}
+				if (req.user.apellidos == ""){
+					req.user.apellidos = undefined;
+				}
 				res.render('perfil',{
 					carrito:ProductosCarrito,
+					payPal:payPalSeleccionado,
+					visa:visaSeleccionado,
 					calle:req.user.direccionEnvio.calle,
 					numero:req.user.direccionEnvio.numero,
 					piso:req.user.direccionEnvio.piso,
@@ -320,11 +336,13 @@ module.exports = function(app,passport){
 			piso = req.body.piso,
 			puerta = req.body.puerta,
 			cp = req.body.cp,
+			metodoPago = req.body.optradio,
 			telefono = req.body.telefono,
 			apellidos = req.body.apellidos,
 			nombre = req.body.nombre;
 		Usuarios.update({correo:req.user.correo},
-						{	'direccionEnvio.calle':calle,
+						{	metodoPago: metodoPago,
+							'direccionEnvio.calle':calle,
 							'direccionEnvio.numero':numero,
 							'direccionEnvio.piso':piso,
 							'direccionEnvio.puerta':puerta,
