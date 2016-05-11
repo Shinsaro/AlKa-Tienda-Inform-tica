@@ -582,6 +582,7 @@ module.exports = function(app,passport){
 							marca : Marca._id,
 							valoracion: 0,
 							tipo : req.body.tipo,
+							foto: ""
 						});
 						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: ""},function (err,ProductoAñadido){
 							if (!err)

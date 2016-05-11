@@ -63,10 +63,10 @@
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-				<select class="form-control selectpicker" id="marca" name="marca" aria-describedby="sizing-addon3">
+				<select class="form-control" id="marca" name="marca" aria-describedby="sizing-addon3">
 					<option selected="selected">Escoje una marca</option>
 					<% marcas.forEach( function (marcas){ %>
-						<option value="<%= marcas.marca %>"><%= marcas.nombre %></option>
+						<option value="<%= marcas.nombre %>"><%= marcas.nombre %></option>
 					<% }); %>
 				</select>
 			</div>
@@ -96,7 +96,7 @@
 								<div class="input-group">
 									<select class="form-control selectpicker" id="fotoProducto" name="fotoProducto" aria-describedby="sizing-addon3">
 										<% productos.forEach( function (producto){ %>
-											<% x = 0; if(producto.foto == undefined){ %>
+											<% x = 0; if(producto.foto == ""){ %>
 												<option value="<%= producto._id %>"><%= producto.nombre %></option>
 												<% x++; %>
 											<% } %>
