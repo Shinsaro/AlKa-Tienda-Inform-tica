@@ -441,7 +441,7 @@ module.exports = function(app,passport){
 	    				alias: req.user.alias,
 	    				nameTarget:"#profileModal",
 						entrarSalir: "Mi perfil",
-						componentes: "/home/category/componentes",
+						componentes: "/user/home/category/componentes",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores"
 	    			});
@@ -465,7 +465,7 @@ module.exports = function(app,passport){
 	    				alias: req.user.alias,
 	    				nameTarget:"#profileModal",
 						entrarSalir: "Mi perfil",
-						componentes: "/home/category/componentes",
+						componentes: "/user/home/category/componentes",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores"
 	    			});
@@ -487,7 +487,7 @@ module.exports = function(app,passport){
     				alias: req.user.alias,
     				nameTarget:"#profileModal",
 					entrarSalir: "Mi perfil",
-					componentes: "/home/category/componentes",
+					componentes: "/user/home/category/componentes",
 					placaBase:"/user/home/category/placa base",
 					procesadores:"/user/home/category/procesadores"
     			});
@@ -508,7 +508,7 @@ module.exports = function(app,passport){
     				alias: req.user.alias,
     				nameTarget:"#profileModal",
 					entrarSalir: "Mi perfil",
-					componentes: "/home/category/componentes",
+					componentes: "/user/home/category/componentes",
 					placaBase:"/user/home/category/placa base",
 					procesadores:"/user/home/category/procesadores"
     			});
@@ -529,7 +529,7 @@ module.exports = function(app,passport){
 				alias: req.user.alias,
 				nameTarget:"#profileModal",
 				entrarSalir: "Mi perfil",
-				componentes: "/home/category/componentes",
+				componentes: "/user/home/category/componentes",
 				placaBase:"/user/home/category/placa base",
 				procesadores:"/user/home/category/procesadores"
 			});
@@ -555,7 +555,7 @@ module.exports = function(app,passport){
 						alias: req.user.alias,
 						nameTarget:"#profileModal",
 						entrarSalir: "Mi perfil",
-						componentes: "/home/category/componentes",
+						componentes: "/user/home/category/componentes",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores"
 					});
@@ -591,7 +591,7 @@ module.exports = function(app,passport){
 							console.log("añadido el nuevo producto a la marca");
 						});
 					} else {
-						res.redirect('/user/home/anadirMarcaForm');		
+						res.redirect('back');	
 					}
 				});
         	}
