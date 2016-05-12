@@ -1,3 +1,4 @@
+
 <div class="navbar navbar-inverse navbar-static-bottom">
 	<div class="container">
 		<div class="navbar-text">
@@ -8,6 +9,7 @@
 </div>
 <!-- Bootstrap core JavaScript
 ================================================== -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <!--Menu desplegables 
@@ -19,28 +21,251 @@
 -->
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"> </script>
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
-<script type="text/javascript" src="/javascripts/comprobacionLoginAndRegister.js"></script>
+<script type="text/javascript" src="/javascripts/comprobacionFormularios.js"></script>
+
 <script>
-	$(document).ready(function () {
-		$('.dropdown-toggle').dropdown();
-        /*$('#botonpagcesta').click(function(){
-		        $("#tabcesta").toggleClass("active");
-		        $("#tabenvioypago").toggleClass("active");
-		    });*/
+    
+    $(document).ready(function () {
+        // Función de ejecución de los dropdowns
+        $('.dropdown-toggle').dropdown();
+        
+        /*********** FUNCIONES DE LA CESTA *********/
+        
+        // Al abrir la página ocultamos las descripciones de los productos
+        $('div[class*="descripcion"]').hide();
+        // Desplegable de la información de cada producto
+        $('a[class*="abrir-info"]').click(function(){
+            if($(this).find('span').hasClass('glyphicon glyphicon-chevron-down')){
+                $(this).parent().find('div[class*="descripcion"]').show();
+                $(this).find('span').removeClass('glyphicon glyphicon-chevron-down').addClass('glyphicon glyphicon-chevron-up');
+            }else if($(this).find('span').hasClass('glyphicon glyphicon-chevron-up')){
+                $(this ).parent().find('div[class*="descripcion"]').hide();
+                $(this).find('span').removeClass('glyphicon glyphicon-chevron-up').addClass('glyphicon glyphicon-chevron-down');
+            }
+        });
+    
+        // Cálculo del importe total del pedido
+        $resultado=0;
+        $suma=0;
+        // Recorrido de los totales de cada producto según la cantidad
+        $('.cantidad').each(function(){
+            $totalProd=parseFloat($(this).parent().next().text())*parseFloat($(this).val());
+            $(this).parent().next().next().text($totalProd.toFixed(2));
+            $suma=$suma + parseFloat($totalProd);
+            $('#totalCarrito').text($suma.toFixed(2));
+            // Cálculo del total de cada producto según la cantidad
+            $(this).focusout(function(){
+                $suma=0;
+                $resultado=parseInt($(this).val())*parseFloat($(this).parent().next().text());
+                $(this).parent().next().next().text($resultado.toFixed(2));
+                // Cálculo del importe total de los productos del carrito
+                $('.totalProducto').each( function (index) {
+                    $suma=$suma + parseFloat($(this).text());
+                    $('#totalCarrito').text($suma.toFixed(2));
+                });  
+            });
+        });
+        
+        /*********** FUNCIONES DEL ENVÍO Y PAGO *********/
+        // Edita datos personales
+        $('#editaDatosPersonales').click(function(){
+            // Mostramos el formulario para guardar los nuevos datos personales
+            $('#formDatosPersonales').removeClass('hidden');
+            // Escondemos el enlace de edición de los datos
+            $(this).hide();
+            // Cancelar la modificación de los datos personales
+            $('#cancelarModificacionDatosPersonales').click(function(){
+                // Mostramos el formulario para guardar los nuevos datos personales
+                $('#formDatosPersonales').addClass('hidden');
+                // Mostramos el enlace de edición de los datos
+                $('#editaDatosPersonales').show();
+            });
+        });
+    
+        // Edita dirección de Envío
+        $('#editaDireccionEnvio').click(function(){
+            // Mostramos el formulario para guardar los datos de la nueva dirección de envío
+            $('#formDireccionEnvio').removeClass('hidden');
+            // Escondemos la opción de edición de dirección
+            $(this).hide();
+            // Cancelar la modificación de la dirección de envío
+            $('#cancelarModificacionDireccionEnvio').click(function(){
+                // Escondemos el formulario
+                $('#formDireccionEnvio').addClass('hidden');
+                // Volvemos a mostrar la opción de edición de la dirección de envío
+                $('#editaDireccionEnvio').show();
+            });
+        });
+    
+        // Añadiendo nueva dirección de facturación
+        $('#nuevaDireccionFacturacion').click(function(){
+            // Mostramos el formulario para añadir los datos de la nueva dirección de facturación
+            $('#formDireccionFacturacion').removeClass('hidden');
+            // Escondemos la opción de añadir
+            $(this).hide();
+            // Cancelar la adición de la dirección de facturación
+            $('#cancelarNuevaDireccionFacturacion').click(function(){
+                // Escondemos el formulario
+                $('#formDireccionFacturacion').addClass('hidden');
+                // Volvemos a mostrar la opción de adición de dirección
+                $('#nuevaDireccionFacturacion').show();
+            });
+        });
+        
+        // Cambiando método de pago
+        $('#editaMetodoPago').click(function(){
+            // Mostramos el formulario para añadir la información del nuevo método de pago
+            $('#formMetodoPago').removeClass('hidden');
+            // Escondemos la opción de cambio de método de pago
+            $(this).hide();
+            // Mostramos los formularios según el método
+            $('input[name="metodoPago"]').click(function(){
+                if($('#metodoPagoVisa').is(':checked')){
+                    if(!$('#cuentaPaypal').hasClass('hidden')){
+                        $('#cuentaPaypal').addClass('hidden')
+                    }
+                    $('#cuentaVisa').removeClass('hidden');
+                }else if($('#metodoPagoPaypal').is(':checked')){
+                    if(!$('#cuentaVisa').hasClass('hidden')){
+                        $('#cuentaVisa').addClass('hidden')
+                    }
+                    $('#cuentaPaypal').removeClass('hidden');
+                }
+            });
+            // Cancelar el cambio del método
+            $('#cancelarMetodoPago').click(function(){
+                // Escondemos el formulario
+                $('#formMetodoPago').addClass('hidden');
+                // Volvemos a mostrar la opción de cambio de método
+                $('#editaMetodoPago').show();
+            });
+        });
+    
+        
+        /*// Validación de los datos personales
+        validacionDatosPersonales();
+        // Validación dirección envío
+        validacionDireccionEnvio();
+        // Validación dirección facturación
+        validacionDireccionFacturacion();*/
+        
+        /*// Cambio de tab de envío y pago a cesta
+        $('#botonPagEnvio').click(function(){
+            $('#tabenvioypago').removeClass().addClass('col-lg-3');
+            $('#tabcesta').removeClass().addClass('col-lg-3 active');
+            $('#envioypago').removeClass().addClass('tab-pane fade');
+            $('#cesta').removeClass().addClass('tab-pane fade in active');
+        });*/
+        
+        /*********** FUNCIONES DEL RESUMEN *********/
+    
+        // Enviamos la dirección de facturación seleccionada a la página de resumen
+        var resumenDireccionFacturacion = $('#selectDireccionesFacturacion option:selected').text();
+        $('#resumenDireccionFacturacion').append(resumenDireccionFacturacion);
+    
+        // Calculamos los resultados de los importes a la página de resumen
+        $resultado=0;
+        $suma=0;
+        // Recorrido de los totales de cada producto según la cantidad
+        $('.resumenCantidad').each(function(){
+            $totalProd=parseFloat($(this).next().text())*parseFloat($(this).text());
+            $(this).next().next().text($totalProd.toFixed(2));
+            $suma=$suma + parseFloat($totalProd);
+            $('#resumenTotalCarrito').text($suma.toFixed(2));
+        });
+        
+        // Cambio de tab de resumen a envío y pago
+        $('#botonPagResumen').click(function(){
+            $('#tabresumen').removeClass().addClass('col-lg-3');
+            $('#tabenvioypago').removeClass().addClass('col-lg-3 active');
+            $('#resumen').removeClass().addClass('tab-pane fade');
+            $('#envioypago').removeClass().addClass('tab-pane fade in active');
+        });
+        
+    
+    });
+    
+  
+    /*********** FUNCIONES DE VALIDACIÓN *************/
 
-		/*$("#botonpagcesta").click(function(){
-		        $("#prova").addClass("active");
-		    });
-		});*/
+/*    // Función que valida cualquier campo (input)
+    function validacionCampo(id, variable, regex, idMensajeOk, idMensajeError, mensajeErrorVacio, mensajeErrorFormato){
+        $('#'+id).focusout(function(){
+            if($('#'+id).val()==''){
+                $(this).parent().find('#'+idMensajeOk).remove();
+                $(this).parent().find('#'+idMensajeError).remove();
+                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>El campo '+mensajeErrorVacio+' no puede estar vacío.</small><br>');
+                $('#errorNombre').prepend('<span class="glyphicon glyphicon-remove"></span>');
+            }else{
+                $(this).parent().find('#'+idMensajeOk).remove();
+                $(this).parent().find('#'+idMensajeError).remove();
+                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
+            }
+        });
+        $('#'+id).keyup(function(){
+            var valor=$(this).val();
+            var variable=new RegExp(regex);
+            if(variable.test(valor)){
+                $(this).parent().find('#'+idMensajeOk).remove();
+                $(this).parent().find('#'+idMensajeError).remove();
+                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
+                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
+            }else{
+                $(this).parent().find('#'+idMensajeOk).remove();
+                $(this).parent().find('#'+idMensajeError).remove();
+                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>'+mensajeErrorFormato+' no tiene el formato correcto.</small><br>');
+                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
+            }
+        });
+    }
 
-		//disabled
-		/*$('#aEnvioypago').click(function(event){
-	        if ($('#cesta').toggleClass('disabled')) {
-	        	$('#envioypago').toggleClass('active');
-	        	return false;
-	        } else {
-	        	$('#envioypago').attr('href','#cesta');
-	        }
-    	});*/
-	}
+    // Función que valida los datos personales
+    function validacionDatosPersonales(){
+        validacionCampo('nombre', 'nombre', '^([a-zA-Z]+( )?)+$', 'nombreOk', 'nombreError', 'del nombre', 'El nombre');
+        validacionCampo('apellidos', 'apellidos', '^([a-zA-Z]+( )?)+$', 'apellidosOk', 'apellidosError', 'de los apellidos', 'Los apellidos');
+        validacionCampo('telefono', 'telefono', '^[0-9]{9}$', 'telefonoOk', 'telefonoError', 'del teléfono', 'El teléfono');
+    }
+
+    // Función que valida los campos de la dirección de facturación
+    function validacionDireccionEnvio(){
+        // Deshabilitamos el botón de envío
+        $('#pedidoEnvio').attr("disabled", true);
+
+        validacionCampo('calleEnvio', 'calle', '^([a-zA-Z]+( )?)+$', 'calleEnvioOk', 'calleEnvioError', 'de la calle', 'La calle');
+        validacionCampo('numeroEnvio', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroEnvioOk', 'numeroEnvioError', 'del número', 'El número');
+        validacionCampo('pisoEnvio', 'piso', '^[0-9]+$', 'pisoEnvioOk', 'pisoEnvioError', 'del piso', 'El piso');
+        validacionCampo('puertaEnvio', 'puerta', '^[0-9]+$', 'puertaEnvioOk', 'puertaEnvioError', 'de la puerta', 'La puerta');
+        validacionCampo('cpEnvio', 'cp', '^[0-9]+$', 'cpEnvioOk', 'cpEnvioError', 'del código postal', 'El código postal'); 
+
+        // Habilitamos el botón de envío
+        $('#pedidoEnvio').attr("disabled", false);
+    }
+
+    // Función que valida los campos de la dirección de facturación
+    function validacionDireccionFacturacion(){
+        // Deshabilitamos el botón de envío
+        $('#pedidoEnvio').attr("disabled", true);
+
+        validacionCampo('calleFacturacion', 'calle', '^([a-zA-Z]+( )?)+$', 'calleFacturacionOk', 'calleFacturacionError', 'de la calle', 'La calle');
+        validacionCampo('numeroFacturacion', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroFacturacionOk', 'numeroFacturacionError', 'del número', 'El número');
+        validacionCampo('pisoFacturacion', 'piso', '^[0-9]+$', 'pisoFacturacionOk', 'pisoFacturacionError', 'del piso', 'El piso');
+        validacionCampo('puertaFacturacion', 'puerta', '^[0-9]+$', 'puertaFacturacionOk', 'puertaFacturacionError', 'de la puerta', 'La puerta');
+        validacionCampo('cpFacturacion', 'cp', '^[0-9]+$', 'cpFacturacionOk', 'cpFacturacionError', 'del código postal', 'El código postal'); 
+
+        // Habilitamos el botón de envío
+        $('#pedidoEnvio').attr("disabled", false);
+    }
+
+    // Función que valida La cuenta de la visa
+    function validacionCuentaVisa(){
+        // Validación del campo
+        validacionCampo('campoCuentaVisa', 'campoCuentaVisa', '^([0-9]{4}-){3}[0-9]{4}$', 'campoCuentaVisaOk', 'campoCuentaVisaError', 'de la cuenta', 'La cuenta');
+    }    
+
+    // Función que valida la cuenta de paypal
+    function validacionCuentaPaypal(){
+         // Validación del campo
+        validacionCampo('campoCuentaPaypal', 'campoCuentaPaypal', /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i, 'campoCuentaPaypalOk', 'campoCuentaPaypalError', 'de la cuenta', 'La cuenta');            
+    }
+  */  
 </script>

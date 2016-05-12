@@ -100,3 +100,11 @@ a {
     margin-right: 5em;
   }
 }
+
+.botonPaginar{
+    background-color: white;
+    color: #337AB7;
+    border: 1px;
+    border-style: solid;
+    border-color: #337AB7;
+}
