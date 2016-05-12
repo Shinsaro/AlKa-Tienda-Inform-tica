@@ -46,48 +46,48 @@
 						<% } %>
 						<div class="dropdown-menu container-fluid panel panel-primary">
 							<div class="panel-heading text-center"><h4><b>Carrito</b></h4></div>
-								<%if (carrito != undefined){%>
-									<table class="table table-responsive">
-										<thead>
-											<tr>
-												<th>Foto</th>
-												<th colspan="3">Nombre</th>
-												<th>Precio</th>
-												<th>Descartar</th>
-											</tr>
-										</thead>
-										<tbody >
-											<% for (var i = 0; i < carrito.length; i++){ %>
-												<form method="POST" action="/user/home/quitarProductoCarrito">
-													<input type="text" class="text-hide" name="idProductoCarrito" value="<%= carrito[i]._id %>">
-													<tr>
-														<td>
-															<img src="<%= carrito[i].foto %>" width="100" height="100" display="block"/>
-														</td>
-														<td colspan="3">
-															<h4><%= carrito[i].nombre %></h4>
-														</td>
-														<td>
-															<p class="precioCarrito"><%= carrito[i].precio %>€</p>
-														</td>
-														<td>
-															<button class="btn btn-danger col-lg-12" type="submit">
-															  <i class="fa fa-trash-o" title="Delete" aria-hidden="true"></i>
-															</button>	
-														</td>
-													</tr>
-												</form>
-											<%}%>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td colspan="5">
-													<button href="/user/home/pedido" class="btn btn-default">Realizar Pedido</button>
-												</td>
-											</tr>
-										</tfoot>
-									</table>
-								<%}%>                            
+                            <%if (carrito != undefined){%>
+                                <table class="table table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Foto</th>
+                                            <th colspan="3">Nombre</th>
+                                            <th>Precio</th>
+                                            <th>Descartar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody >
+                                        <% for (var i = 0; i < carrito.length; i++){ %>
+                                            <form method="POST" action="/user/home/quitarProductoCarrito">
+                                                <input type="text" class="text-hide" name="idProductoCarrito" value="<%= carrito[i]._id %>">
+                                                <tr>
+                                                    <td>
+                                                        <img src="<%= carrito[i].foto %>" width="100" height="100" display="block"/>
+                                                    </td>
+                                                    <td colspan="3">
+                                                        <h4><%= carrito[i].nombre %></h4>
+                                                    </td>
+                                                    <td>
+                                                        <p class="precioCarrito"><%= carrito[i].precio %>€</p>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-danger col-lg-12" type="submit">
+                                                          <i class="fa fa-trash-o" title="Delete" aria-hidden="true"></i>
+                                                        </button>	
+                                                    </td>
+                                                </tr>
+                                            </form>
+                                        <%}%>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5">
+                                                <button href="/user/home/pedido" class="btn btn-default">Realizar Pedido</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            <%}%>                            
 						</div>
 					</div>
 				</ul>

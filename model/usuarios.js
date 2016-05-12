@@ -13,19 +13,21 @@ var schemaUsuarios = new schema ({
 	foto: String,
 	direccionEnvio : {
 		calle: String,
-		numero: Number,
+		numero: String,
 		piso:Number,
 		puerta:Number,
 		cp: Number
 	},
 	direccionFacturacion : [{
 		calle: String,
-		numero: Number,
+		numero: String,
 		piso:Number,
+        puerta:Number,
 		cp: Number
 	}],
 	metodoPago: String,
-	numeroCuenta: String
+	numeroCuenta: String,
+    cuentaPaypal: String
 });
 // generando hash
 schemaUsuarios.methods.generateHash = function(contrasena) {

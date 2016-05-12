@@ -151,3 +151,11 @@ a {
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
 }
+
+.botonPaginar{
+    background-color: white;
+    color: #337AB7;
+    border: 1px;
+    border-style: solid;
+    border-color: #337AB7;
+}

@@ -6,183 +6,516 @@
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu %>
 	<h1>Realizar Pedido</h1>
-
-	<!--<nav class="navbar navbar-inverse">-->
 	<div class="container">
 	  	<ul class="nav nav-tabs nav-tabs-justified nav-tabs-success col-lg-12">
-			<li id="tabcesta" role="presentation" class="col-lg-3 active"><a data-toggle="tab" href="#cesta"><b>CESTA</b></a></li>
-			<li id="tabenvioypago" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#envioypago"><b>ENVÍO Y PAGO</b></a></li>
-			<li id="tabresumen" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#resumen"><b>RESUMEN</b></a></li>
-			<li id="tabfinalizar" role="presentation" class="col-lg-3"><a data-toggle="tab" href="#finalizar"><b>FINALIZAR</b></a></li>
+			<li id="tabcesta" role="presentation" class="<%= ClaseCesta %>">
+                <a data-toggle="tab" aria-expanded="<%= expandedCesta %>"><b>CESTA</b></a>
+            </li>
+			<li id="tabenvioypago" role="presentation" class="<%= ClaseEnvioypago %>">
+                <a data-toggle="tab" aria-expanded="<%= expandedEnvioypago %>"><b>ENVÍO Y PAGO</b></a>
+            </li>
+			<li id="tabresumen" role="presentation" class="<%= ClaseResumen %>">
+                <a data-toggle="tab" aria-expanded="<%= expandedResumen %>"><b>RESUMEN</b></a>
+            </li>
+			<li id="tabfinalizar" role="presentation" class="<%= ClaseFinalizar %>">
+                <a data-toggle="tab" aria-expanded="<%= expandedFinalizar %>"><b>FINALIZAR</b></a>
+            </li>
 		</ul>
-		<div class="tab-content col-lg-12">
-			<div id="cesta" class="tab-pane fade in active">
+		<div class="tab-content col-lg-12 col-xs-12">
+            <!-- TAB CESTA -->
+			<div id="cesta" class="<%= activeinCesta %>">
 			<br>
 				<div class="panel panel-warning">
 					<div class="panel-body">
+                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" ></span>
 						Presupuesto calculado sin impuestos ni gastos de envío.
 					</div>
 				</div>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Artículo</th>
-							<th>Unidades</th>
-							<th>Precio</th>
-							<th>Total</th>
-							<th>Descarta</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
-								<a class="detail-icon" href="bbb" title="detail">
-									<span class="glyphicon glyphicon-chevron-down"></span>
-								</a>
-								&nbsp placa 1
-							</td>
-							<td>2</td>
-							<td>5.5</td>
-							<td>11</td>
-							<td>
-								<a class="remove" href="aaa" title="remove">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a class="detail-icon" href="bbb" title="detail">
-									<span class="glyphicon glyphicon-chevron-down"></span>
-								</a>
-								&nbsp procesador 1
-							</td>
-							<td>3</td>
-							<td>10</td>
-							<td>30</td>
-							<td>
-								<a class="remove" href="aaa" title="remove">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a class="detail-icon" href="bbb" title="detail">
-									<span class="glyphicon glyphicon-chevron-down"></span>
-								</a>
-								&nbsp placa 2
-							</td>
-							<td>1</td>
-							<td>7.3</td>
-							<td>7.3</td>
-							<td>
-								<a class="remove" href="aaa" title="remove">
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-							</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td><h4>Total</h4></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td><h4>suma</h4></td>
-						</tr>
-					</tfoot>
-				</table>
-				<div>
-					<ul class="pager">
-					    <li class="disabled" style="float: left"><a data-toggle="tab"href="#">Anterior</a></li>
-					    <li id="botonpagcesta"style="float: right"><a data-toggle="tab" href="#envioypago">Siguiente</a></li>
-					</ul>
-				</div>
-				<div id="prova"></div>
-			</div>
-			<div id="envioypago" class="tab-pane fade">
-				<br>
-				<form action="/pedido/envioypago" method="post">
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<h3 class="panel-title">Envío</h3>
-						</div>
-						<div class="panel-body">
-							<p>Selecciona la dirección de envío.</p>
-							<!-- foreach con ejs utilizando la bbdd de los users -->
-							<select class="form-control" style="border-radius">
-								<option>aaa</option>
-								<option>bbb</option>
-								<option>ccc</option>
-								<option>ddd</option>
-							</select>
-							<br>
-							<div>
-								<a class="edit" href="aaa" title="edit">
-									<span class="glyphicon glyphicon-pencil"></span>
-									Edita la dirección &nbsp
-								</a>
-								<a class="add" href="aaa" title="add">
-									<span class="glyphicon glyphicon-plus"></span>
-									Añade una nueva dirección
-								</a>
-							</div>
-						</div>
-					</div>
-					<br>
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<h3 class="panel-title">Facturación</h3>	
-						</div>
-						<div class="panel-body">
-							<p>Selecciona la dirección de facturación.</p>
-                            <select class="form-control" style="border-radius">
-								<% if( usuarios.nombre==="ana" ){ %>
-                                     <option><%= usuarios.direccion.calle %></option>
-                                <% } %>
-							</select>
-							<br>
-							<div>
-								<a class="edit" href="aaa" title="edit">
-									<span class="glyphicon glyphicon-pencil"></span>
-									Edita la dirección &nbsp 
-								</a>
-								<a class="add" href="aaa" title="add">
-									<span class="glyphicon glyphicon-plus"></span>
-									Añade una nueva dirección
-								</a>
-							</div>
-						</div>
-					</div>
-					<br>
-					<div class="panel panel-success">
-						<div class="panel-heading">
-							<h3 class="panel-title">Pago</h3>	
-						</div>
-						<div class="panel-body">
-							
-						</div>
-					</div>
-					<div id="paginacion">
-						<ul class="pager">
-					    	<li id="botonpagenvio1" style="float: left"><a data-toggle="tab" href="#cesta">Anterior</a></li>
-					    	<li id="botonpagenvio2" style="float: right"><a data-toggle="tab" href="#resumen">Siguiente</a></li>
-					  	</ul>
-					</div>
+                <form id="formCesta" action="/user/home/pedido/envioypago" method="post">
+                    <table class="table table-condensed table-responsive col-xs-6">
+                        <thead>
+                            <tr>
+                                <th>Artículo</th>
+                                <th>Unidades</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<carrito.length; i++){ %>
+                            <tr>
+                                <td>
+                                    <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                        &nbsp;
+                                    </a>
+                                    <h5><%= carrito[i].nombre %></h5>
+                                    
+                                    <div class="panel panel-default descripcion">
+                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                    </div>
+                                </td>
+                                <td class="form-group">
+                                    <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
+                                </td>
+                                <td class="precio"><%= carrito[i].precio %></td>
+                                <td class="totalProducto"></td>
+                                <td>
+                                <a class="remove" href="aaa" title="remove">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><h4>Importe Total</h4></td>
+                                <td></td>
+                                <td></td>
+                                <td><h4 id="totalCarrito"></h4></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <!--<div id="paginacion">
+                        <ul class="pager">
+                            <li id="botonPagSiguienteCesta" style="float: right">
+                                <a><input type="submit" id="pedidoCesta" value="Siguiente" style="float:right"/></a>
+                            </li>
+                        </ul>
+                    </div>-->
+                    <!--<div class="paginas">
+                        <input type="submit" id="pedidoCesta" value="Siguiente" style="float:right"/>
+                    </div>-->
+                    <button type="submit" id="botonPedidoCesta" class="pager next botonPaginar" style="float:right">
+                        Siguiente
+                    </button>
 				</form>
 			</div>
-			<div id="resumen" class="tab-pane fade">
+            <!-- Tab envío y pago -->
+			<div id="envioypago" class="<%= activeinEnvioypago %>">
+				<br>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Confirma tus datos personales
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="container">
+                            <div id="infoDatosPersonales" class="container col-md-3"  style="padding: 2%">
+                                <p>
+                                    Nombre<br>
+                                    <% if(usuario.nombre!=undefined && usuario.nombre!=''){ %>
+                                    <label><%= usuario.nombre %></label>
+                                    <% }else{ %>
+                                    <i>No has guardado tu nombre</i>
+                                    <% } %>
+                                </p>
+                                <p>
+                                    Apellidos<br>
+                                    <% if(usuario.apellidos!=undefined && usuario.apellidos!=''){ %>
+                                    <label><%= usuario.apellidos %></label>
+                                    <% }else{ %>
+                                    <i>No has guardado tus apellidos</i>
+                                    <% } %>
+                                </p>
+                                <p>
+                                    Teléfono<br>
+                                    <% if(usuario.telefono!=undefined && usuario.telefono!=''){ %>
+                                    <label><%= usuario.telefono %></label>
+                                    <% }else{ %>
+                                    <i>No has guardado tu teléfono</i>
+                                    <% } %>
+                                </p>
+                                <br>
+                                <button type="button" id="editaDatosPersonales" class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                    edita datos
+                                </button>
+                            </div>
+                            <div id="formDatosPersonales" class="container col-sm-10 col-md-7 hidden" style="border-left: 1px solid grey">
+                                <form action="/user/home/pedido/envioypago/actualizarDatos" method="post">
+                                    <h5 class="text-primary">
+                                        Ingresa los datos personales que quieras cambiar
+                                    </h5>
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="nombre"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Apellidos</label>
+                                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="apellidos"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="text" class="form-control" id="telefono" name="telefono" placeholder="telefono"/>
+                                    </div>
+                                    <br>
+                                    <button type="submit" id="guardarModificacionDatosPersonales" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-floppy-saved">
+                                        </span>
+                                        guarda
+                                    </button>
+                                    <button type="button" id="cancelarModificacionDatosPersonales" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span>
+                                        cancela
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Confirma tu direcciones
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <div id="direccion1" class="container">
+                            <h4 class="text-primary">
+                                Dirección de envío
+                            </h4>
+                            <div id="infoDireccionEnvio" class="container-fluid col-sm-10 col-md-3">
+                                <% if(usuario.direccionEnvio.calle != undefined && usuario.direccionEnvio.calle!=''){ %>
+                                    <p>C/ <%= usuario.direccionEnvio.calle %>,
+                                        <%= usuario.direccionEnvio.numero %>, 
+                                        <%= usuario.direccionEnvio.piso %>º - 
+                                        <%= usuario.direccionEnvio.puerta %>ª</p>
+                                    <p> 0<%= usuario.direccionEnvio.cp %></p>
+                                <% }else{ %>
+                                    <div class="alert alert-warning small" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>                                            
+                                        <span class="sr-only">Aviso:</span>
+                                        No tienes dirección de envío.
+                                    </div>
+                                <% } %>
+                                <button type="button" id="editaDireccionEnvio" class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                    edita dirección envío
+                                </button>
+                            </div>
+                            <div id="formDireccionEnvio" class="container-fluid col-sm-10 col-md-7 hidden" style="border-left: 1px solid grey">
+                                <form action="/user/home/pedido/envioypago/actualizarDireccionEnvio" method="post">
+                                    <h5 class="text-primary">
+                                        Ingresa la nueva dirección de envío
+                                    </h5>
+                                    <div class="form-group">
+                                        <label>Calle</label>
+                                        <input type="text" class="form-control" id="calleEnvio" name="calleEnvio" placeholder="calle"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Número</label>
+                                        <input type="text" class="form-control" id="numeroEnvio" name="numeroEnvio" placeholder="número"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Piso</label>
+                                        <input type="text" class="form-control" id="pisoEnvio" name="pisoEnvio" placeholder="piso"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Puerta</label>
+                                        <input type="text" class="form-control" id="puertaEnvio" name="puertaEnvio" placeholder="puerta"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Código Postal</label>
+                                        <input type="text" class="form-control" id="cpEnvio" name="cpEnvio" placeholder="código postal"/>
+                                    </div>
+                                    <button type="submit" id="guardarModificacionDireccionEnvio" class="btn btn-primary  btn-xs">
+                                        <span class="glyphicon glyphicon-floppy-saved">
+                                        </span>
+                                        guarda
+                                    </button>
+                                    <button type="button" id="cancelarModificacionDireccionEnvio" class="btn btn-primary  btn-xs">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span>
+                                        cancela
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <br>
+                        <div id="direccion2" class="container">
+                            <h4 class="text-primary">
+                                Dirección de facturación
+                            </h4>
+                            <div id="infoDireccionFacturacion" class="col-sm-10 col-md-3">
+                                <% if(usuario.direccionFacturacion.length != 0 ){ %>
+                                    <select id="selectDireccionesFacturacion" class="form-control" style="border-radius">
+                                        <% usuario.direccionFacturacion.forEach(function(direccion){ %>
+                                            <option>
+                                                C/ <%= direccion.calle %>, 
+                                                <%= direccion.numero %>, 
+                                                <%= direccion.piso %>º -
+                                                <%= direccion.puerta %>ª, 
+                                                0<%= direccion.cp %>
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                <% }else{ %>
+                                    <div class="alert alert-warning" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <span class="sr-only">Aviso:</span>
+                                        No tienes ninguna dirección de facturación guardada.
+                                    </div>
+                                <% } %>
+                                <br>
+                                <button type="button" id="nuevaDireccionFacturacion" class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                    añade dirección facturación
+                                </button>
+                            </div>
+                            <div id="formDireccionFacturacion" class="col-sm-10 col-md-7 hidden" style="border-left: 1px solid grey">
+                                <form action="/user/home/pedido/envioypago/actualizarDireccionFacturacion" method="post">
+                                    <h5 class="text-primary">
+                                        Ingresa la nueva dirección de facturación
+                                    </h5>
+                                    <div class="form-group">
+                                        <label>Calle</label>
+                                        <input type="text" class="form-control" id="calleFacturacion" name="calleFacturacion" placeholder="calle"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Número</label>
+                                        <input type="text" class="form-control" id="numeroFacturacion" name="numeroFacturacion" placeholder="número"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Piso</label>
+                                        <input type="text" class="form-control" id="pisoFacturacion" name="pisoFacturacion" placeholder="piso"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Puerta</label>
+                                        <input type="text" class="form-control" id="puertaFacturacion" name="puertaFacturacion" placeholder="puerta"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Código Postal</label>
+                                        <input type="text" class="form-control" id="cpFacturacion" name="cpFacturacion" placeholder="código postal"/>
+                                    </div>
+                                    <button type="submit" id="guardarNuevaDireccionFacturacion" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-floppy-saved">
+                                        </span>
+                                        guarda
+                                    </button>
+                                    <button type="button" id="cancelarNuevaDireccionFacturacion" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span>
+                                        cancela
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Pago</h3>	
+                    </div>
+                    <div class="panel-body">
+                        <h4 class="text-primary">
+                            Confirma tu método de pago
+                        </h4>
+                        <div class="container">
+                            <div id="infoMetodoPago" class="col-md-3">
+                                <% if(usuario.metodoPago!=undefined && usuario.metodoPago!=''){ %>
+                                    <% if(usuario.metodoPago == 'visa'){ %>
+                                        <p>El cobro se efecturá al número de cuenta:</p>
+                                        <label><%= usuario.numeroCuenta %></label>
+                                        <% }else if(usuario.metodoPago == 'paypal'){ %>
+                                        <p>El cobro se efectuará con la siguiente cuanta de PayPal:</p><br>
+                                        <label><%= usuario.cuentaPaypal %></label>
+                                    <% } %>
+                                <% }else{ %>
+                                    <div class="alert alert-warning" role="alert">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        <span class="sr-only">Aviso:</span>
+                                        No tienes configurado tu método de pago.
+                                    </div>
+                                <% } %>
+                                <br>
+                                <button type="button" id="editaMetodoPago" class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-pencil">
+                                    </span>
+                                    edita método pago
+                                </button>
+                            </div>
+                            <div id="formMetodoPago" class="col-sm-10 col-md-7 hidden" style="border-left: 1px solid grey">
+                                <form action="/user/home/pedido/envioypago/actualizarMetodoPago" method="post">
+                                    <h5 class="text-primary">
+                                        Selecciona un método de pago
+                                    </h5>
+                                    <div class="form-group">
+                                        <input type="radio" name="metodoPago" id="metodoPagoVisa" value="visa"/>
+                                        <i class="fa fa-cc-visa" aria-hidden="true"></i>
+                                        <label>Visa</label>
+                                        <br>
+                                        <input type="radio" name="metodoPago" id="metodoPagoPaypal" value="paypal"/>
+                                        <i class="fa fa-paypal" aria-hidden="true"></i>
+                                        <label>PayPal</label>
+                                    </div>
+                                    <div id="cuentaPaypal" class="form-group hidden">
+                                        <p>Intoduce tu cuenta de PaypPal:<p>
+                                        <label class="sr-only" for="cuentaPayal">email</label>
+                                        <div class="input-group">
+                                          <div class="input-group-addon">@</div>
+                                          <input type="text" class="form-control" name="cuentaPaypal" id="campoCuentaPaypal" placeholder="ejemplo: ejemplo@gmail.com" size="50%"/>
+                                        </div>
+                                    </div>
+                                    <div id="cuentaVisa" class="form-group hidden">
+                                        <p>Introduce tu número de cuenta:</p>
+                                        <label class="sr-only" for="cuentaVisa">numCuenta</label>
+                                        <div class="input-group">
+                                          <div class="input-group-addon">nº</div>
+                                            <input type="text" class="form-control" name="cuentaVisa" id="campoCuentaVisa" placeholder="ejemplo: 0000-0000-0000-0000" size="50%"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button type="submit" id="guardarMetodoPago" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-floppy-saved">
+                                        </span>
+                                        guarda
+                                    </button>
+                                    <button type="button" id="cancelarMetodoPago" class="btn btn-primary btn-xs">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span>
+                                        cancela
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="paginacion">
+                    <ul class="pager">
+                        <li id="botonPagAnteriorEnvio" style="float: left">
+                            <a data-toggle="tab" href="#cesta">Anterior</a>
+                        </li>
+                        <li id="botonPagSiguienteEnvio" style="float: right">
+                            <a data-toggle="tab" href="#resumen">Siguiente</a>
+                        </li>
+                    </ul>
+                </div>
+			</div>
+            <!-- Tab resumen -->
+			<div id="resumen" class="<%= activeinResumen %>">
+                <div>
+                    <br>
+                    <h3 class="text-primary">
+                        Resumen de los datos de compra
+                    </h3>
+                    <br>
+                </div>
+                <div id="datosUsuario" class="col-md-12">
+                    <label class="col-md-12"><h4 class="text-default">Datos de Usuario</h4></label>
+                    <div class="col-md-6">
+                        <p>
+                            Nombre: <label><%= usuario.nombre %></label><br>
+                            Apellidos: <label><%= usuario.apellidos %></label><br>
+                            Teléfono: <label><%= usuario.telefono %></label>
+                        </p>
+                        <p>
+                            Usuario: <label><%= usuario.alias %></label><br>
+                            Correo: <label><%= usuario.correo %></label>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            Dirección de envío: <br>
+                            <label>
+                                C/ <%= usuario.direccionEnvio.calle %>,
+                                <%= usuario.direccionEnvio.numero %>,
+                                <%= usuario.direccionEnvio.piso %>º - 
+                                <%= usuario.direccionEnvio.puerta %>ª, 
+                                0<%= usuario.direccionEnvio.cp %>
+                            </label>
+                        </p>
+                        <p>
+                            Dirección de facturación: <br>
+                            <label id="resumenDireccionFacturacion">
+                            </label>
+                        </p>
+                        <p>
+                            <% if(usuario.metodoPago == 'visa'){ %>
+                            Método de pago: <label><%= usuario.metodoPago %></label><br>
+                            Número de cuenta: <label><%= usuario.numeroCuenta %></label><br>
+                            <% }else{ %>
+                            Método de pago: <label><%= usuario.metodoPago %></label><br>
+                            Cuenta de PayPal: <label><%= usuario.cuentaPaypal %></label><br>
+                            <% } %>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <div id="datosCompra" class="col-md-12">
+                    <label><h4 class="text-default">Datos de Compra</h4></label>
+                   <table class="table table-condensed" table-responsive>
+                        <thead>
+                            <tr>
+                                <th>Artículo</th>
+                                <th>Uds.</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<carrito.length; i++){ %>
+                            <tr>
+                                <td>
+                                    <label><h5><%= carrito[i].nombre %></h5></label><br>
+                                    <div class="panel panel-default">
+                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                    </div>
+                                </td>
+                                <td class="resumenCantidad"><%= cantidad[i] %></td>
+                                <td class="resumenPrecio"><%= carrito[i].precio %></td>
+                                <td class="resumentTotalProducto"></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><h4>Importe Total</h4></td>
+                                <td></td>
+                                <td></td>
+                                <td><h4 id="resumenTotalCarrito"></h4></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 				<ul class="pager">
-				   	<li id="botonpagresumen1" style="float: left"><a data-toggle="tab" href="#envioypago">Anterior</a></li>
-				   	<li id="botonpagresumen2" style="float: right"><a data-toggle="tab" href="#finalizar">Siguiente</a></li>
+				   	<li id="botonPagResumen" style="float: left">
+                        <a data-toggle="tab" href="#envioypago">Anterior</a>
+                    </li>
+				   	<li id="botonpagresumen2" style="float: right">
+                        <a data-toggle="tab" href="#finalizar">Siguiente</a>
+                    </li>
 				</ul>
 			</div>
-			<div id="finalizar" class="tab-pane fade">
+            <!-- Tab finalizar -->
+			<div id="finalizar" class="<%= activeinFinalizar %>">
+                <div class="panel panel-info">
+					<div class="panel-body text-center">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ></span>
+						<h3>¡Enhorabuena! Tu compra ha sido realizada con éxito.</h3>
+					</div>
+                </div>
+                <br>
+                <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm" style="float:center">
+                    revisa tus compras
+                </button>
+                <button type="button" href="/user/home" id="guardarMetodoPago" class="btn btn-primary btn-sm" style="float:center">
+                    vuelve al inicio
+                </button>
+                <br>
 				<ul class="pager">
-				    <li id="botonpagfinalizar" style="float: left"><a data-toggle="tab" href="#resumen">Anterior</a></li>
-				    <li class="disabled" style="float: right"><a data-toggle="tab" href="#">Siguiente</a></li>
-				</ul>
+				    <li id="botonpagfinalizar" style="float: left">
+                        <a data-toggle="tab" href="#resumen">Anterior</a>
+                    </li>
 			</div>
 		</div>
 	</div>
