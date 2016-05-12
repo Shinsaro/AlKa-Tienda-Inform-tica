@@ -756,54 +756,59 @@ module.exports = function(app,passport){
     };  
 
 	realizarPedido = function (req,res){
-        var usuarioObjID = req.user._id;
+        var usuarioObjID = "";
         var idProductos = [];
         var cantidadProductos = [];
-        Carrito.find({idUsuario:usuarioObjID},function (err,ProductosCarrito){
-            if(!err){
-                ProductosCarrito.forEach(function(producto){
-                    idProductos.push(producto.idProducto);
-                    cantidadProductos.push(producto.cantidad);
-                });
-                var cantidades = cantidadProductos;
-                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-                    Usuarios.findOne({_id: usuarioObjID}, function(err,usuario){
-                        if(!err){
-                            console.log('Mostrando productos añadidos al pedido');
-                            res.render('pedido', {
-                                alias:req.user.alias,
-                                home: "/user/home",
-                                titulo: "pedido",
-                                placaBase:"/user/home/category/placa base",
-                                procesadores:"/user/home/category/procesadores",
-                                modal:"modal",
-                                nameTarget:"#profileModal",
-                                entrarSalir: "Mi perfil",
-                                cantidad: cantidades,
-                                carrito: ProductosPedido,
-                                usuario: usuario,
-                                ClaseCesta: "col-lg-3 active",
-                                ClaseEnvioypago: "col-lg-3 disabled",
-                                ClaseResumen: "col-lg-3 disabled",
-                                ClaseFinalizar: "col-lg-3 disabled",
-                                expandedCesta: true,
-                                expandedEnvioypago: false,
-                                expandedResumen: false,
-                                expandedFinalizar: false,
-                                activeinCesta: "tab-pane fade in active",
-                                activeinEnvioypago: "tab-pane fade",
-                                activeinResumen: "tab-pane fade",
-                                activeinFinalizar: "tab-pane fade"
-                            });
-                        }else{
-                            console.log('Error al mostrar los productos añadidos al pedido. '+err);
-                        }
+        //
+        Usuarios.findOne({correo:req.user.correo},function (err,usuario){
+            usuarioObjID = usuario._id;
+            Carrito.find({idUsuario:usuarioObjID},function (err,ProductosCarrito){
+                if(!err){
+                    ProductosCarrito.forEach(function(producto){
+                        idProductos.push(producto.idProducto);
+                        cantidadProductos.push(producto.cantidad);
                     });
-                });
-            }else{
-                console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
-            }
-		});
+                    var cantidades = cantidadProductos;
+                    Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+                        Usuarios.findOne({_id: usuarioObjID}, function(err,usuario){
+                            if(!err){
+                                console.log('Mostrando productos añadidos al pedido');
+                                res.render('pedido', {
+                                    alias:req.user.alias,
+                                    home: "/user/home",
+                                    titulo: "pedido",
+                                    componentes: "/user/home/category/componentes",
+                                    placaBase:"/user/home/category/placa base",
+                                    procesadores:"/user/home/category/procesadores",
+                                    modal:"modal",
+                                    nameTarget:"#profileModal",
+                                    entrarSalir: "Mi perfil",
+                                    cantidad: cantidades,
+                                    carrito: ProductosPedido,
+                                    usuario: usuario,
+                                    ClaseCesta: "col-lg-3 active",
+                                    ClaseEnvioypago: "col-lg-3 disabled",
+                                    ClaseResumen: "col-lg-3 disabled",
+                                    ClaseFinalizar: "col-lg-3 disabled",
+                                    expandedCesta: true,
+                                    expandedEnvioypago: false,
+                                    expandedResumen: false,
+                                    expandedFinalizar: false,
+                                    activeinCesta: "tab-pane fade in active",
+                                    activeinEnvioypago: "tab-pane fade",
+                                    activeinResumen: "tab-pane fade",
+                                    activeinFinalizar: "tab-pane fade"
+                                });
+                            }else{
+                                console.log('Error al mostrar los productos añadidos al pedido. '+err);
+                            }
+                        });
+                    });
+                }else{
+                    console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
+                }
+            });
+        });
 	};
     
     envioypago = function(req,res){
@@ -858,6 +863,7 @@ module.exports = function(app,passport){
                                 alias:req.user.alias,
                                 home: "/user/home",
                                 titulo: "pedido",
+                                componentes: "/user/home/category/componentes",
                                 placaBase:"/user/home/category/placa base",
                                 procesadores:"/user/home/category/procesadores",
                                 modal:"modal",
@@ -1065,6 +1071,7 @@ module.exports = function(app,passport){
                                 alias:req.user.alias,
                                 home: "/user/home",
                                 titulo: "pedido",
+                                componentes: "/user/home/category/componentes",
                                 placaBase:"/user/home/category/placa base",
                                 procesadores:"/user/home/category/procesadores",
                                 modal:"modal",
