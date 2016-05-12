@@ -80,41 +80,73 @@
 		<input type="submit" value="Crear producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
 		<div class="input-group form-group-sm col-xs-12 divSubirFotoProducto">
 			<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#uploadPictureModal">Cambiar foto</button>				
+			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#uploadPictureModal">Asignar foto</button>				
+		</div>
+		<div class="input-group form-group-sm col-xs-12 divSubirFotoProducto">
+			<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
+			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#updatePictureModal">Cambiar foto</button>				
 		</div>
 	</form>
 	<div class="container">
-			<div class="modal fade" id="uploadPictureModal" role="dialog">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Cambiar foto perfil</h4>
-						</div>
-						<div class="modal-body col-lg-12">
-							<form action="/user/home/producto/upload" method='POST' enctype='multipart/form-data'>
-								<div class="input-group">
-									<select class="form-control selectpicker" id="fotoProducto" name="fotoProducto" aria-describedby="sizing-addon3">
-										<% productos.forEach( function (producto){ %>
-											<% x = 0; if(producto.foto == ""){ %>
-												<option value="<%= producto._id %>"><%= producto.nombre %></option>
-												<% x++; %>
-											<% } %>
-										<% }); %>
-										<% if (x == 0) { %>
-											<option>No hay productos sin foto</option>
+		<div class="modal fade" id="uploadPictureModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Cambiar foto producto</h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<form action="/user/home/producto/upload" method='POST' enctype='multipart/form-data'>
+							<div class="input-group">
+								<select class="form-control" id="fotoProducto" name="fotoProducto" aria-describedby="sizing-addon3">
+									<% productos.forEach( function (producto){ %>
+										<% x = 0; if(producto.foto == ""){ %>
+											<option value="<%= producto._id %>"><%= producto.nombre %></option>
+											<% x++; %>
 										<% } %>
-									</select>
-									<input type="file" name='archivo'>
-						   			<input type="submit" class="btn btn-success" value='Subir'>	
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						</div>
+									<% }); %>
+									<% if (x == 0) { %>
+										<option>No hay productos sin foto</option>
+									<% } %>
+								</select>
+								<input type="file" name="archivoSubir">
+					   			<input type="submit" class="btn btn-success" value='Subir'>	
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="container">
+		<div class="modal fade" id="updatePictureModal" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Cambiar foto producto</h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<form action="/user/home/producto/update" method='POST' enctype='multipart/form-data'>
+							<div class="input-group">
+								<select class="form-control" id="fotoProductoUpdate" name="fotoProductoUpdate" aria-describedby="sizing-addon3">
+									<% productos.forEach( function (producto){ %>
+										<option value="<%= producto._id %>"><%= producto.nombre %></option>
+									<% }); %>
+								</select>
+								<input type="file" name="archivoActualizar">
+					   			<input type="submit" class="btn btn-success" value='Subir'>	
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <% } %>

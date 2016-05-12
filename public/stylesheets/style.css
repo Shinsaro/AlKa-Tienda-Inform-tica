@@ -13,6 +13,12 @@ html {
 .row{
   padding-left: 15px;
 }
+.thumbnail{
+  height: 365px;
+}
+/*.borderless td, .borderless th {
+  border: none;
+}*/
 #titulo{
   text-transform:capitalize;
 }

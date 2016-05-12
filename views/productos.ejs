@@ -6,7 +6,7 @@
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu  %>
 	<!-- Parrilla de fotos -->
-    <div class="col-lg-1 col-md-1 col-xs-2 continer" style="margin-top: 250px">
+    <div class="col-lg-1 col-md-1 col-xs-1 continer" style="margin-top: 250px">
         <table>
             <thead>
                 <tr>
@@ -31,29 +31,41 @@
                     <input type="submit" value="Filtrar" id="filtrar" name="filtrar" class="btn btn-primary">
                 </form>
     </div>
-	<div id="about" class="container col-lg-10 col-lg-offset-0 col-sm-10 col-sm-offset-0 col-xs-8 col-xs-offset-1">
+	<div id="about" class="col-lg-10 col-sm-10 col-sm-offset-0 col-xs-9 col-xs-offset-1">
 		<!-- Título de la página -->
 		<h1 id="titulo"><%= titulo %></h1>
 	    <div class="row">
-            <%productos.forEach( function (producto){ %>
-                <form action='/user/home/anadeProductoCarrito' method='POST'>
-                    <div class="thumbnail col-lg-3 col-sm-5 col-xs-11">
-                        <input name="id" class="text-hide" value="<%= producto._id %>">
-                        <div class="col-lg-12 col-sm-12 col-xs-12">
-                            <img class="img-square center-block" src="<%= producto.foto %>" height="200" width="200">
-                        </div>
-                        <h4><%= producto.nombre %></h4>
-                        <p hidden><%= producto.descripcion %></p>
-                        <p>
-                            <h2><span class="label label-success" style="float: left"><%= producto.precio %>€</span></h2>
-                            <button title="detalles del producto" class="btn btn-primary botonProducto" style="float: right" type="button" data-toggle="modal" data-target="#productoModal">más»</button>
-                            <% if (alias != ""){ %>
-                                <button type="submit" class="btn btn-primary" style="float: right" id="comprar" value="comprar"><i class="fa fa-shopping-cart"></i></button>
-                            <% } %>
-                        </p>
-                    </div>
-                </form>
-            <% }); %>
+            <table>
+                <tbody>
+                    <% var x = 0; productos.forEach( function (producto){ %>
+                        <tr class="thumbnail col-lg-4 col-sm-6 col-xs-12">
+                            <form action='/user/home/anadeProductoCarrito' method='POST'>
+                                <td class="col-lg-12 col-sm-6 col-xs-12">
+                                    <% if (alias != ""){ %>
+                                        <button type="submit" class="btn btn-primary" style="float: right" id="comprar" value="comprar"><i class="fa fa-shopping-cart"></i></button>
+                                    <% } %>
+                                    <input name="id" class="text-hide" value="<%= producto._id %>">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <img class="img-square center-block" src="<%= producto.foto %>" height="200" width="200">
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <h4 class="h4"><%= producto.nombre %></h4>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <p hidden><%= producto.descripcion %></p>
+                                        <h2><span class="label label-success" style="float: left"><%= producto.precio %>€</span></h2>
+                                        <button title="detalles del producto" class="btn btn-primary botonProducto" style="float: right" type="button" data-toggle="modal" data-target="#productoModal">más»</button>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <input class="rating" value="<%= valoraciones[x].valoracion %>" data-readonly="true">
+                                    </div>
+                                    <% x++; %>
+                                </td>
+                            </form>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
 	    </div>
     </div>
     <%- include ./footer %>

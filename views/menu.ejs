@@ -36,12 +36,14 @@
 							<input type="text" class="form-control input-lg">
 						</div>
 						<button type="button" class="btn btn-primary btn-lg" data-toggle="<%= modal %>" data-target="<%= nameTarget %>"><i class="fa fa-key"> <%= entrarSalir %></i></button>
-						<button type="button" class="btn btn-lg btn-primary dropdown-toggle carritoBtn" data-toggle="dropdown" data-hover="dropdown" role="button">
-							<i class="fa fa-shopping-cart">&nbsp</i>
-							<%if (carrito != undefined){%>
-								<span class="badge"><%= carrito.length%></span>
-							<%}%>
-						</button>
+						<% if (entrarSalir != "Log In") { %>
+							<button type="button" class="btn btn-lg btn-primary dropdown-toggle carritoBtn" data-toggle="dropdown" data-hover="dropdown" role="button">
+								<i class="fa fa-shopping-cart">&nbsp</i>
+								<%if (carrito != undefined){%>
+									<span class="badge"><%= carrito.length%></span>
+								<%}%>
+							</button>
+						<% } %>
 						<div class="dropdown-menu container-fluid panel panel-primary">
 							<div class="panel-heading text-center"><h4><b>Carrito</b></h4></div>
 								<%if (carrito != undefined){%>
