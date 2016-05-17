@@ -1206,6 +1206,7 @@ module.exports = function(app,passport){
                                 titulo: "pedido",
                                 ram: "/user/home/category/ram",
                                 hdd: "/user/home/category/disco duro",
+                                componentes: "/user/home/category/componentes",
                                 placaBase:"/user/home/category/placa base",
                                 procesadores:"/user/home/category/procesadores",
                                 modal:"modal",
