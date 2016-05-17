@@ -4,10 +4,10 @@
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-usb" aria-hidden="true"></i></span>
-				<select class="form-control selectpicker" id="marca" name="marca" aria-describedby="sizing-addon3">
+				<select class="form-control" id="marca" name="marca" aria-describedby="sizing-addon3">
 					<option selected="selected">Escoje una marca</option>
 					<% marcas.forEach( function (marcas){ %>
-						<option value="<%= marcas._id %>"><%= marcas.nombre %></option>
+						<option value="<%= marcas.nombre %>"><%= marcas.nombre %></option>
 					<% }); %>
 				</select>
 			</div>
@@ -17,14 +17,8 @@
 				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-list" aria-hidden="true"></i></span>
 				<select class="form-control selectpicker" id="producto" name="producto" aria-describedby="sizing-addon3" multiple>
 					<% productos.forEach( function (producto){ %>
-						<% x = 0; if(producto.foto == undefined){ %>
-							<option value="<%= producto._id %>"><%= producto.nombre %></option>
-							<% x++; %>
-						<% } %>
+						<option value="<%= producto.nombre %>"><%= producto.nombre %></option>
 					<% }); %>
-					<% if (x == 0) { %>
-						<option>No hay productos sin foto</option>
-					<% } %>
 				</select>
 			</div>
 		</div>
@@ -41,6 +35,19 @@
 		<input type="submit" value="Asignar marca producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
 	</form>
 <% } else { %>
+	<% if (messageDanger != ""){ %>
+		<form method="get" action="/user/home/anadirMarcaForm" class="col-lg-12 col-sm-12 col-xs-12">
+			<div class="alert alert-danger" class="col-lg-12 col-sm-12 col-xs-12">
+				<b class="col-lg-9 col-sm-9 col-xs-9"><%= message %></b>
+				<button type="submit" class="btn btn-primary">Ir a crear marca</button>
+			</div>
+		</form>
+	<% } 
+	   if (messageSuccess != ""){ %>
+		<div class="alert alert-success" class="col-lg-12 col-sm-12 col-xs-12">
+			<b class="col-lg-9 col-sm-9 col-xs-9"><%= message %></b>
+		</div>
+	<% } %>
 	<form role="form" data-toggle="validator" action="/user/home/anadirProducto" method="POST" id="formAdminProducto" class="col-lg-12">
 		<div class="form-group form-group-sm">
 			<div class="input-group form-group-sm">
@@ -84,7 +91,11 @@
 		</div>
 		<div class="input-group form-group-sm col-xs-12 divSubirFotoProducto">
 			<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
-			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#updatePictureModal">Cambiar foto</button>				
+			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#updatePictureModal">Cambiar foto</button>
+		</div>
+		<div class="input-group form-group-sm col-xs-12 divSubirFotoProducto">
+			<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-product-hunt" aria-hidden="true"></i></span>
+			<button type="button" class="btn btn-success form-control" data-toggle="modal" data-target="#eliminarProducto">Elminar producto</button>
 		</div>
 	</form>
 	<div class="container">
@@ -139,6 +150,34 @@
 								</select>
 								<input type="file" name="archivoActualizar">
 					   			<input type="submit" class="btn btn-success" value='Subir'>	
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="modal fade" id="eliminarProducto" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Cambiar foto producto</h4>
+					</div>
+					<div class="modal-body col-lg-12">
+						<form action="/user/home/eliminarProducto" method='POST' enctype='multipart/form-data'>
+							<div class="input-group">
+								<select class="form-control input-small" id="producto" name="producto">
+									<option selected="selected">Escoje una producto</option>
+									<% productos.forEach( function (producto){ %>
+										<option value="<%= producto.nombre %>"><%= producto.nombre %></option>
+									<% }); %>
+								</select>
+					   			<input type="submit" class="btn btn-success" value='Eliminar Producto'>	
 							</div>
 						</form>
 					</div>

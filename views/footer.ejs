@@ -1,5 +1,5 @@
 <div class="container">
-	<div class="modal fade" id="productoModal" role="dialog" data-backdrop="static" data-keyboard="false">
+	<div class="modal fade in" id="productoModal" role="dialog" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog">
 			<div class="modal-content col-lg-12 col-sm-12 col-xs-12">
 				<div class="modal-header">
@@ -33,11 +33,13 @@
 			<p class="footer-block">Contacta con nosotros</p>
 		</div>
 </div>
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/javascripts/jquery-2.2.3.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
 <!--Menu desplegables 
     =================
 -->
@@ -53,17 +55,89 @@
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.js"></script>
 <script type="text/javascript" src="/javascripts/comprobacionFormularios.js"></script>
 
+<!--
+    Jquery Searchable
+    ================= -->
+<script src="/javascripts/jquery-searchable-master/jquery.searchable.js"></script>
+<script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
+<script src="/javascripts/typeahead.js/bloodhound.js"></script>
+
 <script>
 	$(document).ready(function () {
         // Función de ejecución de los dropdowns
 		$('.dropdown-toggle').dropdown();
+
+        /*********** FUNCIONES DE MODAL PRODUCTO **********/
 		$('.botonProducto').click(function(){
-			$('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).parent().parent().find('.h4').text() +"</b>");
-			$('#productoNombre').replaceWith("<b id='productoNombre'>" + $(this).parent().parent().find('.h4').text() +"</b>");
-			$('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-0" height="200" width="200" src="' + $(this).parent().parent().find('.img-square').attr('src') + '">');
-			$('#productoDescripcion').replaceWith("<p id='productoDescripcion' class='text-justify col-lg-12'>" + $(this).prev().prev().text() + "</p>");
-			$('#productoPrecio').replaceWith("<span id='productoPrecio'>" + $(this).prev().first().text() + "</span>");
+            $('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).parent().parent().find('.h4').text() +"</b>");
+            $('#productoNombre').replaceWith("<b id='productoNombre'>" + $(this).parent().parent().find('.h4').text() +"</b>");
+            $('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-0" height="200" width="200" src="' + $(this).parent().parent().find('.img-square').attr('src') + '">');
+            $('#productoDescripcion').replaceWith("<p id='productoDescripcion' class='text-justify col-lg-12'>" + $(this).prev().prev().text() + "</p>");
+            $('#productoPrecio').replaceWith("<span id='productoPrecio'>" + $(this).prev().first().text() + "</span>");
 		});
+
+        /*********** FUNCIONES DE BUSQUEDA **********/
+        $('#searchable-container').searchable({
+            searchField   : '#buscadorProducto',
+            selector      : '.trBusqueda',
+            childSelector : '.tdBusqueda',
+            show: function( elem ) {
+                elem.show(100);
+            },
+            hide: function( elem ) {
+                elem.hide( 100 );
+            }
+        });
+        var substringMatcher = function(strs) {
+          return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+                var strsPasoUno = str.split(",");
+                var strsPasoDos = strsPasoUno[0].split("¬");
+              if (substrRegex.test(strsPasoDos[0])) {
+                matches.push(strsPasoDos[0]);
+              }
+            });
+            cb(matches);
+          };
+        };
+        $('#productoListaVacia').focusout(function(){
+            $('#productoListaVacia').val();
+        });
+        var articulos = $('.listaProductos').val().split(",");
+        for (var i = 0; i < articulos.length; i++){
+            productos = articulos;
+        }
+        $('#the-basics .typeahead').typeahead({
+          hint: false,
+          highlight: false,
+          minLength: 1
+        },
+        {
+          name: 'productos',
+          source: substringMatcher(productos),
+          templates: {
+            empty: [
+              '<div class="empty-message">',
+                'unable to find any Best Picture winners that match the current query',
+              '</div>'
+            ].join('\n'),
+            suggestion: function(productos){
+                var producto = productos.split("¬");
+                return '<a href="/producto/' + producto[0] + '"><p><img src="/images/fotosProductos/' + producto[0]+ ".jpg" +'" width="25%" height="25%"><strong>' + producto[0] + '</strong></p></a>';
+            }
+          }
+        }).on('typeahead:selected', function (obj, datum) {
+            $('form').get(0).setAttribute('action',"/producto/" + datum)
+        });
         
         /*********** FUNCIONES DE LA CESTA *********/
         
