@@ -33,8 +33,12 @@ module.exports = function(app,passport){
 					componentes: "/home/category/componentes",
 					ram: "/home/category/ram",
 					hdd: "/home/category/disco duro",
+					targetas:"/home/category/targetas graficas",
+					cajas: "/home/category/cajas",
+					fuentes:"/home/category/fuentes",
 					placaBase:"/home/category/placa base",
-					procesadores:"/home/category/procesadores"
+					procesadores:"/home/category/procesadores",
+					configura: "/home/configura tu pc"
 				});
 			}else{
 				console.log('Error');
@@ -59,8 +63,12 @@ module.exports = function(app,passport){
 					componentes: "/user/home/category/componentes",
 					ram: "/user/home/category/ram",
 					hdd: "/user/home/category/disco duro",
+					cajas:"/user/home/category/cajas",
+					fuentes:"/user/home/category/fuentes",
+					targetas:"/user/home/category/targetas graficas",
 					placaBase:"/user/home/category/placa base",
 					procesadores:"/user/home/category/procesadores",
+					configura: "/user/home/configura tu pc",
 					carrito: ""
 				});
 			});
@@ -100,8 +108,12 @@ module.exports = function(app,passport){
 								componentes: "/user/home/category/componentes",
 								ram: "/user/home/category/ram",
 								hdd: "/user/home/category/disco duro",
+								cajas:"/user/home/category/cajas",
+								fuentes:"/user/home/category/fuentes",
+								targetas:"/user/home/category/targetas graficas",
 								placaBase:"/user/home/category/placa base",
-								procesadores:"/user/home/category/procesadores"
+								procesadores:"/user/home/category/procesadores",
+								configura: "/home/configura tu pc"
 							});
 						}else{
 							console.log('Error');
@@ -163,8 +175,12 @@ module.exports = function(app,passport){
 								componentes: "/home/category/componentes",
 								ram: "/home/category/ram",
 								hdd: "/home/category/disco duro",
+								targetas:"/home/category/targetas graficas",
+								cajas: "/home/category/cajas",
+								fuentes:"/home/category/fuentes",
 								placaBase:"/home/category/placa base",
-								procesadores:"/home/category/procesadores"
+								procesadores:"/home/category/procesadores",
+								configura: "/home/configura tu pc"
 							});
 						}else{
 							console.log('Error');
@@ -234,8 +250,12 @@ module.exports = function(app,passport){
 										componentes: "/user/home/category/componentes",
 										ram: "/user/home/category/ram",
 										hdd: "/user/home/category/disco duro",
+										cajas:"/user/home/category/cajas",
+										fuentes:"/user/home/category/fuentes",
+										targetas:"/user/home/category/targetas graficas",
 										placaBase:"/user/home/category/placa base",
-										procesadores:"/user/home/category/procesadores"
+										procesadores:"/user/home/category/procesadores",
+										configura: "/user/home/category/configura tu pc"
 									});
 								}else{
 									console.log('Error');
@@ -297,8 +317,12 @@ module.exports = function(app,passport){
 								componentes: "/home/category/componentes",
 								ram: "/home/category/ram",
 								hdd: "/home/category/disco duro",
+								targetas:"/home/category/targetas graficas",
+								cajas: "/home/category/cajas",
+								fuentes:"/home/category/fuentes",
 								placaBase:"/home/category/placa base",
-								procesadores:"/home/category/procesadores"
+								procesadores:"/home/category/procesadores",
+								configura: "/home/configura tu pc"
 							});
 						}else{
 							console.log('Error');
@@ -367,8 +391,12 @@ module.exports = function(app,passport){
 										componentes: "/user/home/category/componentes",
 										ram: "/user/home/category/ram",
 										hdd: "/user/home/category/disco duro",
+										cajas:"/user/home/category/cajas",
+										fuentes:"/user/home/category/fuentes",
+										targetas:"/user/home/category/targetas graficas",
 										placaBase:"/user/home/category/placa base",
-										procesadores:"/user/home/category/procesadores"
+										procesadores:"/user/home/category/procesadores",
+										configura: "/user/home/category/configura tu pc"
 									});
 								}else{
 									console.log('Error');
@@ -376,6 +404,66 @@ module.exports = function(app,passport){
 							});
 						});
 					});
+				});
+			});
+		});
+	}
+	configuraTuPC = function (req,res){
+		var arrayNombresProductos = [];
+		Productos.find(function (err,ProductosTienda){
+			if (idProductoCarrito == undefined) {
+				var idProductoCarrito = [];
+			}
+			for (var i = 0; i < ProductosTienda.length; i++ ){
+				arrayNombresProductos.push(ProductosTienda[i].nombre);
+			}
+			Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
+				Productos.find().count().distinct('tipo',function(err,tiposProductos){
+					if (req.user != undefined){
+						res.render('configuraTuPC',{
+							home : "/user/home/" ,
+							alias:req.user.alias,
+							productosLista : arrayNombresProductos,
+							productos: ProductosTienda,
+							carrito: ProductosCarrito,
+							tipos : tiposProductos,
+							titulo:"Configura tu PC",
+							modal:"modal",
+							nameTarget:"#profileModal",
+							entrarSalir: "Mi perfil",
+							componentes: "/user/home/category/componentes",
+							ram: "/user/home/category/ram",
+							hdd: "/user/home/category/disco duro",
+							cajas:"/user/home/category/cajas",
+							fuentes:"/user/home/category/fuentes",
+							targetas:"/user/home/category/targetas graficas",
+							placaBase:"/user/home/category/placa base",
+							procesadores:"/user/home/category/procesadores",
+							configura: "/user/home/category/configura tu pc"
+						});
+					} else {
+						res.render('configuraTuPC',{
+							home : "/home/" ,
+							alias:"",
+							productosLista : arrayNombresProductos,
+							productos: ProductosTienda,
+							carrito: ProductosCarrito,
+							tipos : tiposProductos,
+							titulo:"Configura tu PC",
+							modal:"modal",
+							nameTarget:"#myModal",
+							entrarSalir: "Log In",
+							componentes: "/home/category/componentes",
+							ram: "/home/category/ram",
+							hdd: "/home/category/disco duro",
+							targetas:"/home/category/targetas graficas",
+							cajas: "/home/category/cajas",
+							fuentes:"/home/category/fuentes",
+							placaBase:"/home/category/placa base",
+							procesadores:"/home/category/procesadores",
+							configura: "/home/configura tu pc"
+						});
+					}
 				});
 			});
 		});
@@ -432,8 +520,12 @@ module.exports = function(app,passport){
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
 						hdd: "/user/home/category/disco duro",
+						cajas:"/user/home/category/cajas",
+						fuentes:"/user/home/category/fuentes",
+						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
-						procesadores:"/user/home/category/procesadores"
+						procesadores:"/user/home/category/procesadores",
+						configura: "/user/home/category/configura tu pc"
 					});
 				});
 			});
@@ -532,11 +624,15 @@ module.exports = function(app,passport){
 			modal:"modal",
 			nameTarget: "#myModal",
 			entrarSalir: "Log In",
-			componentes: "/user/home/category/componentes",
-			ram: "/user/home/category/ram",
-			hdd: "/user/home/category/disco duro",
+			componentes: "/home/category/componentes",
+			ram: "/home/category/ram",
+			hdd: "/home/category/disco duro",
+			caja:"/home/category/cajas",
+			fuentes:"/home/category/fuentes",
+			targetas:"/home/category/targetas graficas",
 			placaBase:"/home/placa base",
-			procesadores:"/home/procesadores"
+			procesadores:"/home/procesadores",
+			configura: "/home/configura tu pc"
 		});
 		console.log("Usuario añadido");
 	}
@@ -548,11 +644,15 @@ module.exports = function(app,passport){
 			texto:"Proceda a loguearse.",
 			nameTarget:"#profileModal",
 			entrarSalir: "Mi perfil",
-			componentes: "/home/category/componentes",
+			componentes: "/user/home/category/componentes",
 			ram: "/user/home/category/ram",
 			hdd: "/user/home/category/disco duro",
+			cajas:"/user/home/category/cajas",
+			fuentes:"/user/home/category/fuentes",
+			targetas:"/user/home/category/targetas graficas",
 			placaBase:"/user/home/category/placa base",
-			procesadores:"/user/home/category/procesadores"
+			procesadores:"/user/user/home/category/procesadores",
+			configura: "/user/home/category/configura tu pc"
 		});
 	}
 	logoutWeb = function(req, res) {
@@ -587,8 +687,12 @@ module.exports = function(app,passport){
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
 							hdd: "/user/home/category/disco duro",
+							cajas:"/user/home/category/cajas",
+							fuentes:"/user/home/category/fuentes",
+							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores"
+							procesadores:"/user/home/category/procesadores",
+							configura: "/user/home/category/configura tu pc"
 		    			});
 		    		}
 		    	});
@@ -622,8 +726,12 @@ module.exports = function(app,passport){
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
 							hdd: "/user/home/category/disco duro",
+							cajas:"/user/home/category/cajas",
+							fuentes:"/user/home/category/fuentes",
+							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores"
+							procesadores:"/user/home/category/procesadores",
+							configura: "/user/home/category/configura tu pc"
 		    			});
 		    		}
 	    		});
@@ -656,8 +764,12 @@ module.exports = function(app,passport){
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
 							hdd: "/user/home/category/disco duro",
+							cajas:"/user/home/category/cajas",
+							fuentes:"/user/home/category/fuentes",
+							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores"
+							procesadores:"/user/home/category/procesadores",
+							configura: "/user/home/category/configura tu pc"
 		    			});
 		    		}
 	    		});
@@ -686,8 +798,12 @@ module.exports = function(app,passport){
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
 						hdd: "/user/home/category/disco duro",
+						cajas:"/user/home/category/cajas",
+						fuentes:"/user/home/category/fuentes",
+						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
-						procesadores:"/user/home/category/procesadores"
+						procesadores:"/user/home/category/procesadores",
+						configura: "/user/home/category/configura tu pc"
 	    			});
 	    		}
     		});
@@ -716,8 +832,12 @@ module.exports = function(app,passport){
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
 						hdd: "/user/home/category/disco duro",
+						cajas:"/user/home/category/cajas",
+						fuentes:"/user/home/category/fuentes",
+						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
-						procesadores:"/user/home/category/procesadores"
+						procesadores:"/user/home/category/procesadores",
+						configura: "/user/home/category/configura tu pc"
 					});
 		    	});
 			});
@@ -752,8 +872,12 @@ module.exports = function(app,passport){
 								componentes: "/user/home/category/componentes",
 								ram: "/user/home/category/ram",
 								hdd: "/user/home/category/disco duro",
+								cajas:"/user/home/category/cajas",
+								fuentes:"/user/home/category/fuentes",
+								targetas:"/user/home/category/targetas graficas",
 								placaBase:"/user/home/category/placa base",
-								procesadores:"/user/home/category/procesadores"
+								procesadores:"/user/home/category/procesadores",
+								configura: "/user/home/category/configura tu pc"
 							});
 						});
 			    	});
@@ -909,8 +1033,12 @@ module.exports = function(app,passport){
 	                                componentes: "/user/home/category/componentes",
 	                                ram: "/user/home/category/ram",
 	                                hdd: "/user/home/category/disco duro",
+	                                cajas:"/user/home/category/cajas",
+	                                fuentes:"/user/home/category/fuentes",
+	                                targetas:"/user/home/category/targetas graficas",
 	                                placaBase:"/user/home/category/placa base",
 	                                procesadores:"/user/home/category/procesadores",
+	                                configura: "/user/home/configura tu pc",
 	                                modal:"modal",
 	                                nameTarget:"#profileModal",
 	                                entrarSalir: "Mi perfil",
@@ -997,8 +1125,12 @@ module.exports = function(app,passport){
                                 componentes: "/user/home/category/componentes",
                                 ram: "/user/home/category/ram",
                                 hdd: "/user/home/category/disco duro",
+                                cajas:"/user/home/category/cajas",
+                                fuentes:"/user/home/category/fuentes",
+                                targetas:"/user/home/category/targetas graficas",
                                 placaBase:"/user/home/category/placa base",
                                 procesadores:"/user/home/category/procesadores",
+                                configura: "/user/home/configura tu pc",
                                 modal:"modal",
                                 nameTarget:"#profileModal",
                                 entrarSalir: "Mi perfil",
@@ -1206,9 +1338,13 @@ module.exports = function(app,passport){
                                 titulo: "pedido",
                                 ram: "/user/home/category/ram",
                                 hdd: "/user/home/category/disco duro",
+                                cajas:"/user/home/category/cajas",
+                                fuentes:"/user/home/category/fuentes",
+                                targetas:"/user/home/category/targetas graficas",
                                 componentes: "/user/home/category/componentes",
                                 placaBase:"/user/home/category/placa base",
                                 procesadores:"/user/home/category/procesadores",
+                                configura: "/user/home/configura tu pc",
                                 modal:"modal",
                                 nameTarget:"#profileModal",
                                 entrarSalir: "Mi perfil",
@@ -1256,6 +1392,8 @@ module.exports = function(app,passport){
     app.get('/',indexWeb);
 	app.get('/home',indexWeb);
 	app.get('/user/home',isLoggedIn,indexWebLogin);
+	app.all('/home/configura%20tu%20pc',configuraTuPC);
+	app.all('/user/home/configura%20tu%20pc',isLoggedIn,configuraTuPC);
 	app.all('/producto/:nombre',fichaProducto);
 	app.get('/user/home/listarProductosForm',isLoggedIn,listarProductosForm);
 	app.get('/user/home/listarUsuariosForm',isLoggedIn,listarUsuariosForm);

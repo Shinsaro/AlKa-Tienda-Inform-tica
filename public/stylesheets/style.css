@@ -3,6 +3,15 @@ html {
   min-height: 100%;
   position: relative;
 }
+.productoConfigurar{
+  margin: 3px;
+}
+.container{
+  margin-top: 40px;
+}
+/*select img:hover{
+  
+}*/
 #formFormularioAdminAnadir{
   position: relative;
   margin-top: 20px;

@@ -61,12 +61,25 @@
 <script src="/javascripts/jquery-searchable-master/jquery.searchable.js"></script>
 <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
 <script src="/javascripts/typeahead.js/bloodhound.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 
 <script>
 	$(document).ready(function () {
         // Función de ejecución de los dropdowns
 		$('.dropdown-toggle').dropdown();
-
+        /*********** FUNCIONES DE Configura tu PC **********/
+        $('.selectpicker').selectpicker({
+          style: 'btn-primary',
+        });
+        var str = "";
+        
+        $( "select" ).change(function() {
+          str += $( this ).val() + " ";
+          /*$(this).parent().parent().parent().next().first().remove();*/
+          console.log($(this).parent().parent().parent().next().add('<label class="label label-default" style="font-size: 15px" value="0">' + str + '</label>'));
+        });
+        
+        
         /*********** FUNCIONES DE MODAL PRODUCTO **********/
 		$('.botonProducto').click(function(){
             $('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).parent().parent().find('.h4').text() +"</b>");

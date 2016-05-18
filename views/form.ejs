@@ -38,14 +38,14 @@
 	<% if (messageDanger != ""){ %>
 		<form method="get" action="/user/home/anadirMarcaForm" class="col-lg-12 col-sm-12 col-xs-12">
 			<div class="alert alert-danger" class="col-lg-12 col-sm-12 col-xs-12">
-				<b class="col-lg-9 col-sm-9 col-xs-9"><%= message %></b>
+				<b class="col-lg-9 col-sm-9 col-xs-9"><%= messageDanger %></b>
 				<button type="submit" class="btn btn-primary">Ir a crear marca</button>
 			</div>
 		</form>
 	<% } 
 	   if (messageSuccess != ""){ %>
 		<div class="alert alert-success" class="col-lg-12 col-sm-12 col-xs-12">
-			<b class="col-lg-9 col-sm-9 col-xs-9"><%= message %></b>
+			<b class="col-lg-9 col-sm-9 col-xs-9"><%= messageSuccess %></b>
 		</div>
 	<% } %>
 	<form role="form" data-toggle="validator" action="/user/home/anadirProducto" method="POST" id="formAdminProducto" class="col-lg-12">
@@ -104,14 +104,14 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Cambiar foto producto</h4>
+						<h4 class="modal-title">Asignar foto producto</h4>
 					</div>
 					<div class="modal-body col-lg-12">
 						<form action="/user/home/producto/upload" method='POST' enctype='multipart/form-data'>
 							<div class="input-group">
 								<select class="form-control" id="fotoProducto" name="fotoProducto" aria-describedby="sizing-addon3">
 									<% productos.forEach( function (producto){ %>
-										<% x = 0; if(producto.foto == ""){ %>
+										<% x = 0; if(producto.foto == undefined){ %>
 											<option value="<%= producto._id %>"><%= producto.nombre %></option>
 											<% x++; %>
 										<% } %>
