@@ -16,7 +16,11 @@
 							<p id="productoDescripcion"></p>
 						</div>
 						<div class="col-lg-12 col-sm-12 col-xs-12">
-							<button type="submit" class="btn btn-primary" id="comprar" value="comprar">Ver ficha producto</button>
+                            <form id="formFichaProducto" action="/home/" method="post">
+                                <button type="submit" class="btn btn-primary">
+                                    Ver ficha producto
+                                </button>
+                            </form>
                         </div>
 					</div>
 				</div>
@@ -82,11 +86,14 @@
         
         /*********** FUNCIONES DE MODAL PRODUCTO **********/
 		$('.botonProducto').click(function(){
-            $('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).parent().parent().find('.h4').text() +"</b>");
-            $('#productoNombre').replaceWith("<b id='productoNombre'>" + $(this).parent().parent().find('.h4').text() +"</b>");
-            $('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-0" height="200" width="200" src="' + $(this).parent().parent().find('.img-square').attr('src') + '">');
-            $('#productoDescripcion').replaceWith("<p id='productoDescripcion' class='text-justify col-lg-12'>" + $(this).prev().prev().text() + "</p>");
-            $('#productoPrecio').replaceWith("<span id='productoPrecio'>" + $(this).prev().first().text() + "</span>");
+			$('#productoTitulo').replaceWith("<b id='productoTitulo'>" + $(this).parent().parent().find('.h4').text() +"</b>");
+			$('#productoNombre').replaceWith("<b id='productoNombre'>" + $(this).parent().parent().find('.h4').text() +"</b>");
+			$('#productoImagen').replaceWith('<img id="productoImagen" class="img-square col-lg-offset-3 col-sm-offset-3 col-xs-offset-0" height="200" width="200" src="' + $(this).parent().parent().find('.img-square').attr('src') + '">');
+			$('#productoDescripcion').replaceWith("<p id='productoDescripcion' class='text-justify col-lg-12'>" + $(this).prev().prev().text() + "</p>");
+			$('#productoPrecio').replaceWith("<span id='productoPrecio'>" + $(this).prev().first().text() + "</span>");
+            // Completar action del form hacia ficha técnica
+            $nombreProducto = $(this).parent().parent().find('.h4').text();
+            $('#formFichaProducto').attr('action',"/home/"+$nombreProducto);
 		});
 
         /*********** FUNCIONES DE BUSQUEDA **********/
@@ -263,22 +270,21 @@
                 $('#editaMetodoPago').show();
             });
         });
-    
         
-        /*// Validación de los datos personales
-        validacionDatosPersonales();
-        // Validación dirección envío
-        validacionDireccionEnvio();
-        // Validación dirección facturación
-        validacionDireccionFacturacion();*/
-        
-        /*// Cambio de tab de envío y pago a cesta
-        $('#botonPagEnvio').click(function(){
+        // Cambio de tab de envío y pago a cesta
+        $('#botonPagAnteriorEnvio').click(function(){
             $('#tabenvioypago').removeClass().addClass('col-lg-3');
             $('#tabcesta').removeClass().addClass('col-lg-3 active');
             $('#envioypago').removeClass().addClass('tab-pane fade');
             $('#cesta').removeClass().addClass('tab-pane fade in active');
-        });*/
+        });
+        // Cambio de tab de envío y pago a resumen
+        $('#botonPagSiguienteEnvio').click(function(){
+            $('#tabenvioypago').removeClass().addClass('col-lg-3');
+            $('#tabresumen').removeClass().addClass('col-lg-3 active');
+            $('#envioypago').removeClass().addClass('tab-pane fade');
+            $('#resumen').removeClass().addClass('tab-pane fade in active');
+        });
         
         /*********** FUNCIONES DEL RESUMEN *********/
     
@@ -295,16 +301,55 @@
             $(this).next().next().text($totalProd.toFixed(2));
             $suma=$suma + parseFloat($totalProd);
             $('#resumenTotalCarrito').text($suma.toFixed(2));
+            // Cálculo del importe con gastos de envío
+            $total=$suma+5;
+            $('#resumenTotalMasGastos').text($total.toFixed(2));
         });
         
-        // Cambio de tab de resumen a envío y pago
-        $('#botonPagResumen').click(function(){
+        // Cambio de tab de envío y pago a cesta
+        $('#botonPagAnteriorResumen').click(function(){
             $('#tabresumen').removeClass().addClass('col-lg-3');
             $('#tabenvioypago').removeClass().addClass('col-lg-3 active');
             $('#resumen').removeClass().addClass('tab-pane fade');
             $('#envioypago').removeClass().addClass('tab-pane fade in active');
         });
         
+        /********** FUNCIONES DE FINALIZAR **********/
+
+        // Cambio de tab de envío y pago a cesta
+        $('#botonPagAnteriorFinalizar').click(function(){
+            $('#tabfinalizar').removeClass().addClass('col-lg-3');
+            $('#tabresumen').removeClass().addClass('col-lg-3 active');
+            $('#finalizar').removeClass().addClass('tab-pane fade');
+            $('#resumen').removeClass().addClass('tab-pane fade in active');
+        });
+
+        /*************** FUNCIONES DE LA FICHA DEL PRODUCTO ***************/
+
+        // Funciones que deshabilita el botón si no hay comentario o valoración
+        $('#comentario').blur(function(){
+            alert($('.caption').find('span').text());
+            $comentario=$('#comentario').val();
+            if($comentario==""||$comentario==undefined){
+                $('#botonComentario').prop("disabled", true);
+            }else{
+                $('#botonComentario').prop("disabled", false);
+            }
+        });
+
+        /*$('.rating-container').click(function(){
+            alert('mono');
+            //$('.star-rating-control .star-rating-on').length;
+            $valoracion=$('#valoracion').prev().children().text();
+            alert($valoracion);
+            $('#comentarioValoracion').prop("disabled", false);
+            if($valoracion==""||$valoracion==undefined){
+                $('#comentarioValoracion').prop("disabled", true);
+            }else{
+                $('#comentarioValoracion').prop("disabled", false);
+            }
+        });*/
+
     
     });
     

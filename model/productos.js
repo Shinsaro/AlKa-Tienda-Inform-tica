@@ -9,7 +9,21 @@ var schemaProductos = new schema ({
 				marca : ObjectId,
 				valoracion: Number,
 				tipo : String,
-				foto: String
+				foto: String,
+                caracteristicas: [String],
+                especificaciones: [
+                        {
+                            nombre: String,
+                            caracteristicas: [String]
+                        }
+                    ],
+                comentario: [
+                        {
+                            alias: String,
+                            foto: String,
+                            opinion: String
+                        }
+                    ]
 			    });
 // Lo modulamos y lo hacemos público
 module.exports = mongoose.model('productos',schemaProductos);

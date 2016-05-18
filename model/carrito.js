@@ -6,7 +6,8 @@ var schemaCarrito = new schema ({
 				idProducto: ObjectId,
                 cantidad: { type: Number, default: 1 },
 				idUsuario: ObjectId,
-				fechaCreacionCarrito: { type: Date, default: Date.now }
+				fechaCreacionCarrito: { type: Date, default: Date.now },
+                finalizar: { type: Boolean, default: false }
 			    });
 // Lo modulamos y lo hacemos público
 module.exports = mongoose.model('carritos',schemaCarrito);

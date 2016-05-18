@@ -167,6 +167,11 @@ a {
     border: 1px;
     border-style: solid;
     border-color: #337AB7;
+    border-color: #EEEEEE;
+    border-radius: 15px;
+    padding: 5px 14px;
+    display: inline-block;
+    text-align: center;
 }
 #the-basics {
   margin-top:-5px;

@@ -25,7 +25,122 @@ db.productos.insertMany([
 		marca: ObjectId("573a501066075db17a1de446"),
 		valoracion:0,
 		tipo:"placa base",
-		foto:"/images/fotosProductos/msi_h81m_e33-compressor.jpg"
+		foto:"/images/fotosProductos/msi_h81m_e33-compressor.jpg",
+        caracteristicas:[
+            "Supports 4th Gen Intel® Core™ / Pentium® / Celeron® processors for LGA 1150 socket",
+            "Supports DDR3-1600 Memory",
+            "USB 3.0 + SATA 6Gb/s",
+            "Military Class 4: Top Quality & Stability",
+            "Military Class Essentials: Total Protection for Military Class Motherboards",
+            "OC Genie 4: Overclock in 1 Second",
+            "Click BIOS 4: Easily Fine-tune Your System",
+            "4K UHD Support: Ultra-high Definition Visual Experience",
+            "Command Center: Control & Customize Your PC Settings",
+            "Fast Boot: Quickly Boot Up & Enter OS in A Few Seconds",
+            "M-Flash: Simply Update & Backup Your BIOS",
+            "Live Update 5: Easily Update The Latest BIOS & Drivers"
+        ],
+        especificaciones:[
+            {
+                nombre: "CPU",
+                caracteristicas: [
+                    "4th Generation Intel® Core™ i7 / Core™ i5 / Core™ i3 / Pentium® / Celeron® processors for LGA 1150 socket",
+                    "Please refer to CPU Support for compatible CPU; the above description is for reference only."
+                ]
+            },
+            {
+                nombre: "Chipset",
+                caracteristicas: [
+                    "Support two DDR3 DIMMs 1066/1333/1600 MHz, up to 16GB Max",
+                ]
+            },
+            {
+                nombre: "Main Memory",
+                caracteristicas: [
+                    "1 x PCIe 2.0 x16 slot",
+                    "1 x PCIe x1 slot"
+                ]
+            },
+            {
+                nombre: "On-Board SATA ",
+                caracteristicas: [
+                    "SATAIII controller integrated in Intel® H81 chipset",
+                    "Up to 6Gb/s transfer speed.",
+                    "Supports two SATAIII ports (SATA1~2) by H81",
+                    "SATAII controller integrated in Intel® H81 chipset",
+                    "Up to 3Gb/s transfer speed.",
+                    "Supports two SATAII ports (SATA3~4) by H81"
+                ]
+            },
+            {
+                nombre: "USB 3.0",
+                caracteristicas: [
+                    "2 x USB 3.0 ports on the back panel (rear x 2)"
+                ]
+            },
+            {
+                nombre: "Audio",
+                caracteristicas: [
+                    "Chip integrated by Realtek® ALC887",
+                    "Flexible 8-channel audio with jack sensing",
+                    "Compliant with Azalia 1.0 spec"
+                ]
+            },
+            {
+                nombre: "LAN",
+                caracteristicas: [
+                    "Supports Gb LAN 10/100/1000 by Realtek® RTL8111G"
+                ]
+            },
+            {
+                nombre: "Internal I/O Connectors ",
+                caracteristicas: [
+                    "1 x ATX 24-Pin power connector",
+                    "1 x 4-pin ATX 12V power connector",
+                    "CPU x 1 / System x 2 FAN connectors",
+                    "1 x Clear CMOS jumper",
+                    "2 x SATAIII connectors",
+                    "2 x SATAII connectors",
+                    "2 x USB 2.0 connectors",
+                    "1 x Serial port connector",
+                    "1 x Trusted Platform Module (TPM) header",
+                    "1 x Front Panel Audio connector",
+                    "1 x Chassis Intrusion connector"
+                ]
+            },
+            {
+                nombre: "Back Panel I/O Ports",
+                caracteristicas: [
+                    "1 x PS/2 keyboard port",
+                    "1 x PS/2 mouse port",
+                    "4 x USB 2.0 ports",
+                    "2 x USB 3.0 ports",
+                    "1 x RJ45 LAN Jack",
+                    "1 x 3 in 1 audio jack",
+                    "1 x Graphic Card port",
+                    "1 x HDMI port"
+                ]
+            },
+            {
+                nombre: "BIOS",
+                caracteristicas: [
+                    "The motherboard BIOS provides 'Plug & Play' BIOS which detects the peripheral devices and expansion cards of the board automatically.",
+                    "The motherboard provides a Desktop Management Interface(DMI) function which records your motherboard specifications."
+                ]
+            },
+            {
+                nombre: "Dimension",
+                caracteristicas: [
+                    "22.6cm(L) x 17.3cm(W) Micro-ATX Form Factor"
+                ]
+            },
+            {
+                nombre: "Mounting",
+                caracteristicas: [
+                    "6 mounting holes"
+                ]
+            }
+        ]
 	},
 	{
 		nombre:"MSI 970 Gaming",

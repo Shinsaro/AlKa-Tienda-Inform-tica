@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ./header %>
+</head>
+<body data-spy="scroll" data-target="#navbar-example">
+	<%- include ./menu %>
+    <div style="padding-top:5%">
+        <div class="panel panel-primary col-md-10 col-md-offset-1">
+            <div class="panel-heading">
+                <h4 class="panel-title"><b>Ficha de producto</b></h4>
+            </div>
+            <div class="panel panel-body">
+                <div class="container col-md-12" style="border-bottom: 1px solid grey; padding-bottom: 3%">
+                    <form class="col-md-12" action='/user/home/anadeProductoCarrito' method='POST'>
+                        <div class="container col-md-4 col-sm-12 form-group">
+                            <img class="img-square center-block" src="<%= productoFicha.foto %>" height="200" width="200">
+                        </div>
+                        <div class="container col-md-7 col-sm-12" style="border-left: 1px solid grey">
+                            <div class="container form-group">
+                                <h1><span class="label label-primary" style="float: left"><%= productoFicha.nombre %></span></h1>
+                            </div>
+                            <div class="container">
+                                <h4 class="text-justify"><%= productoFicha.descripcion %></h4>
+                            </div>
+                            <div class="container form-group" style="padding-top: 3%">
+                                <input class="rating" value="<%= productoFicha.valoracion %>" data-readonly="true"/>
+                            </div>
+                            <div class="container">
+                                <h2>
+                                    <span class="label label-success" style="float: left">
+                                        <%= productoFicha.precio %>€
+                                    </span>
+                                </h2>
+                                <input type="text" name="id" class="hidden" value="<%= productoFicha._id %>"/>
+                                <button type="submit" class="btn btn-primary" style="float: left" id="comprar" value="comprar" style="float: left">
+                                    <i class="fa fa-shopping-cart">&nbsp;<b>Comprar</b></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <div class="conatiner col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-5 col-sm-offset-2 text-center" style="padding-top: 3%">
+                        <ul class="nav nav-tabs nav-tabs-justified nav-tabs-success col-md-12">
+                            <li id="tabcaracteristicas" role="presentation" class="active">
+                                <a data-toggle="tab" href="#caracteristicas"><b>CARACTERÍSTICAS</b></a>
+                            </li>
+                            <li id="tabespecificaciones" role="presentation" class="">
+                                <a data-toggle="tab" href="#especificaciones"><b>ESPECIFICACIONES</b></a>
+                            </li>
+                            <li id="tabopiniones" role="presentation" class="">
+                                <a data-toggle="tab" href="#opiniones"><b>OPINIONES</b></a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content col-md-10 col-md-offset-1 col-sm-12" style="padding-top: 3%">
+                        <!-- TAB CARACTERÍSTICAS -->
+                        <div id="caracteristicas" class="tab-pane fade in active col-md-12 text-center">
+                            <% if(productoFicha.caracteristicas!=undefined && productoFicha.caracteristicas.length!=0){ %>
+                            <ul class="list-group">
+                                <% productoFicha.caracteristicas.forEach(function(caracteristica){ %>
+                                <li class="list-group-item"><%= caracteristica %></li>
+                                <% }); %>
+                            </ul>
+                            <% }else{ %>
+                            <div class="panel panel-warning">
+                                <div class="panel-body">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" ></span>
+                                    Este producto no tiene características.
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                        <!-- TAB ESPECIFICCIONES -->
+                        <div id="especificaciones" class="tab-pane fade col-md-12">
+                            <% if(productoFicha.especificaciones!=undefined && productoFicha.especificaciones.length!=0){ %>
+                            <ul class="list-group">
+                                <% productoFicha.especificaciones.forEach(function(especificacion){ %>
+                                <li class="list-group-item">
+                                    <%= especificacion.nombre %>
+                                    <ul>
+                                        <% especificacion.caracteristicas.forEach(function(caracteristica){ %>
+                                        <li><%= caracteristica %></li>
+                                        <% }); %>
+                                    </ul>
+                                </li>
+                                <% }); %>
+                            </ul>
+                            <% }else{ %>
+                            <div class="panel panel-warning">
+                                <div class="panel-body">
+                                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                    Este producto no tiene características.
+                                </div>
+                            </div>
+                            <% } %>
+                        </div>
+                        <!-- TAB OPINIONES -->
+                        <div id="opiniones" class="container tab-pane fade col-md-12 col-sm-12">
+                            <% if(registrado==true){ %>
+                                <% if(comentarValorar==true){ %>
+                                <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
+                                    <div class="panel-body text-center col-sm-12">
+                                        Déjanos un comentario sobre el producto y tu valoración. ¡Grácias!
+                                    </div>
+                                </div>
+                                <div class="container col-md-12 col-sm-12">
+                                    <div class="container col-md-8 col-lg-8 col-sm-8">
+                                        <form action="/user/home/<%= productoFicha.nombre %>/comentario" method="post">
+                                            <input type="text" name="idProducto" class="hidden" value="<%= productoFicha._id %>">
+                                            <div class="form-group">
+                                                <textarea id="comentario" cols="55" rows="5" name="comentario" placeholder="Escribe tu comentario"></textarea>
+                                            </div>
+                                            <button id="botonComentario" type="submit" class="btn btn-primary btn-xs text-center" style="float: right" disabled>
+                                                ¡Comenta!
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="container col-lg-4 col-md-4 col-sm-4" style="padding-top:2%%">
+                                        <form action="/user/home/<%= productoFicha.nombre %>/valoracion" method="post">
+                                            <input type="text" name="idProducto" class="hidden" value="<%= productoFicha._id %>">
+                                            <div id="valoracion" class="form-group">
+                                                <input class="rating" value="<%= productoFicha.valoracion %>"/>
+                                            </div>
+                                            <p class="hidden" id="numeroValoracion" name="numeroValoracion"></p>
+                                            <button id="botonValoracion" type="submit" class="btn btn-primary btn-xs text-center" disabled>
+                                                ¡Valora!
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <% }else{ %>
+                                <div class="panel panel-info col-md-offset-2 col-md-8">
+                                    <div class="panel-body text-center">
+                                        ¡Lo sentimos!<br>Al no haber comprado el producto no puedes comentarlo ni valorarlo.
+                                    </div>
+                                </div>
+                                <% } %>
+                            <% }else{ %>
+                            <div class="panel panel-info col-md-offset-2 col-md-8">
+                                <div class="panel-body text-center">
+                                    ¡Lo sentimos!<br>Al no estar registrado no puedes comentar ni valorar el producto.
+                                </div>
+                            </div>
+                            <% } %>
+                            <div class="col-md-12 col-sm-12">
+                                <div class="col-md-12" style="border-bottom: 1px solid grey">
+                                    <h5 class="text-default">
+                                        COMENTARIOS
+                                    </h5>
+                                </div>
+                                <% if(productoFicha.comentario!=undefined && productoFicha.comentario.length!=0){ %>
+                                <div class="bs-example" style="margin-top:5%" data-example-id="media-list">
+                                    <ul class="media-list">
+                                        <% for (var i=0; i<productoFicha.comentario.length; i++) { %>
+                                        <li class="media">
+                                            <div class="media-left">
+                                                <img class="media-object" src="<%= productoFicha.comentario[i].foto %>" height="75px" alt="foto perfil"/>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading"><%= productoFicha.comentario[i].alias %></h4>
+                                                <p><%= productoFicha.comentario[i].opinion %></p>
+                                            </div>
+                                        </li>
+                                       <% } %>
+                                   </ul>
+                                </div>
+                                <% }else{ %>
+                                <div class="panel panel-warning col-md-offset-2 col-md-8 text-center" style="margin-top: 2%">
+                                    <div class="panel-body">
+                                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                        No hay comentarios sobre este producto.
+                                    </div>
+                                </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include("./footer") %>
+</body>
+</html>

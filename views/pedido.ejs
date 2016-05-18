@@ -5,8 +5,12 @@
 </head>
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu %>
-	<h1>Realizar Pedido</h1>
-	<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-body text-center" style="margin-top:4%">
+            <h1>Realizando pedido</h1>
+        </div>
+    </div>
+	<div class="container col-lg-offset-1 col-lg-10">
 	  	<ul class="nav nav-tabs nav-tabs-justified nav-tabs-success col-lg-12">
 			<li id="tabcesta" role="presentation" class="<%= ClaseCesta %>">
                 <a data-toggle="tab" aria-expanded="<%= expandedCesta %>"><b>CESTA</b></a>
@@ -21,18 +25,18 @@
                 <a data-toggle="tab" aria-expanded="<%= expandedFinalizar %>"><b>FINALIZAR</b></a>
             </li>
 		</ul>
-		<div class="tab-content col-lg-12 col-xs-12">
+		<div class="tab-content col-lg-12 col-xs-12" style="margin-top:1%">
             <!-- TAB CESTA -->
 			<div id="cesta" class="<%= activeinCesta %>">
 			<br>
-				<div class="panel panel-warning">
+				<div class="panel panel-warning col-lg-6 col-lg-offset-3 text-center">
 					<div class="panel-body">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" ></span>
 						Presupuesto calculado sin impuestos ni gastos de envío.
 					</div>
 				</div>
                 <form id="formCesta" action="/user/home/pedido/envioypago" method="post">
-                    <table class="table table-condensed table-responsive col-xs-6">
+                    <table class="table table-condensed table-responsive col-xs-6" style="margin-top:1%">
                         <thead>
                             <tr>
                                 <th>Artículo</th>
@@ -43,29 +47,33 @@
                         </thead>
                         <tbody>
                             <% for(var i=0; i<carrito.length; i++){ %>
-                            <tr>
-                                <td>
-                                    <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
-                                        <span class="glyphicon glyphicon-chevron-down"></span>
-                                        &nbsp;
-                                    </a>
-                                    <h5><%= carrito[i].nombre %></h5>
-                                    
-                                    <div class="panel panel-default descripcion">
-                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
-                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
-                                    </div>
-                                </td>
-                                <td class="form-group">
-                                    <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
-                                </td>
-                                <td class="precio"><%= carrito[i].precio %></td>
-                                <td class="totalProducto"></td>
-                                <td>
-                                <a class="remove" href="aaa" title="remove">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </a></td>
-                            </tr>
+                            <form action="/user/home/quitarProductoCarrito" method="POST">
+                                <tr>
+                                    <td class="form-group">
+                                        <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
+                                            <span class="glyphicon glyphicon-chevron-down"></span>
+                                            &nbsp;
+                                        </a>
+                                        <h5><%= carrito[i].nombre %></h5>
+
+                                        <div class="panel panel-default descripcion">
+                                            <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                            <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                        </div>
+                                    </td>
+                                    <td class="form-group">
+                                        <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
+                                        <input class="hidden" name="idProductoCarrito" type="text" value="<%= carrito[i].idProducto %>"/>
+                                    </td>
+                                    <td class="precio"><%= carrito[i].precio %></td>
+                                    <td class="totalProducto"></td>
+                                    <td style="width:5px">
+                                        <button type="submit" class="btn btn-danger btn-xs" title="quitar">
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </form>
                             <% } %>
                         </tbody>
                         <tfoot>
@@ -77,16 +85,6 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <!--<div id="paginacion">
-                        <ul class="pager">
-                            <li id="botonPagSiguienteCesta" style="float: right">
-                                <a><input type="submit" id="pedidoCesta" value="Siguiente" style="float:right"/></a>
-                            </li>
-                        </ul>
-                    </div>-->
-                    <!--<div class="paginas">
-                        <input type="submit" id="pedidoCesta" value="Siguiente" style="float:right"/>
-                    </div>-->
                     <button type="submit" id="botonPedidoCesta" class="pager next botonPaginar" style="float:right">
                         Siguiente
                     </button>
@@ -402,99 +400,115 @@
 			</div>
             <!-- Tab resumen -->
 			<div id="resumen" class="<%= activeinResumen %>">
-                <div>
-                    <br>
-                    <h3 class="text-primary">
-                        Resumen de los datos de compra
-                    </h3>
-                    <br>
-                </div>
-                <div id="datosUsuario" class="col-md-12">
-                    <label class="col-md-12"><h4 class="text-default">Datos de Usuario</h4></label>
-                    <div class="col-md-6">
-                        <p>
-                            Nombre: <label><%= usuario.nombre %></label><br>
-                            Apellidos: <label><%= usuario.apellidos %></label><br>
-                            Teléfono: <label><%= usuario.telefono %></label>
-                        </p>
-                        <p>
-                            Usuario: <label><%= usuario.alias %></label><br>
-                            Correo: <label><%= usuario.correo %></label>
-                        </p>
+                <form action="/user/home/pedido/finalizar" method="post">
+                    <div>
+                        <br>
+                        <h3 class="text-primary">
+                            Resumen de los datos de compra
+                        </h3>
+                        <br>
                     </div>
-                    <div class="col-md-6">
-                        <p>
-                            Dirección de envío: <br>
-                            <label>
-                                C/ <%= usuario.direccionEnvio.calle %>,
-                                <%= usuario.direccionEnvio.numero %>,
-                                <%= usuario.direccionEnvio.piso %>º - 
-                                <%= usuario.direccionEnvio.puerta %>ª, 
-                                0<%= usuario.direccionEnvio.cp %>
-                            </label>
-                        </p>
-                        <p>
-                            Dirección de facturación: <br>
-                            <label id="resumenDireccionFacturacion">
-                            </label>
-                        </p>
-                        <p>
-                            <% if(usuario.metodoPago == 'visa'){ %>
-                            Método de pago: <label><%= usuario.metodoPago %></label><br>
-                            Número de cuenta: <label><%= usuario.numeroCuenta %></label><br>
-                            <% }else{ %>
-                            Método de pago: <label><%= usuario.metodoPago %></label><br>
-                            Cuenta de PayPal: <label><%= usuario.cuentaPaypal %></label><br>
-                            <% } %>
-                        </p>
+                    <div id="datosUsuario" class="col-md-12">
+                        <label class="col-md-12"><h4 class="text-default">Datos de Usuario</h4></label>
+                        <div class="col-md-6">
+                            <p>
+                                Nombre: <label name="nombre"><%= usuario.nombre %></label><br>
+                                Apellidos: <label name="apellidos"><%= usuario.apellidos %></label><br>
+                                Teléfono: <label name="telefono"><%= usuario.telefono %></label>
+                            </p>
+                            <p>
+                                Usuario: <label name="alias"><%= usuario.alias %></label><br>
+                                Correo: <label name="correo"><%= usuario.correo %></label>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>
+                                Dirección de envío: <br>
+                                <label name="direccionEnvio">
+                                    C/ <%= usuario.direccionEnvio.calle %>,
+                                    <%= usuario.direccionEnvio.numero %>,
+                                    <%= usuario.direccionEnvio.piso %>º -
+                                    <%= usuario.direccionEnvio.puerta %>ª,
+                                    0<%= usuario.direccionEnvio.cp %>
+                                </label>
+                            </p>
+                            <p>
+                                Dirección de facturación: <br>
+                                <label id="resumenDireccionFacturacion" name="direccionFacturacion">
+                                </label>
+                            </p>
+                            <p name="metodoPago">
+                                <% if(usuario.metodoPago == 'visa'){ %>
+                                Método de pago: <label><%= usuario.metodoPago %></label><br>
+                                Número de cuenta: <label><%= usuario.numeroCuenta %></label><br>
+                                <% }else{ %>
+                                Método de pago: <label><%= usuario.metodoPago %></label><br>
+                                Cuenta de PayPal: <label><%= usuario.cuentaPaypal %></label><br>
+                                <% } %>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <br>
-                <div id="datosCompra" class="col-md-12">
-                    <label><h4 class="text-default">Datos de Compra</h4></label>
-                   <table class="table table-condensed" table-responsive>
-                        <thead>
-                            <tr>
-                                <th>Artículo</th>
-                                <th>Uds.</th>
-                                <th>Precio</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for(var i=0; i<carrito.length; i++){ %>
-                            <tr>
-                                <td>
-                                    <label><h5><%= carrito[i].nombre %></h5></label><br>
-                                    <div class="panel panel-default">
-                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
-                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
-                                    </div>
-                                </td>
-                                <td class="resumenCantidad"><%= cantidad[i] %></td>
-                                <td class="resumenPrecio"><%= carrito[i].precio %></td>
-                                <td class="resumentTotalProducto"></td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td><h4>Importe Total</h4></td>
-                                <td></td>
-                                <td></td>
-                                <td><h4 id="resumenTotalCarrito"></h4></td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-				<ul class="pager">
-				   	<li id="botonPagResumen" style="float: left">
-                        <a data-toggle="tab" href="#envioypago">Anterior</a>
-                    </li>
-				   	<li id="botonpagresumen2" style="float: right">
-                        <a data-toggle="tab" href="#finalizar">Siguiente</a>
-                    </li>
-				</ul>
+                    <br>
+                    <div id="datosCompra" class="col-md-12">
+                        <label><h4 class="text-default">Datos de Compra</h4></label>
+                       <table class="table table-condensed" table-responsive>
+                            <thead>
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Uds.</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(var i=0; i<carrito.length; i++){ %>
+                                <tr>
+                                    <td>
+                                        <label><h5 name="nombreProducto"><%= carrito[i].nombre %></h5></label><br>
+                                        <div class="panel panel-default">
+                                            <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                            <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                        </div>
+                                    </td>
+                                    <td class="resumenCantidad" name="resumenCantidad"><%= cantidad[i] %></td>
+                                    <td class="resumenPrecio" name="resumenPrecio"><%= carrito[i].precio %></td>
+                                    <td class="resumentTotalProducto" name="resumentTotalProducto"></td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><h4>Importe Total</h4></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <h4 id="resumenTotalCarrito" name="importeSingastos" style="float:left"></h4>
+                                        <h4 style="float:left">€</h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h3>Importe Total</h3>
+                                        <i><h5>más gastos de envío (5,00€)</h5></i>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <h3 id="resumenTotalMasGastos" name="importeConGastos" style="float:left"></h3>
+                                        <h3 style="float:left">€</h3>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <ul class="pager">
+                        <li id="botonPagAnteriorResumen" style="float: left">
+                            <a data-toggle="tab" href="#envioypago">Anterior</a>
+                        </li>
+                        <button type="submit" id="botonPagSiguienteResumen" class="pager next botonPaginar" style="float:right">
+                            Siguiente
+                        </button>
+                    </ul>
+                </form>
 			</div>
             <!-- Tab finalizar -->
 			<div id="finalizar" class="<%= activeinFinalizar %>">
@@ -502,18 +516,20 @@
 					<div class="panel-body text-center">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true" ></span>
 						<h3>¡Enhorabuena! Tu compra ha sido realizada con éxito.</h3>
+                        <br>
+                        <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm">
+                            revisa tus compras
+                        </button>
+                        <a id="compraFinalizada" href="/user/home">
+                            <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm">
+                                vuelve al inicio
+                            </button>
+                        </a>
+                        <br>
 					</div>
                 </div>
-                <br>
-                <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm" style="float:center">
-                    revisa tus compras
-                </button>
-                <button type="button" href="/user/home" id="guardarMetodoPago" class="btn btn-primary btn-sm" style="float:center">
-                    vuelve al inicio
-                </button>
-                <br>
 				<ul class="pager">
-				    <li id="botonpagfinalizar" style="float: left">
+				    <li id="botonPagAnteriorFinalizar" style="float: left">
                         <a data-toggle="tab" href="#resumen">Anterior</a>
                     </li>
 			</div>
