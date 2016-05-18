@@ -782,6 +782,9 @@ module.exports = function(app,passport){
    		var arrayNombresProductos = [];
    		if (req.user.admin == true){
 	    	Productos.find(function (err,ProductosTienda){
+	    		for (var i = 0; i < ProductosTienda.length; i++ ){
+	    			arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+	    		}
 	    		if(!err){
 	    			res.render('formularioAdminListar',{
 	    				small : "Listar productos",
@@ -815,6 +818,9 @@ module.exports = function(app,passport){
     	var arrayNombresProductos = [];
     	if (req.user.admin == true){
     		Productos.find(function (err,ProductosTienda){
+    			for (var i = 0; i < ProductosTienda.length; i++ ){
+	    			arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+	    		}
 				Marcas.find(function (err,MarcasTienda){
 					res.render('formularioAdminListarForm',{
 						small : "Listar marcas con sus productos",
@@ -850,6 +856,9 @@ module.exports = function(app,passport){
     	if (req.user.admin == true){
 	    	var arrayMarcasNombres = [];
 	    	Productos.find(function (err,ProductosTienda){
+	    		for (var i = 0; i < ProductosTienda.length; i++ ){
+	    			arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+	    		}
 		    	Marcas.find(function (err,MarcasTienda){
 					Marcas.find({nombre: {$in : req.body.marcas}},function (err,MarcasTiendaEscojidas){
 						for (var j = 0; j < MarcasTiendaEscojidas.length; j++){
@@ -978,94 +987,114 @@ module.exports = function(app,passport){
     // Funciones del producto
 
     fichaProducto = function(req, res){
+    	var arrayNombresProductos = [];
         var idProductos = [],
             cantidadProductos = [],
             nombreProductoficha = req.params.producto,
             comentarValorar = false;
         // Busco el producto de la ficha
-        Productos.findOne({nombre: nombreProductoficha}, function(err, productoFicha){
-            if(!err){
-                console.log('Producto de la ficha encontrado');
-                // Compruebo que exista el usuario
-                if(req.user!=undefined){
-                    var idUsuario = req.user._id,
-                        idProducto = productoFicha._id;
-                    // Compruebo que el usuario a comprado el producto de la ficha
-                    Carrito.find({idUsuario:idUsuario, idProducto:idProducto, finalizar:true},function (err,ProductoComprado){
-                        if(!err){
-                            // El usuario ha comprado el producto
-                            if(ProductoComprado!=undefined && ProductoComprado!=null && ProductoComprado!=""){
-                                console.log('El ususario ha comprado el producto de la ficha');
-                                comentarValorar=true;
-                            }else{
-                                console.log('Producto no encontrado');
-                            }
-                            // Busco los productos del carrito
-                            Carrito.find({idUsuario:idUsuario, finalizar:false},function (err,ProductosCarrito){
-                                if(!err){
-                                    ProductosCarrito.forEach(function(producto){
-                                        idProductos.push(producto.idProducto);
-                                        cantidadProductos.push(producto.cantidad);
-                                    });
-                                    var cantidades = cantidadProductos;
-                                    Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-                                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
-                                            if(!err){
-                                                console.log('Mostrando productos añadidos al pedido');
-                                                res.render('fichaProducto', {
-                                                    alias: req.user.alias,
-                                                    home: "/user/home",
-                                                    titulo: "AlKa - Ficha Producto",
-                                                    componentes: "/user/home/category/componentes",
-                                                    placaBase:"/user/home/category/placa base",
-                                                    procesadores:"/user/home/category/procesadores",
-                                                    modal:"modal",
-                                                    nameTarget:"#profileModal",
-                                                    entrarSalir: "Mi perfil",
-                                                    cantidad: cantidades,
-                                                    carrito: ProductosPedido,
-                                                    usuario: usuario,
-                                                    productoFicha: productoFicha,
-                                                    comentarValorar: comentarValorar,
-                                                    registrado: true
-                                                });
-                                            }else{
-                                                console.log('Error al mostrar los productos añadidos al pedido. '+err);
-                                            }
-                                        });
-                                    });
-                                }else{
-                                    console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
-                                }
-                            });
-                        }else{
-                            console.log('Error al buscar el producto comprado '+err);
-                        }
-                    });
-                // Si el usuario no existe renderizo otros datos
-                }else{
-                    console.log('El usuario no está registrado');
-                    console.log('Mostrando productos añadidos al pedido');
-                                        res.render('fichaProducto', {
-                                            alias: "",
-                                            home: "/home",
-                                            titulo: "AlKa - Ficha Producto",
-                                            componentes: "/home/category/componentes",
-                                            placaBase:"/home/category/placa base",
-                                            procesadores:"/home/category/procesadores",
-                                            modal:"modal",
-                                            nameTarget:"#myModal",
-                                            entrarSalir: "Log In",
-                                            carrito: "",
-                                            productoFicha: productoFicha,
-                                            comentarValorar: comentarValorar,
-                                            registrado: false
-                                        });
-                }
-            }else{
-                console.log('Error al buscar el producto de la ficha '+err);
-            }
-        });
+        Productos.find(function (err,ProductosTienda){
+	        for (var i = 0; i < ProductosTienda.length; i++ ){
+				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+			}
+	        Productos.findOne({nombre: nombreProductoficha}, function(err, productoFicha){
+	            if(!err){
+	                console.log('Producto de la ficha encontrado');
+	                // Compruebo que exista el usuario
+	                if(req.user!=undefined){
+	                    var idUsuario = req.user._id,
+	                        idProducto = productoFicha._id;
+	                    // Compruebo que el usuario a comprado el producto de la ficha
+	                    Carrito.find({idUsuario:idUsuario, idProducto:idProducto, finalizar:true},function (err,ProductoComprado){
+	                        if(!err){
+	                            // El usuario ha comprado el producto
+	                            if(ProductoComprado!=undefined && ProductoComprado!=null && ProductoComprado!=""){
+	                                console.log('El ususario ha comprado el producto de la ficha');
+	                                comentarValorar=true;
+	                            }else{
+	                                console.log('Producto no encontrado');
+	                            }
+	                            // Busco los productos del carrito
+	                            Carrito.find({idUsuario:idUsuario, finalizar:false},function (err,ProductosCarrito){
+	                                if(!err){
+	                                    ProductosCarrito.forEach(function(producto){
+	                                        idProductos.push(producto.idProducto);
+	                                        cantidadProductos.push(producto.cantidad);
+	                                    });
+	                                    var cantidades = cantidadProductos;
+	                                    Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+	                                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+	                                            if(!err){
+	                                                console.log('Mostrando productos añadidos al pedido');
+	                                                res.render('fichaProducto', {
+	                                                    alias: req.user.alias,
+	                                                    home: "/user/home",
+	                                                    titulo: "AlKa - Ficha Producto",
+														ram: "/user/home/category/ram",
+						                                hdd: "/user/home/category/disco duro",
+						                                cajas:"/user/home/category/cajas",
+						                                fuentes:"/user/home/category/fuentes",
+						                                targetas:"/user/home/category/targetas graficas",
+						                                configura: "/user/home/configura tu pc",
+	                                                    componentes: "/user/home/category/componentes",
+	                                                    placaBase:"/user/home/category/placa base",
+	                                                    procesadores:"/user/home/category/procesadores",
+	                                                    productosLista : arrayNombresProductos,
+	                                                    modal:"modal",
+	                                                    nameTarget:"#profileModal",
+	                                                    entrarSalir: "Mi perfil",
+	                                                    cantidad: cantidades,
+	                                                    carrito: ProductosPedido,
+	                                                    usuario: usuario,
+	                                                    productoFicha: productoFicha,
+	                                                    comentarValorar: comentarValorar,
+	                                                    registrado: true
+	                                                });
+	                                            }else{
+	                                                console.log('Error al mostrar los productos añadidos al pedido. '+err);
+	                                            }
+	                                        });
+	                                    });
+	                                }else{
+	                                    console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
+	                                }
+	                            });
+	                        }else{
+	                            console.log('Error al buscar el producto comprado '+err);
+	                        }
+	                    });
+	                // Si el usuario no existe renderizo otros datos
+	                }else{
+	                    console.log('El usuario no está registrado');
+	                    console.log('Mostrando productos añadidos al pedido');
+	                                        res.render('fichaProducto', {
+	                                            alias: "",
+	                                            home: "/home",
+	                                            titulo: "AlKa - Ficha Producto",
+	                                            componentes: "/home/category/componentes",
+	                                            placaBase:"/home/category/placa base",
+	                                            procesadores:"/home/category/procesadores",
+	                                            ram: "/user/home/category/ram",
+				                                hdd: "/user/home/category/disco duro",
+				                                cajas:"/user/home/category/cajas",
+				                                fuentes:"/user/home/category/fuentes",
+				                                targetas:"/user/home/category/targetas graficas",
+				                                configura: "/user/home/configura tu pc",
+				                                productosLista : arrayNombresProductos,
+	                                            modal:"modal",
+	                                            nameTarget:"#myModal",
+	                                            entrarSalir: "Log In",
+	                                            carrito: "",
+	                                            productoFicha: productoFicha,
+	                                            comentarValorar: comentarValorar,
+	                                            registrado: false
+	                                        });
+	                }
+	            }else{
+	                console.log('Error al buscar el producto de la ficha '+err);
+	            }
+	        });
+		});
     };
 
     comentario = function(req, res){
@@ -1156,60 +1185,67 @@ module.exports = function(app,passport){
         var usuarioObjID = "";
         var idProductos = [];
         var cantidadProductos = [];
+        var arrayNombresProductos = [];
         //
-        Usuarios.findOne({correo:req.user.correo},function (err,usuario){
-        	usuarioObjID = usuario._id;
-	        Carrito.find({idUsuario:usuarioObjID, finalizar:false},function (err,ProductosCarrito){
-	            if(!err){
-	                ProductosCarrito.forEach(function(producto){
-	                    idProductos.push(producto.idProducto);
-	                    cantidadProductos.push(producto.cantidad);
-	                });
-	                var cantidades = cantidadProductos;
-	                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-	                    Usuarios.findOne({_id: usuarioObjID}, function(err,usuario){
-	                        if(!err){
-	                            console.log('Mostrando productos añadidos al pedido');
-	                            res.render('pedido', {
-	                                alias:req.user.alias,
-	                                home: "/user/home",
-	                                titulo: "AlKa - Pedido",
-	                                componentes: "/user/home/category/componentes",
-	                                ram: "/user/home/category/ram",
-	                                hdd: "/user/home/category/disco duro",
-	                                cajas:"/user/home/category/cajas",
-	                                fuentes:"/user/home/category/fuentes",
-	                                targetas:"/user/home/category/targetas graficas",
-	                                placaBase:"/user/home/category/placa base",
-	                                procesadores:"/user/home/category/procesadores",
-	                                configura: "/user/home/configura tu pc",
-	                                modal:"modal",
-	                                nameTarget:"#profileModal",
-	                                entrarSalir: "Mi perfil",
-	                                cantidad: cantidades,
-	                                carrito: ProductosPedido,
-	                                usuario: usuario,
-	                                ClaseCesta: "col-lg-3 active",
-	                                ClaseEnvioypago: "col-lg-3 disabled",
-	                                ClaseResumen: "col-lg-3 disabled",
-	                                ClaseFinalizar: "col-lg-3 disabled",
-	                                expandedCesta: true,
-	                                expandedEnvioypago: false,
-	                                expandedResumen: false,
-	                                expandedFinalizar: false,
-	                                activeinCesta: "tab-pane fade in active",
-	                                activeinEnvioypago: "tab-pane fade",
-	                                activeinResumen: "tab-pane fade",
-	                                activeinFinalizar: "tab-pane fade"
-	                            });
-	                        }else{
-	                            console.log('Error al mostrar los productos añadidos al pedido. '+err);
-	                        }
-	                    });
-	                });
-	            }else{
-	                console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
-	            }
+        Productos.find(function (err,ProductosTienda){
+        	for (var i = 0; i < ProductosTienda.length; i++ ){
+				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+			}
+	        Usuarios.findOne({correo:req.user.correo},function (err,usuario){
+	        	usuarioObjID = usuario._id;
+		        Carrito.find({idUsuario:usuarioObjID, finalizar:false},function (err,ProductosCarrito){
+		            if(!err){
+		                ProductosCarrito.forEach(function(producto){
+		                    idProductos.push(producto.idProducto);
+		                    cantidadProductos.push(producto.cantidad);
+		                });
+		                var cantidades = cantidadProductos;
+		                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+		                    Usuarios.findOne({_id: usuarioObjID}, function(err,usuario){
+		                        if(!err){
+		                            console.log('Mostrando productos añadidos al pedido');
+		                            res.render('pedido', {
+		                                alias:req.user.alias,
+		                                home: "/user/home",
+		                                titulo: "AlKa - Pedido",
+		                                componentes: "/user/home/category/componentes",
+		                                ram: "/user/home/category/ram",
+		                                hdd: "/user/home/category/disco duro",
+		                                cajas:"/user/home/category/cajas",
+		                                fuentes:"/user/home/category/fuentes",
+		                                targetas:"/user/home/category/targetas graficas",
+		                                placaBase:"/user/home/category/placa base",
+		                                procesadores:"/user/home/category/procesadores",
+		                                configura: "/user/home/configura tu pc",
+		                                productosLista : arrayNombresProductos,
+		                                modal:"modal",
+		                                nameTarget:"#profileModal",
+		                                entrarSalir: "Mi perfil",
+		                                cantidad: cantidades,
+		                                carrito: ProductosPedido,
+		                                usuario: usuario,
+		                                ClaseCesta: "col-lg-3 active",
+		                                ClaseEnvioypago: "col-lg-3 disabled",
+		                                ClaseResumen: "col-lg-3 disabled",
+		                                ClaseFinalizar: "col-lg-3 disabled",
+		                                expandedCesta: true,
+		                                expandedEnvioypago: false,
+		                                expandedResumen: false,
+		                                expandedFinalizar: false,
+		                                activeinCesta: "tab-pane fade in active",
+		                                activeinEnvioypago: "tab-pane fade",
+		                                activeinResumen: "tab-pane fade",
+		                                activeinFinalizar: "tab-pane fade"
+		                            });
+		                        }else{
+		                            console.log('Error al mostrar los productos añadidos al pedido. '+err);
+		                        }
+		                    });
+		                });
+		            }else{
+		                console.log('Error al seleccionar el id de los productos añadidos al carrito. '+err);
+		            }
+				});
 			});
 		});
 	};
@@ -1221,7 +1257,7 @@ module.exports = function(app,passport){
         var cantidades = req.body.cantidades;
         var cantidades2 = [];
         var cantidadModificada = 0
-        var aux = 0;
+        var aux = 0, arrayNombresProductos = [];
         
         // Guardo las cantidades guardadas en el carrito
         Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
@@ -1254,54 +1290,60 @@ module.exports = function(app,passport){
                 aux++;
             });
             // Busco la información de los productos según el id del ususario
-            Productos.find({_id: {$in: idProductosCarrito}},function (err,ProductosPedido){
-                if(!err){
-                    console.log('Buscando productos añadidos al pedido envio y pago');
-                    //
-                    Usuarios.findOne({_id: idUsuario}, function(err,usuario){
-                        if(!err){
-                            console.log('Mostrando información de usuario');
-                            // Envío toda la información a la página con los cambios hechos
-                            res.render('pedido', {
-                                alias:req.user.alias,
-                                home: "/user/home",
-                                titulo: "AlKa - Pedido",
-                                componentes: "/user/home/category/componentes",
-                                ram: "/user/home/category/ram",
-                                hdd: "/user/home/category/disco duro",
-                                cajas:"/user/home/category/cajas",
-                                fuentes:"/user/home/category/fuentes",
-                                targetas:"/user/home/category/targetas graficas",
-                                placaBase:"/user/home/category/placa base",
-                                procesadores:"/user/home/category/procesadores",
-                                configura: "/user/home/configura tu pc",
-                                modal:"modal",
-                                nameTarget:"#profileModal",
-                                entrarSalir: "Mi perfil",
-                                cantidad: cantidades,
-                                carrito: ProductosPedido,
-                                usuario: usuario,
-                                ClaseCesta: "col-lg-3",
-                                ClaseEnvioypago: "col-lg-3 active",
-                                ClaseResumen: "col-lg-3 disabled",
-                                ClaseFinalizar: "col-lg-3 disabled",
-                                expandedCesta: false,
-                                expandedEnvioypago: true,
-                                expandedResumen: false,
-                                expandedFinalizar: false,
-                                activeinCesta: "tab-pane fade",
-                                activeinEnvioypago: "tab-pane fade in active",
-                                activeinResumen: "tab-pane fade",
-                                activeinFinalizar: "tab-pane fade"
-                            });
-                        }else{
-                            console.log('Error al buscar el usuario');
-                        }
-                    });
-                }else{
-                    console.log('Error al mostrar los productos añadidos al pedido. '+err);
-                }
-            });
+            Productos.find(function (err,ProductosTienda){
+	        	for (var i = 0; i < ProductosTienda.length; i++ ){
+					arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+				}
+	            Productos.find({_id: {$in: idProductosCarrito}},function (err,ProductosPedido){
+	                if(!err){
+	                    console.log('Buscando productos añadidos al pedido envio y pago');
+	                    //
+	                    Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+	                        if(!err){
+	                            console.log('Mostrando información de usuario');
+	                            // Envío toda la información a la página con los cambios hechos
+	                            res.render('pedido', {
+	                                alias:req.user.alias,
+	                                home: "/user/home",
+	                                titulo: "AlKa - Pedido",
+	                                componentes: "/user/home/category/componentes",
+	                                ram: "/user/home/category/ram",
+	                                hdd: "/user/home/category/disco duro",
+	                                cajas:"/user/home/category/cajas",
+	                                fuentes:"/user/home/category/fuentes",
+	                                targetas:"/user/home/category/targetas graficas",
+	                                placaBase:"/user/home/category/placa base",
+	                                procesadores:"/user/home/category/procesadores",
+	                                configura: "/user/home/configura tu pc",
+	                                productosLista : arrayNombresProductos,
+	                                modal:"modal",
+	                                nameTarget:"#profileModal",
+	                                entrarSalir: "Mi perfil",
+	                                cantidad: cantidades,
+	                                carrito: ProductosPedido,
+	                                usuario: usuario,
+	                                ClaseCesta: "col-lg-3",
+	                                ClaseEnvioypago: "col-lg-3 active",
+	                                ClaseResumen: "col-lg-3 disabled",
+	                                ClaseFinalizar: "col-lg-3 disabled",
+	                                expandedCesta: false,
+	                                expandedEnvioypago: true,
+	                                expandedResumen: false,
+	                                expandedFinalizar: false,
+	                                activeinCesta: "tab-pane fade",
+	                                activeinEnvioypago: "tab-pane fade in active",
+	                                activeinResumen: "tab-pane fade",
+	                                activeinFinalizar: "tab-pane fade"
+	                            });
+	                        }else{
+	                            console.log('Error al buscar el usuario');
+	                        }
+	                    });
+	                }else{
+	                    console.log('Error al mostrar los productos añadidos al pedido. '+err);
+	                }
+	            });
+			});
         }); 
     };
     
@@ -1454,7 +1496,7 @@ module.exports = function(app,passport){
         // Declaración de variables a utilizar
         var idUsuario = req.user._id;
         var idProductos = [];
-        var cantidadProductos = [];
+        var cantidadProductos = [], arrayNombresProductos = [];
         
         // Actualizando el pedido del carrito como finalizado
         Carrito.update({idUsuario: idUsuario, finalizar: false},
@@ -1467,67 +1509,73 @@ module.exports = function(app,passport){
                                 console.log('Error al actualizar el pedido como finalizado '+err);
                             }
         });
-        
-        // Buscando los productos del carrito de este usuario
-        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarrito){
-            if (!err) {
-                productosCarrito.forEach(function(producto){
-                    idProductos.push(producto.idProducto);
-                    cantidadProductos.push(producto.cantidad);
-                });
-                var cantidades = cantidadProductos;
-                // Busco la información de los productos según el id del ususario
-                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-                    if(!err){
-                        console.log('buscando productos añadidos al pedido envio y pago');
-                        // Mostrando información de usuario
-                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
-                            if(!err){
-                                console.log('Mostrando información usuario');
-                                // Envío toda la información a la página con los cambios hechos
-                                res.render('pedido', {
-                                    alias:req.user.alias,
-                                    home: "/user/home",
-                                    titulo: "AlKa - Pedido",
-                                    ram: "/user/home/category/ram",
-                                    hdd: "/user/home/category/disco duro",
-                                    cajas:"/user/home/category/cajas",
-                                    fuentes:"/user/home/category/fuentes",
-                                    targetas:"/user/home/category/targetas graficas",
-                                    componentes: "/user/home/category/componentes",
-                                    placaBase:"/user/home/category/placa base",
-                                    procesadores:"/user/home/category/procesadores",
-                                    modal:"modal",
-                                    nameTarget:"#profileModal",
-                                    entrarSalir: "Mi perfil",
-                                    cantidad: cantidades,
-                                    carrito: ProductosPedido,
-                                    usuario: usuario,
-                                    ClaseCesta: "col-lg-3",
-                                    ClaseEnvioypago: "col-lg-3",
-                                    ClaseResumen: "col-lg-3",
-                                    ClaseFinalizar: "col-lg-3 active",
-                                    expandedCesta: false,
-                                    expandedEnvioypago: false,
-                                    expandedResumen: false,
-                                    expandedFinalizar: true,
-                                    activeinCesta: "tab-pane fade",
-                                    activeinEnvioypago: "tab-pane fade",
-                                    activeinResumen: "tab-pane fade",
-                                    activeinFinalizar: "tab-pane fade in active"
-                                });
-                            }else{
-                                console.log('Error al buscar el usuario');
-                            }
-                        });
-                    }else{
-                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
-                    }
-                });
-            } else {
-                console.log('Error al buscar los productos '+err);
-            }
-        }); 
+        Productos.find(function (err,ProductosTienda){
+        	for (var i = 0; i < ProductosTienda.length; i++ ){
+				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+			}
+	        // Buscando los productos del carrito de este usuario
+	        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarrito){
+	            if (!err) {
+	                productosCarrito.forEach(function(producto){
+	                    idProductos.push(producto.idProducto);
+	                    cantidadProductos.push(producto.cantidad);
+	                });
+	                var cantidades = cantidadProductos;
+	                // Busco la información de los productos según el id del ususario
+	                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+	                    if(!err){
+	                        console.log('buscando productos añadidos al pedido envio y pago');
+	                        // Mostrando información de usuario
+	                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+	                            if(!err){
+	                                console.log('Mostrando información usuario');
+	                                // Envío toda la información a la página con los cambios hechos
+	                                res.render('pedido', {
+	                                    alias:req.user.alias,
+	                                    home: "/user/home",
+	                                    titulo: "AlKa - Pedido",
+	                                    ram: "/user/home/category/ram",
+	                                    hdd: "/user/home/category/disco duro",
+	                                    cajas:"/user/home/category/cajas",
+	                                    fuentes:"/user/home/category/fuentes",
+	                                    targetas:"/user/home/category/targetas graficas",
+	                                    componentes: "/user/home/category/componentes",
+	                                    placaBase:"/user/home/category/placa base",
+	                                    procesadores:"/user/home/category/procesadores",
+	                                    configura: "/user/home/configura tu pc",
+	                                    productosLista : arrayNombresProductos,
+	                                    modal:"modal",
+	                                    nameTarget:"#profileModal",
+	                                    entrarSalir: "Mi perfil",
+	                                    cantidad: cantidades,
+	                                    carrito: ProductosPedido,
+	                                    usuario: usuario,
+	                                    ClaseCesta: "col-lg-3",
+	                                    ClaseEnvioypago: "col-lg-3",
+	                                    ClaseResumen: "col-lg-3",
+	                                    ClaseFinalizar: "col-lg-3 active",
+	                                    expandedCesta: false,
+	                                    expandedEnvioypago: false,
+	                                    expandedResumen: false,
+	                                    expandedFinalizar: true,
+	                                    activeinCesta: "tab-pane fade",
+	                                    activeinEnvioypago: "tab-pane fade",
+	                                    activeinResumen: "tab-pane fade",
+	                                    activeinFinalizar: "tab-pane fade in active"
+	                                });
+	                            }else{
+	                                console.log('Error al buscar el usuario');
+	                            }
+	                        });
+	                    }else{
+	                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
+	                    }
+	                });
+	            } else {
+	                console.log('Error al buscar los productos '+err);
+	            }
+	        });
+	    }); 
     };
 
     quitarProductoCarrito = function (req,res){
