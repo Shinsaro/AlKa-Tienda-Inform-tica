@@ -75,12 +75,15 @@
         $('.selectpicker').selectpicker({
           style: 'btn-primary',
         });
-        var str = "";
+        var str = "", precio = "", cantidad = "";
         
-        $( "select" ).change(function() {
-          str += $( this ).val() + " ";
-          /*$(this).parent().parent().parent().next().first().remove();*/
-          console.log($(this).parent().parent().parent().next().add('<label class="label label-default" style="font-size: 15px" value="0">' + str + '</label>'));
+        $("select").change(function() {
+            precio = $(this).val();
+            cantidad = $(this).parent().parent().parent().prev().find('cantidad').text();
+            console.log(cantidad);
+            totalProducto = precio * cantidad;
+            str = '<label class="label label-default" style="font-size: 15px" value="0">' +  + '</label>';          
+            $(this).parent().parent().parent().next().html(str);
         });
         
         

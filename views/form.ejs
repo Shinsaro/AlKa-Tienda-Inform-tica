@@ -1,29 +1,4 @@
 <%var x = "formMarca" ; if (x == formulario ) { %>
-	<form role="form" data-toggle="validator" action="/user/home/actualizarProducto" method="POST" id="formAdminMarca" class="col-lg-offet-2 col-lg-6">
-		<label>Asignar marca al producto</label>
-		<div class="form-group form-group-sm">
-			<div class="input-group form-group-sm">
-				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-usb" aria-hidden="true"></i></span>
-				<select class="form-control" id="marca" name="marca" aria-describedby="sizing-addon3">
-					<option selected="selected">Escoje una marca</option>
-					<% marcas.forEach( function (marcas){ %>
-						<option value="<%= marcas.nombre %>"><%= marcas.nombre %></option>
-					<% }); %>
-				</select>
-			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<div class="input-group form-group-sm">
-				<span class="input-group-addon" id="sizing-addon3"><i class="fa fa-list" aria-hidden="true"></i></span>
-				<select class="form-control selectpicker" id="producto" name="producto" aria-describedby="sizing-addon3" multiple>
-					<% productos.forEach( function (producto){ %>
-						<option value="<%= producto.nombre %>"><%= producto.nombre %></option>
-					<% }); %>
-				</select>
-			</div>
-		</div>
-		<input type="submit" value="Crear marca" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
-	</form>
 	<form role="form" data-toggle="validator" action="/user/home/anadirMarca" method="POST" id="formAdminProducto" class="col-lg-offet-2 col-lg-6">
 		<label>Crear marca</label>
 		<div class="form-group form-group-sm">
@@ -32,7 +7,7 @@
 				<input type="text" class="form-control" name="marcaNombre" placeholder="Marca producto" aria-describedby="sizing-addon3">
 			</div>
 		</div>
-		<input type="submit" value="Asignar marca producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
+		<input type="submit" value="Crear marca producto" id="anadirProducto" name="anadirProducto" class="btn btn-primary">
 	</form>
 <% } else { %>
 	<% if (messageDanger != ""){ %>

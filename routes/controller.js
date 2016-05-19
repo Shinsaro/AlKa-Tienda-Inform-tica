@@ -77,11 +77,11 @@ module.exports = function(app,passport){
 			if (idProductoCarrito == undefined) {
 				var idProductoCarrito = [];
 			}
-			Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+			Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 				for (var i = 0; i < carritoUsuario.length; i++) {
 					idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 				}
-				Productos.find({_id: {$in : idProductoCarrito},foto : {$ne : null}}, function (err,ProductosCarrito){
+				Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
 					Productos.find(function (err,ProductosTienda){
 						if (arrayValoraciones == undefined) {
 							var arrayValoraciones = [];
@@ -195,7 +195,7 @@ module.exports = function(app,passport){
 		if (idProductoCarrito == undefined) {
 			var idProductoCarrito = [];
 		}
-		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+		Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 			for (var i = 0; i < carritoUsuario.length; i++) {
 				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 			}
@@ -337,7 +337,7 @@ module.exports = function(app,passport){
 		if (idProductoCarrito == undefined) {
 			var idProductoCarrito = [];
 		}
-		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+		Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 			for (var i = 0; i < carritoUsuario.length; i++) {
 				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 			}
@@ -410,60 +410,65 @@ module.exports = function(app,passport){
 	}
 	configuraTuPC = function (req,res){
 		var arrayNombresProductos = [];
-		Productos.find(function (err,ProductosTienda){
-			if (idProductoCarrito == undefined) {
-				var idProductoCarrito = [];
-			}
-			for (var i = 0; i < ProductosTienda.length; i++ ){
-				arrayNombresProductos.push(ProductosTienda[i].nombre);
-			}
-			Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
-				Productos.find().count().distinct('tipo',function(err,tiposProductos){
-					if (req.user != undefined){
-						res.render('configuraTuPC',{
-							home : "/user/home/" ,
-							alias:req.user.alias,
-							productosLista : arrayNombresProductos,
-							productos: ProductosTienda,
-							carrito: ProductosCarrito,
-							tipos : tiposProductos,
-							titulo:"Configura tu PC",
-							modal:"modal",
-							nameTarget:"#profileModal",
-							entrarSalir: "Mi perfil",
-							componentes: "/user/home/category/componentes",
-							ram: "/user/home/category/ram",
-							hdd: "/user/home/category/disco duro",
-							cajas:"/user/home/category/cajas",
-							fuentes:"/user/home/category/fuentes",
-							targetas:"/user/home/category/targetas graficas",
-							placaBase:"/user/home/category/placa base",
-							procesadores:"/user/home/category/procesadores",
-							configura: "/user/home/category/configura tu pc"
-						});
-					} else {
-						res.render('configuraTuPC',{
-							home : "/home/" ,
-							alias:"",
-							productosLista : arrayNombresProductos,
-							productos: ProductosTienda,
-							carrito: ProductosCarrito,
-							tipos : tiposProductos,
-							titulo:"Configura tu PC",
-							modal:"modal",
-							nameTarget:"#myModal",
-							entrarSalir: "Log In",
-							componentes: "/home/category/componentes",
-							ram: "/home/category/ram",
-							hdd: "/home/category/disco duro",
-							targetas:"/home/category/targetas graficas",
-							cajas: "/home/category/cajas",
-							fuentes:"/home/category/fuentes",
-							placaBase:"/home/category/placa base",
-							procesadores:"/home/category/procesadores",
-							configura: "/home/configura tu pc"
-						});
-					}
+		Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
+			Productos.find(function (err,ProductosTienda){
+				if (idProductoCarrito == undefined) {
+					var idProductoCarrito = [];
+				}
+				for (var i = 0; i < carritoUsuario.length; i++) {
+					idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
+				}
+				for (var i = 0; i < ProductosTienda.length; i++ ){
+					arrayNombresProductos.push(ProductosTienda[i].nombre);
+				}
+				Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
+					Productos.find().count().distinct('tipo',function(err,tiposProductos){
+						if (req.user != undefined){
+							res.render('configuraTuPC',{
+								home : "/user/home/" ,
+								alias:req.user.alias,
+								productosLista : arrayNombresProductos,
+								productos: ProductosTienda,
+								carrito: ProductosCarrito,
+								tipos : tiposProductos,
+								titulo:"Configura tu PC",
+								modal:"modal",
+								nameTarget:"#profileModal",
+								entrarSalir: "Mi perfil",
+								componentes: "/user/home/category/componentes",
+								ram: "/user/home/category/ram",
+								hdd: "/user/home/category/disco duro",
+								cajas:"/user/home/category/cajas",
+								fuentes:"/user/home/category/fuentes",
+								targetas:"/user/home/category/targetas graficas",
+								placaBase:"/user/home/category/placa base",
+								procesadores:"/user/home/category/procesadores",
+								configura: "/user/home/category/configura tu pc"
+							});
+						} else {
+							res.render('configuraTuPC',{
+								home : "/home/" ,
+								alias:"",
+								productosLista : arrayNombresProductos,
+								productos: ProductosTienda,
+								carrito: "",
+								tipos : tiposProductos,
+								titulo:"Configura tu PC",
+								modal:"modal",
+								nameTarget:"#myModal",
+								entrarSalir: "Log In",
+								componentes: "/home/category/componentes",
+								ram: "/home/category/ram",
+								hdd: "/home/category/disco duro",
+								targetas:"/home/category/targetas graficas",
+								cajas: "/home/category/cajas",
+								fuentes:"/home/category/fuentes",
+								placaBase:"/home/category/placa base",
+								procesadores:"/home/category/procesadores",
+								configura: "/home/configura tu pc"
+							});
+						}
+					});
 				});
 			});
 		});
@@ -473,7 +478,7 @@ module.exports = function(app,passport){
 		if (idProductoCarrito == undefined) {
 			var idProductoCarrito = [];
 		}
-		Carrito.find({idUsuario: req.user._id}, function (err,carritoUsuario){
+		Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 			for (var i = 0; i < carritoUsuario.length; i++) {
 				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 			}
@@ -926,8 +931,10 @@ module.exports = function(app,passport){
 							if (!err)
 								res.redirect('back');
 						});
-						Marcas.update({_id:Marca._id},{$set:{ idProducto: producto}},function(err,result){
-							console.log("añadido el nuevo producto a la marca");
+						Productos.findOne({nombre:req.body.nombre},function (err,ProductoCreado){
+							Marcas.update({_id:Marca._id},{$push : {idProducto : ProductoCreado._id}},function(err,result){
+								console.log("añadido el nuevo producto a la marca");
+							});
 						});
 					} else {
 						res.redirect('back');
@@ -979,8 +986,15 @@ module.exports = function(app,passport){
     	Productos.findOne({nombre:req.body.producto},function (err,ProductoId){
 	    	Productos.remove({_id:ProductoId._id},function (err,Producto){
 	    		if (!err)
-	    			res.redirect('back');
+	    			console.log("Producto eliminado en la colección productos");
 	    	});
+	    	Marcas.findOne({_id: ProductoId.marca},function (err, MarcaParaActualizar){
+		    	Marcas.update({_id: MarcaParaActualizar._id},{$pull : {idProducto : ProductoId._id }},function (err,MarcaActualizada){
+	    			if (!err)
+	    				console.log("Referencia del producto eliminada en la colección marcas");
+		    			res.redirect('back');
+	    		});
+		    });
 	    });
     }
     
