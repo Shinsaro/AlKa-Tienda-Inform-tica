@@ -7,7 +7,12 @@ var schemaProductos = new schema ({
 				descripcion: String,
 				precio: Number,
 				marca : ObjectId,
-				valoracion: Number,
+				valoracion: [
+                    {
+                        usuario: ObjectId,
+                        valor: Number
+                    }
+                ],
 				tipo : String,
 				foto: String,
                 caracteristicas: [String],
@@ -16,7 +21,7 @@ var schemaProductos = new schema ({
                             nombre: String,
                             caracteristicas: [String]
                         }
-                    ],
+                ],
                 comentario: [
                         {
                             alias: String,

@@ -47,7 +47,7 @@
                         </thead>
                         <tbody>
                             <% for(var i=0; i<carrito.length; i++){ %>
-                            <form action="/user/home/quitarProductoCarrito" method="POST">
+                            <!--<form action="/user/home/quitarProductoCarrito" method="POST">-->
                                 <tr>
                                     <td class="form-group">
                                         <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
@@ -63,17 +63,17 @@
                                     </td>
                                     <td class="form-group">
                                         <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
-                                        <input class="hidden" name="idProductoCarrito" type="text" value="<%= carrito[i].idProducto %>"/>
+                                        <input class="hidden" name="idProductoCarrito" type="text" value="<%= carrito[i]._id %>"/>
                                     </td>
                                     <td class="precio"><%= carrito[i].precio %></td>
                                     <td class="totalProducto"></td>
                                     <td style="width:5px">
-                                        <button type="submit" class="btn btn-danger btn-xs" title="quitar">
+                                        <button type="button" class="btn btn-danger btn-xs quitarProductoPedido" title="quitar">
                                             <span class="glyphicon glyphicon-trash"></span>
                                         </button>
                                     </td>
                                 </tr>
-                            </form>
+                            <!--</form>-->
                             <% } %>
                         </tbody>
                         <tfoot>

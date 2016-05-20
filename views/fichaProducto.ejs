@@ -23,9 +23,20 @@
                             <div class="container">
                                 <h4 class="text-justify"><%= productoFicha.descripcion %></h4>
                             </div>
+                            <% if(productoFicha.valoracion.length==0 || productoFicha.valoracion.length==undefined){ %>
                             <div class="container form-group" style="padding-top: 3%">
-                                <input class="rating" value="<%= productoFicha.valoracion %>" data-readonly="true"/>
+                                <input class="rating" value="0" data-readonly="true"/>
                             </div>
+                            <% }else{ %>
+                            <div class="container form-group" style="padding-top: 3%">
+                                <% var valor = 0 %>
+                                <% productoFicha.valoracion.forEach(function(valoracion){ %>
+                                <%      valor=valor+valoracion.valor; %>
+                                <% }); %>
+                                <% valor = valor/productoFicha.valoracion.length %>
+                                <input class="rating" value="<%= valor %>" data-readonly="true"/>
+                            </div>
+                            <% } %>
                             <div class="container">
                                 <h2>
                                     <span class="label label-success" style="float: left">
@@ -119,11 +130,23 @@
                                     </div>
                                     <div class="container col-lg-4 col-md-4 col-sm-4" style="padding-top:2%%">
                                         <form action="/user/home/<%= productoFicha.nombre %>/valoracion" method="post">
-                                            <input type="text" name="idProducto" class="hidden" value="<%= productoFicha._id %>">
-                                            <div id="valoracion" class="form-group">
-                                                <input class="rating" value="<%= productoFicha.valoracion %>"/>
+                                            <% if(valoracionUsuario==0){ %>
+                                            <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
+                                                <div class="panel-body text-center col-sm-12">
+                                                    No has valorado este producto.
+                                                </div>
                                             </div>
-                                            <p class="hidden" id="numeroValoracion" name="numeroValoracion"></p>
+                                            <% }else{ %>
+                                            <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
+                                                <div class="panel-body text-center col-sm-12">
+                                                    Puedes cambiar tu valoración del producto.
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                            <div id="valoracion" class="form-group">
+                                                <input class="rating" value="<%= valoracionUsuario %>"/>
+                                            </div>
+                                            <input type="text" class="hidden" id="numeroValoracion" name="numeroValoracion"/>
                                             <button id="botonValoracion" type="submit" class="btn btn-primary btn-xs text-center" disabled>
                                                 ¡Valora!
                                             </button>

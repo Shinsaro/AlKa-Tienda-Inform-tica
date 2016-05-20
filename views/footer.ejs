@@ -199,7 +199,13 @@
             });
         });
         
+        // Quitamos productos del pedido
+        $('.quitarProductoPedido').click(function(){
+            $(this).parent().parent().remove();
+        });
+
         /*********** FUNCIONES DEL ENVÍO Y PAGO *********/
+
         // Edita datos personales
         $('#editaDatosPersonales').click(function(){
             // Mostramos el formulario para guardar los nuevos datos personales
@@ -327,11 +333,18 @@
             $('#resumen').removeClass().addClass('tab-pane fade in active');
         });
 
+        /************** FUNCIONES AL CLICAR LAS TABS *******************/
+
+        /*$('#tabcesta').click(){
+            if($('#tabcesta').hasClass('disabled')){
+
+            }
+        };*/
+
         /*************** FUNCIONES DE LA FICHA DEL PRODUCTO ***************/
 
         // Funciones que deshabilita el botón si no hay comentario o valoración
         $('#comentario').blur(function(){
-            alert($('.caption').find('span').text());
             $comentario=$('#comentario').val();
             if($comentario==""||$comentario==undefined){
                 $('#botonComentario').prop("disabled", true);
@@ -340,103 +353,10 @@
             }
         });
 
-        /*$('.rating-container').click(function(){
-            alert('mono');
-            //$('.star-rating-control .star-rating-on').length;
-            $valoracion=$('#valoracion').prev().children().text();
-            alert($valoracion);
-            $('#comentarioValoracion').prop("disabled", false);
-            if($valoracion==""||$valoracion==undefined){
-                $('#comentarioValoracion').prop("disabled", true);
-            }else{
-                $('#comentarioValoracion').prop("disabled", false);
-            }
-        });*/
-
-    
+        $('span .star').click(function(){
+            $('#numeroValoracion').empty();
+            $('#numeroValoracion').val($('#numeroValoracion').prev().find('div .caption').children().text());
+            $('#botonValoracion').prop("disabled", false);
+        });
     });
-    
-  
-    /*********** FUNCIONES DE VALIDACIÓN *************/
-
-/*    // Función que valida cualquier campo (input)
-    function validacionCampo(id, variable, regex, idMensajeOk, idMensajeError, mensajeErrorVacio, mensajeErrorFormato){
-        $('#'+id).focusout(function(){
-            if($('#'+id).val()==''){
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>El campo '+mensajeErrorVacio+' no puede estar vacío.</small><br>');
-                $('#errorNombre').prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }else{
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
-            }
-        });
-        $('#'+id).keyup(function(){
-            var valor=$(this).val();
-            var variable=new RegExp(regex);
-            if(variable.test(valor)){
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
-                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }else{
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>'+mensajeErrorFormato+' no tiene el formato correcto.</small><br>');
-                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }
-        });
-    }
-
-    // Función que valida los datos personales
-    function validacionDatosPersonales(){
-        validacionCampo('nombre', 'nombre', '^([a-zA-Z]+( )?)+$', 'nombreOk', 'nombreError', 'del nombre', 'El nombre');
-        validacionCampo('apellidos', 'apellidos', '^([a-zA-Z]+( )?)+$', 'apellidosOk', 'apellidosError', 'de los apellidos', 'Los apellidos');
-        validacionCampo('telefono', 'telefono', '^[0-9]{9}$', 'telefonoOk', 'telefonoError', 'del teléfono', 'El teléfono');
-    }
-
-    // Función que valida los campos de la dirección de facturación
-    function validacionDireccionEnvio(){
-        // Deshabilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", true);
-
-        validacionCampo('calleEnvio', 'calle', '^([a-zA-Z]+( )?)+$', 'calleEnvioOk', 'calleEnvioError', 'de la calle', 'La calle');
-        validacionCampo('numeroEnvio', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroEnvioOk', 'numeroEnvioError', 'del número', 'El número');
-        validacionCampo('pisoEnvio', 'piso', '^[0-9]+$', 'pisoEnvioOk', 'pisoEnvioError', 'del piso', 'El piso');
-        validacionCampo('puertaEnvio', 'puerta', '^[0-9]+$', 'puertaEnvioOk', 'puertaEnvioError', 'de la puerta', 'La puerta');
-        validacionCampo('cpEnvio', 'cp', '^[0-9]+$', 'cpEnvioOk', 'cpEnvioError', 'del código postal', 'El código postal'); 
-
-        // Habilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", false);
-    }
-
-    // Función que valida los campos de la dirección de facturación
-    function validacionDireccionFacturacion(){
-        // Deshabilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", true);
-
-        validacionCampo('calleFacturacion', 'calle', '^([a-zA-Z]+( )?)+$', 'calleFacturacionOk', 'calleFacturacionError', 'de la calle', 'La calle');
-        validacionCampo('numeroFacturacion', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroFacturacionOk', 'numeroFacturacionError', 'del número', 'El número');
-        validacionCampo('pisoFacturacion', 'piso', '^[0-9]+$', 'pisoFacturacionOk', 'pisoFacturacionError', 'del piso', 'El piso');
-        validacionCampo('puertaFacturacion', 'puerta', '^[0-9]+$', 'puertaFacturacionOk', 'puertaFacturacionError', 'de la puerta', 'La puerta');
-        validacionCampo('cpFacturacion', 'cp', '^[0-9]+$', 'cpFacturacionOk', 'cpFacturacionError', 'del código postal', 'El código postal'); 
-
-        // Habilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", false);
-    }
-
-    // Función que valida La cuenta de la visa
-    function validacionCuentaVisa(){
-        // Validación del campo
-        validacionCampo('campoCuentaVisa', 'campoCuentaVisa', '^([0-9]{4}-){3}[0-9]{4}$', 'campoCuentaVisaOk', 'campoCuentaVisaError', 'de la cuenta', 'La cuenta');
-    }    
-
-    // Función que valida la cuenta de paypal
-    function validacionCuentaPaypal(){
-         // Validación del campo
-        validacionCampo('campoCuentaPaypal', 'campoCuentaPaypal', /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i, 'campoCuentaPaypalOk', 'campoCuentaPaypalError', 'de la cuenta', 'La cuenta');            
-    }
-  */  
 </script>
