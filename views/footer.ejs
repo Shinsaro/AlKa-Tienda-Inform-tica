@@ -103,13 +103,6 @@
                 $(this).parent().parent().parent().next().html($str);
             }
         });
-        /*$('.cantidad').change(function(){
-            $precio = Number($(this).parent().next().find('select').val());
-            $cantidad = Number($(this).val());
-            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
-            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
-            $(this).parent().next().next().find('.precioTotalProducto').html($str);
-        });*/
         $('.calcularTotal').click(function(){
             $('.precioTotalProducto').each(function(){
                 $totalProductoFinal += parseFloat($(this).text());
@@ -230,7 +223,13 @@
             });
         });
         
+        // Quitamos productos del pedido
+        $('.quitarProductoPedido').click(function(){
+            $(this).parent().parent().remove();
+        });
+
         /*********** FUNCIONES DEL ENVÍO Y PAGO *********/
+
         // Edita datos personales
         $('#editaDatosPersonales').click(function(){
             // Mostramos el formulario para guardar los nuevos datos personales
@@ -358,17 +357,30 @@
             $('#resumen').removeClass().addClass('tab-pane fade in active');
         });
 
+        /************** FUNCIONES AL CLICAR LAS TABS *******************/
+
+        /*$('#tabcesta').click(){
+            if($('#tabcesta').hasClass('disabled')){
+
+            }
+        };*/
+
         /*************** FUNCIONES DE LA FICHA DEL PRODUCTO ***************/
 
         // Funciones que deshabilita el botón si no hay comentario o valoración
         $('#comentario').blur(function(){
-            alert($('.caption').find('span').text());
             $comentario=$('#comentario').val();
             if($comentario==""||$comentario==undefined){
                 $('#botonComentario').prop("disabled", true);
             }else{
                 $('#botonComentario').prop("disabled", false);
             }
-        });    
+        });
+
+        $('span .star').click(function(){
+            $('#numeroValoracion').empty();
+            $('#numeroValoracion').val($('#numeroValoracion').prev().find('div .caption').children().text());
+            $('#botonValoracion').prop("disabled", false);
+        });
     });
 </script>
