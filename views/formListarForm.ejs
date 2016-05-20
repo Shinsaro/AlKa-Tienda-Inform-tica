@@ -1,12 +1,20 @@
 <%var x = "formMarca" ; if (x == formulario ) { %>
-		<form method="post" action="/user/home/listarMarcaEscojida">
+	<table class="table table-responsive">
+    	<thead>
+            <tr>
+                <th>Nombre Marca</th>
+                <th>Cantidad Articulos</th>
+            </tr>
+        </thead>
+        <tbody>
 			<% for(var i = 0; i < productosMarcas.length; i++) {%>
-				<input type="checkbox" value="<%= productosMarcas[i].nombre %>" name="marcas"><%= productosMarcas[i].nombre %>
+			<tr>
+				<td><%= productosMarcas[i].nombre %></td>
+				<td><%= productosMarcas[i].idProducto.length %></td>
+			</tr>
 			<% } %>
-			<br/>
-			<br/>
-			<input type="submit" class="btn btn-primary" value="Listar productos marca">
-		</form>
+		</tbody>
+	</table>
 <% } else { %>
 	
 <% } %>

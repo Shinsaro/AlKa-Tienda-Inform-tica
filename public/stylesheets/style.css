@@ -9,9 +9,15 @@ html {
 .container{
   margin-top: 40px;
 }
-/*select img:hover{
-  
-}*/
+.cantidad {
+  background: white;
+  color: black;
+  border-radius: 3px;
+  line-height: 28px;
+}
+/* .cantidad::-webkit-inner-spin-button{
+  display: none;
+} */
 #formFormularioAdminAnadir{
   position: relative;
   margin-top: 20px;

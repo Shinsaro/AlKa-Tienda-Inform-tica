@@ -75,17 +75,48 @@
         $('.selectpicker').selectpicker({
           style: 'btn-primary',
         });
-        var str = "", precio = "", cantidad = "";
-        
-        $("select").change(function() {
-            precio = $(this).val();
-            cantidad = $(this).parent().parent().parent().prev().find('cantidad').text();
-            console.log(cantidad);
-            totalProducto = precio * cantidad;
-            str = '<label class="label label-default" style="font-size: 15px" value="0">' +  + '</label>';          
-            $(this).parent().parent().parent().next().html(str);
+        $precio = 0, $totalProducto = 0, $cantidad = 0, $totalProductoFinal = 0, $str = 0;
+        $('.fa-minus').click(function(){
+            if ($(this).parent().next().val() > 0){
+                $cantidad = $(this).parent().next().val() - 1;
+            }
+            $(this).parent().next().val($cantidad);
+            $precio = Number($(this).parent().parent().parent().next().find('select').val());
+            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
+            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
+            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($str);
         });
-        
+        $('.fa-plus').click(function(){
+            $cantidad = Number($(this).parent().prev().val()) + 1;
+            $(this).parent().prev().val($cantidad);
+            $precio = Number($(this).parent().parent().parent().next().find('select').val());
+            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
+            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
+            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($str);
+        });
+        $("select").change(function() {
+            $precio = Number($(this).val());
+            $cantidad = Number($(this).parent().parent().parent().parent().children().find('.cantidad').val());
+            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
+            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
+            if ($('.precioTotalProducto').val() != undefined){
+                $(this).parent().parent().parent().next().html($str);
+            }
+        });
+        /*$('.cantidad').change(function(){
+            $precio = Number($(this).parent().next().find('select').val());
+            $cantidad = Number($(this).val());
+            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
+            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
+            $(this).parent().next().next().find('.precioTotalProducto').html($str);
+        });*/
+        $('.calcularTotal').click(function(){
+            $('.precioTotalProducto').each(function(){
+                $totalProductoFinal += parseFloat($(this).text());
+            });
+            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProductoFinal).toFixed(2) + '">' + Number($totalProductoFinal).toFixed(2) + '€</label>';
+            $(this).parent().next().html($str);
+        });        
         
         /*********** FUNCIONES DE MODAL PRODUCTO **********/
 		$('.botonProducto').click(function(){
@@ -338,105 +369,6 @@
             }else{
                 $('#botonComentario').prop("disabled", false);
             }
-        });
-
-        /*$('.rating-container').click(function(){
-            alert('mono');
-            //$('.star-rating-control .star-rating-on').length;
-            $valoracion=$('#valoracion').prev().children().text();
-            alert($valoracion);
-            $('#comentarioValoracion').prop("disabled", false);
-            if($valoracion==""||$valoracion==undefined){
-                $('#comentarioValoracion').prop("disabled", true);
-            }else{
-                $('#comentarioValoracion').prop("disabled", false);
-            }
-        });*/
-
-    
+        });    
     });
-    
-  
-    /*********** FUNCIONES DE VALIDACIÓN *************/
-
-/*    // Función que valida cualquier campo (input)
-    function validacionCampo(id, variable, regex, idMensajeOk, idMensajeError, mensajeErrorVacio, mensajeErrorFormato){
-        $('#'+id).focusout(function(){
-            if($('#'+id).val()==''){
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>El campo '+mensajeErrorVacio+' no puede estar vacío.</small><br>');
-                $('#errorNombre').prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }else{
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
-            }
-        });
-        $('#'+id).keyup(function(){
-            var valor=$(this).val();
-            var variable=new RegExp(regex);
-            if(variable.test(valor)){
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).before('<small id="'+idMensajeOk+'">&nbsp<span class="glyphicon glyphicon-ok"></span></small');
-                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }else{
-                $(this).parent().find('#'+idMensajeOk).remove();
-                $(this).parent().find('#'+idMensajeError).remove();
-                $(this).after('<p id="'+idMensajeError+'" style="color:red"><small>'+mensajeErrorFormato+' no tiene el formato correcto.</small><br>');
-                $('#'+idMensajeError).prepend('<span class="glyphicon glyphicon-remove"></span>');
-            }
-        });
-    }
-
-    // Función que valida los datos personales
-    function validacionDatosPersonales(){
-        validacionCampo('nombre', 'nombre', '^([a-zA-Z]+( )?)+$', 'nombreOk', 'nombreError', 'del nombre', 'El nombre');
-        validacionCampo('apellidos', 'apellidos', '^([a-zA-Z]+( )?)+$', 'apellidosOk', 'apellidosError', 'de los apellidos', 'Los apellidos');
-        validacionCampo('telefono', 'telefono', '^[0-9]{9}$', 'telefonoOk', 'telefonoError', 'del teléfono', 'El teléfono');
-    }
-
-    // Función que valida los campos de la dirección de facturación
-    function validacionDireccionEnvio(){
-        // Deshabilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", true);
-
-        validacionCampo('calleEnvio', 'calle', '^([a-zA-Z]+( )?)+$', 'calleEnvioOk', 'calleEnvioError', 'de la calle', 'La calle');
-        validacionCampo('numeroEnvio', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroEnvioOk', 'numeroEnvioError', 'del número', 'El número');
-        validacionCampo('pisoEnvio', 'piso', '^[0-9]+$', 'pisoEnvioOk', 'pisoEnvioError', 'del piso', 'El piso');
-        validacionCampo('puertaEnvio', 'puerta', '^[0-9]+$', 'puertaEnvioOk', 'puertaEnvioError', 'de la puerta', 'La puerta');
-        validacionCampo('cpEnvio', 'cp', '^[0-9]+$', 'cpEnvioOk', 'cpEnvioError', 'del código postal', 'El código postal'); 
-
-        // Habilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", false);
-    }
-
-    // Función que valida los campos de la dirección de facturación
-    function validacionDireccionFacturacion(){
-        // Deshabilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", true);
-
-        validacionCampo('calleFacturacion', 'calle', '^([a-zA-Z]+( )?)+$', 'calleFacturacionOk', 'calleFacturacionError', 'de la calle', 'La calle');
-        validacionCampo('numeroFacturacion', 'numero', '^[0-9]+(( )?-( )?[0-9]+)?$', 'numeroFacturacionOk', 'numeroFacturacionError', 'del número', 'El número');
-        validacionCampo('pisoFacturacion', 'piso', '^[0-9]+$', 'pisoFacturacionOk', 'pisoFacturacionError', 'del piso', 'El piso');
-        validacionCampo('puertaFacturacion', 'puerta', '^[0-9]+$', 'puertaFacturacionOk', 'puertaFacturacionError', 'de la puerta', 'La puerta');
-        validacionCampo('cpFacturacion', 'cp', '^[0-9]+$', 'cpFacturacionOk', 'cpFacturacionError', 'del código postal', 'El código postal'); 
-
-        // Habilitamos el botón de envío
-        $('#pedidoEnvio').attr("disabled", false);
-    }
-
-    // Función que valida La cuenta de la visa
-    function validacionCuentaVisa(){
-        // Validación del campo
-        validacionCampo('campoCuentaVisa', 'campoCuentaVisa', '^([0-9]{4}-){3}[0-9]{4}$', 'campoCuentaVisaOk', 'campoCuentaVisaError', 'de la cuenta', 'La cuenta');
-    }    
-
-    // Función que valida la cuenta de paypal
-    function validacionCuentaPaypal(){
-         // Validación del campo
-        validacionCampo('campoCuentaPaypal', 'campoCuentaPaypal', /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i, 'campoCuentaPaypalOk', 'campoCuentaPaypalError', 'de la cuenta', 'La cuenta');            
-    }
-  */  
 </script>

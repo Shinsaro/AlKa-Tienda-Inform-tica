@@ -28,9 +28,26 @@
 								</ul>
 							</li>
 							<li class="divider"></li>
-							<li><a href="<%= configura %>" class="menu">Configuracia tu PC</a></li>
+							<li><a href="<%= configura %>" class="menu">Configuración tu PC</a></li>
 						</ul>
 					</li>
+				</ul>
+				<ul class="nav navbar-nav" style="margin-top:5px">
+					<% if (messageDangerLogin != ""){ %>
+						<div class="alert alert-danger" role="alert">
+							<strong><%= messageDangerLogin %></strong>
+						</div>
+					<% } %>
+					<% if (messageSuccessRegistrar != ""){ %>
+						<div class="alert alert-success" role="alert">
+							<strong><%= messageSuccessRegistrar %></strong>
+						</div>
+					<% } %>
+					<% if (messageDangerRegistrar != ""){ %>
+						<div class="alert alert-danger" role="alert">
+							<strong><%= messageDangerRegistrar %></strong>
+						</div>
+					<% } %>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<div class="navbar-form navbar-left">
@@ -83,6 +100,7 @@
                                                         </button>	
                                                     </td>
                                                 </tr>
+                                            </form>
                                         <%}%>
                                     </tbody>
                                     <tfoot>
@@ -91,7 +109,6 @@
                                             	<a href="/user/home/pedido">
                                                 	<button class="btn btn-default" type="button">Realizar Pedido</button>
                                                 </a>
-                                                </form>
                                             </td>
                                         </tr>
                                     </tfoot>

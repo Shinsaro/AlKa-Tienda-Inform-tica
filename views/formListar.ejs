@@ -1,19 +1,33 @@
 <%var x = "formProductos" ; if (x == formulario ) { %>	
 	<form method="post" action="/user/home/listarMarcaEscojida">
 		<%- include ./formListarForm %>
-		<div class="container">
-			<%for( var k = 0; k < productos.length; k++){ %>
-				<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-					<input name="id" class="text-hide" value="<%= productos[k]._id %>">
-					<img class="img-square" src="<%= productos[k].foto %>" height="280" width="280">
-					<h4><%= productos[k].nombre %></h4>
-					<p hidden><%= productos[k].descripcion %></p>
-					<p>
-	                    <h2><span class="label label-success" style="float: left"><%= productos[k].precio %>€</span></h2>
-	                </p>
-				</div>
-			<% } %>
-		</div>
+		<table class="tableProductos panel-body" id="searchable-container">
+                <tbody>
+                    <% productos.forEach( function (producto){ %>
+                        <tr class="thumbnail col-lg-4 col-sm-6 col-xs-12 col-xs-offset-0 trBusqueda">
+                            <form action='/user/home/anadeProductoCarrito' method='POST'>
+                                <td class="col-lg-12 col-sm-6 col-xs-12">
+                                    <% if (alias != ""){ %>
+                                        <button type="submit" class="btn btn-primary" style="float: right" id="comprar" value="comprar"><i class="fa fa-shopping-cart"></i></button>
+                                    <% } %>
+                                    <input name="id" class="text-hide" value="<%= producto._id %>">
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <img class="img-square center-block" src="<%= producto.foto %>" height="200" width="200">
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <h4 class="h4 tdBusqueda"><%= producto.nombre %></h4>
+                                    </div>
+                                    <div class="col-lg-12 col-sm-12 col-xs-12">
+                                        <p hidden><%= producto.descripcion %></p>
+                                        <h2><span class="label label-success" style="float: left"><%= producto.precio %>€</span></h2>
+                                        <button title="detalles del producto" class="btn btn-primary botonProducto" style="float: right" type="button" data-toggle="modal" data-target="#productoModal">más»</button>
+                                    </div>
+                                </td>
+                            </form>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
 	</form>
 <% } else { %>
 	<table class="table table-responsive">

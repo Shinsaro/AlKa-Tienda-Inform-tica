@@ -6,10 +6,14 @@
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu  %>
 	<div class="container">
-		 <table class="tableProductosConfigura panel-body">
+		<h1 id="titulo"><%= titulo %></h1>
+		<div class="alert alert-warning" role="alert">
+			<strong>Aquí recibiras un presupuesto según la configuración escogida.</strong>
+		</div>
+		<table class="tableProductosConfigura panel-body">
         	<thead>
                 <tr>
-                    <th style="padding-left:15px">Cantidad</th>
+                    <th >Cantidad</th>
                     <th style="padding-left:15px">Producto</th>
                     <th style="padding-left:15px">Precio</th>
                 </tr>
@@ -17,27 +21,47 @@
             <tbody>
                 <% for (var i = 0; i < tipos.length; i++){ %>
 	                <tr>
-	                    	<td class="col-lg-1 col-sm-1 col-xs-1"><input type="number" class="input-group cantidad"></td>
-							<td class="form-group form-group-sm col-lg-9 col-sm-9 col-xs-9">
-								<div class="input-group form-group-sm" id="productoConfigurarSelect">
-									<span class="input-group-addon" ><i class="fa fa-product-hunt productoConfigurar" aria-hidden="true"></i></span>
-									<select class="form-control selectpicker precio" name="producto" aria-describedby="sizing-addon3">
-										<option selected="selected" class="default">Escoje una <%= tipos[i] %></option>
-										<% productos.forEach( function (producto){ %>
-											<% if (producto.tipo == tipos[i]) { %>
-												<option value="<%= producto.precio %>" data-content='<img src="<%= producto.foto %>" width="2.5%"> <%= producto.nombre %> - precio unitatio : <%= producto.precio %>'></option>
-											<% } %>
-										<% }); %>
-									</select>
-								</div>
-							</td>
-							<td class="col-lg-2 col-sm-2 col-xs-2">
-								<label class="label label-default" style="font-size: 15px">0</label>
-							</td>
-						</div>
+                    	<td class="form-group form-group-sm">
+							<div class="input-group form-group-sm">
+								<span class="input-group-addon" id="sizing-addon3" style="padding:0px;border:0px;background:transparent;box-shadow:0px">
+									<i class="fa fa-minus btn btn-primary" aria-hidden="true"></i>
+								</span>
+	                    		<input type="text" min="0" class="input-group cantidad" value="0">
+	                    		<span class="input-group-addon" id="sizing-addon3" style="padding:0px;border:0px;background:transparent;box-shadow:0px">
+	                    			<i class="fa fa-plus btn btn-primary" aria-hidden="true"></i>
+	                    		</span>
+	                    	</div>
+                    	</td>
+						<td class="form-group form-group-sm col-lg-9 col-sm-9 col-xs-9">
+							<div class="input-group form-group-sm" id="productoConfigurarSelect">
+								<span class="input-group-addon" ><i class="fa fa-product-hunt productoConfigurar" aria-hidden="true"></i></span>
+								<select class="form-control selectpicker precio" name="producto" aria-describedby="sizing-addon3">
+									<option selected="selected" value="0">Escoge <%= tipos[i] %></option>
+									<% productos.forEach( function (producto){ %>
+										<% if (producto.tipo == tipos[i]) { %>
+											<option value="<%= producto.precio %>" data-content='<img src="<%= producto.foto %>" width="2.5%"> <%= producto.nombre %> - precio unitatio : <%= producto.precio %>€'></option>
+										<% } %>
+									<% }); %>
+								</select>
+							</div>
+						</td>
+						<td class="col-lg-2 col-sm-2 col-xs-2">
+							<label class="label label-primary precioTotalProducto" type="number" style="font-size: 15px">0.00€</label>
+						</td>
 	            	</tr>
 	            <% } %>
 	        </tbody>
+	        <tfoot>
+                <tr>
+                	<td></td>
+                	<td class="form-group form-group-sm col-lg-9 col-sm-9 col-xs-9"  style="padding-top:10px">
+                		<button type="button" class="btn btn-primary calcularTotal">Calcular total</button>
+                	</td>
+                    <td class="col-lg-2 col-sm-2 col-xs-2">
+                    	<label class="label label-primary precioTotal" type="number" style="font-size: 15px">0.00€</label>
+                    </td>
+                </tr>
+            </tfoot>
 	    </table>
 	</div>
     <%- include ./footer %>
