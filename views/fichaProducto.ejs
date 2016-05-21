@@ -5,8 +5,8 @@
 </head>
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu %>
-    <div style="padding-top:5%">
-        <div class="panel panel-primary col-md-10 col-md-offset-1">
+    <div class=" col-md-10 col-md-offset-1">
+        <div class="panel panel-primary">
             <div class="panel-heading">
                 <h4 class="panel-title"><b>Ficha de producto</b></h4>
             </div>
@@ -20,7 +20,7 @@
                             <div class="container form-group">
                                 <h1><span class="label label-primary" style="float: left"><%= productoFicha.nombre %></span></h1>
                             </div>
-                            <div class="container">
+                            <div class="justify">
                                 <h4 class="text-justify"><%= productoFicha.descripcion %></h4>
                             </div>
                             <% if(productoFicha.valoracion.length==0 || productoFicha.valoracion.length==undefined){ %>
@@ -52,7 +52,7 @@
                     </form>
                 </div>
                 <div>
-                    <div class="conatiner col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-5 col-sm-offset-2 text-center" style="padding-top: 3%">
+                    <div class="conatiner col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6 col-sm-offset-2 text-center" style="padding-top: 3%">
                         <ul class="nav nav-tabs nav-tabs-justified nav-tabs-success col-md-12">
                             <li id="tabcaracteristicas" role="presentation" class="active">
                                 <a data-toggle="tab" href="#caracteristicas"><b>CARACTERÍSTICAS</b></a>
@@ -78,7 +78,7 @@
                             <div class="panel panel-warning">
                                 <div class="panel-body">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true" ></span>
-                                    Este producto no tiene características.
+                                    Lamentamos no poder mostrarte las características de este producto en este momento.
                                 </div>
                             </div>
                             <% } %>
@@ -100,15 +100,15 @@
                             </ul>
                             <% }else{ %>
                             <div class="panel panel-warning">
-                                <div class="panel-body">
+                                <div class="panel-body text-center">
                                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                                    Este producto no tiene características.
+                                    Lamentamos no poder mostrarte las especificaciones de este producto en este momento.
                                 </div>
                             </div>
                             <% } %>
                         </div>
                         <!-- TAB OPINIONES -->
-                        <div id="opiniones" class="container tab-pane fade col-md-12 col-sm-12">
+                        <div id="opiniones" class=" tab-pane fade col-lg-12 col-md-12 col-sm-12">
                             <% if(registrado==true){ %>
                                 <% if(comentarValorar==true){ %>
                                 <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
@@ -116,38 +116,38 @@
                                         Déjanos un comentario sobre el producto y tu valoración. ¡Grácias!
                                     </div>
                                 </div>
-                                <div class="container col-md-12 col-sm-12">
-                                    <div class="container col-md-8 col-lg-8 col-sm-8">
+                                <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top:7%">
+                                    <div class="col-md-10 col-lg-6 col-sm-8">
                                         <form action="/user/home/<%= productoFicha.nombre %>/comentario" method="post">
                                             <input type="text" name="idProducto" class="hidden" value="<%= productoFicha._id %>">
                                             <div class="form-group">
-                                                <textarea id="comentario" cols="55" rows="5" name="comentario" placeholder="Escribe tu comentario"></textarea>
+                                                <textarea id="comentario" cols="49" rows="5" name="comentario" placeholder="Escribe tu comentario"></textarea>
                                             </div>
-                                            <button id="botonComentario" type="submit" class="btn btn-primary btn-xs text-center" style="float: right" disabled>
+                                            <button id="botonComentario" type="submit" class="btn btn-primary btn-xs text-center col-lg-12" style="float: right" disabled>
                                                 ¡Comenta!
                                             </button>
                                         </form>
                                     </div>
-                                    <div class="container col-lg-4 col-md-4 col-sm-4" style="padding-top:2%%">
+                                    <div class="col-lg-6 col-md-4 col-sm-4">
+                                        <% if(valoracionUsuario==0){ %>
+                                        <div class="panel panel-info col-lg-12 col-md-offset-2 col-md-8 col-sm-12">
+                                            <div class="panel-body text-center col-sm-12">
+                                                No has valorado este producto.
+                                            </div>
+                                        </div>
+                                        <% }else{ %>
+                                        <div class="panel panel-info col-lg-12 col-md-offset-2 col-md-8 col-sm-12">
+                                            <div class="panel-body text-center col-sm-12">
+                                                Puedes cambiar tu valoración del producto.
+                                            </div>
+                                        </div>
+                                        <% } %>
                                         <form action="/user/home/<%= productoFicha.nombre %>/valoracion" method="post">
-                                            <% if(valoracionUsuario==0){ %>
-                                            <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
-                                                <div class="panel-body text-center col-sm-12">
-                                                    No has valorado este producto.
-                                                </div>
-                                            </div>
-                                            <% }else{ %>
-                                            <div class="panel panel-info col-md-offset-2 col-md-8 col-sm-12">
-                                                <div class="panel-body text-center col-sm-12">
-                                                    Puedes cambiar tu valoración del producto.
-                                                </div>
-                                            </div>
-                                            <% } %>
-                                            <div id="valoracion" class="form-group">
+                                            <div id="valoracion" class="form-group" style="margin-left:25%; float:left">
                                                 <input class="rating" value="<%= valoracionUsuario %>"/>
                                             </div>
                                             <input type="text" class="hidden" id="numeroValoracion" name="numeroValoracion"/>
-                                            <button id="botonValoracion" type="submit" class="btn btn-primary btn-xs text-center" disabled>
+                                            <button id="botonValoracion" type="submit" class="btn btn-primary btn-xs text-center" style="margin-left:10%; margin-top:1%" disabled>
                                                 ¡Valora!
                                             </button>
                                         </form>
@@ -167,7 +167,7 @@
                                 </div>
                             </div>
                             <% } %>
-                            <div class="col-md-12 col-sm-12">
+                            <div class="col-md-12 col-sm-12" style="margin-top:7%">
                                 <div class="col-md-12" style="border-bottom: 1px solid grey">
                                     <h5 class="text-default">
                                         COMENTARIOS

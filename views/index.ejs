@@ -69,7 +69,16 @@
 	                                <button title="detalles del producto" class="btn btn-primary botonProducto" style="float: right" type="button" data-toggle="modal" data-target="#productoModal">más»</button>
 	                            </div>
 	                            <div class="col-lg-12 col-lg-offset-5 col-sm-12 col-xs-12">
-	                                <input class="rating" value="<%= valoraciones[x].valoracion %>" data-readonly="true">
+	                                <% if(producto.valoracion.length==0 || producto.valoracion.length==undefined){ %>
+                                    <input class="rating" value="0" data-readonly="true"/>
+                                    <% }else{ %>
+                                    <% var valor = 0 %>
+                                    <% producto.valoracion.forEach(function(valoracion){ %>
+                                    <%      valor=valor+valoracion.valor; %>
+                                    <% }); %>
+                                    <% valor = valor/producto.valoracion.length %>
+                                    <input class="rating" value="<%= valor %>" data-readonly="true"/>
+                                    <% } %>
 	                            </div>
 	                            <% x++; %>
 	                        </td>

@@ -191,6 +191,23 @@
             $('form').get(0).setAttribute('action',"/producto/" + datum)
         });
         
+        /*********** FUNCIONES DEL PEDIDO ***********/
+        
+        // Función que deshabilita el botón del pedido en caso de que no haayan productos en el carrito
+        if($('#cantidadProductosCarritoMenu').text()=='0'){
+            $('#botonRealizarPedido').parent().attr('href','');
+            $('#botonRealizarPedido').addClass('disabled');
+        }
+        $('#cantidadProductosCarritoMenu').change(function(){
+            if($('span .badge').text()=='0'){
+                $('#botonRealizarPedido').parent().attr('href','');
+                $('#botonRealizarPedido').addClass('disabled');
+            }else{
+                $('#botonRealizarPedido').parent().attr('href','/user/home/pedido');
+                $('#botonRealizarPedido').removeClass('disabled');
+            } 
+        });
+        
         /*********** FUNCIONES DE LA CESTA *********/
         
         // Al abrir la página ocultamos las descripciones de los productos
@@ -317,18 +334,38 @@
             $('#cesta').removeClass().addClass('tab-pane fade in active');
         });
         // Cambio de tab de envío y pago a resumen
-        $('#botonPagSiguienteEnvio').click(function(){
-            $('#tabenvioypago').removeClass().addClass('col-lg-3');
-            $('#tabresumen').removeClass().addClass('col-lg-3 active');
-            $('#envioypago').removeClass().addClass('tab-pane fade');
-            $('#resumen').removeClass().addClass('tab-pane fade in active');
-        });
+        if($('#nombreUsuario').text()==undefined||$('#nombreUsuario').text()==""||
+            $('#apellidosUsuario').text()==undefined||$('#apellidosUsuario').text()==""||
+            $('#telefonoUsuario').text()==undefined||$('#telefonoUsuario').text()==""||
+            $('#direccionEnvioUsuario').text()==undefined||$('#direccionEnvioUsuario').text()==""||
+            $('#selectDireccionesFacturacion option').length==0||
+            $('#selectDireccionFacturacion')==undefined||
+            (($('#cuentaPaypalUsuario').text()==undefined||$('#cuentaPaypalUsuario').text()=="")&&
+             ($('#numeroCuentaUsuario').text()==undefined||$('#numeroCuentaUsuario').text()==""))){
+            // Si falta algún dato del usuario deshabilitamos el botón
+            $('#botonPagSiguienteEnvio').children().attr('href','');
+            $('#botonPagSiguienteEnvio').addClass('disabled');
+        }else{
+            $('#botonPagSiguienteEnvio').children().attr('href','#resumen');
+            $('#botonPagSiguienteEnvio').removeClass('disabled');
+            $('#botonPagSiguienteEnvio').click(function(){
+                $('#tabenvioypago').removeClass().addClass('col-lg-3');
+                $('#tabresumen').removeClass().addClass('col-lg-3 active');
+                $('#envioypago').removeClass().addClass('tab-pane fade');
+                $('#resumen').removeClass().addClass('tab-pane fade in active');
+            });
+        }
         
         /*********** FUNCIONES DEL RESUMEN *********/
     
         // Enviamos la dirección de facturación seleccionada a la página de resumen
-        var resumenDireccionFacturacion = $('#selectDireccionesFacturacion option:selected').text();
-        $('#resumenDireccionFacturacion').append(resumenDireccionFacturacion);
+        $resumenDireccionFacturacion = $('#selectDireccionesFacturacion option:selected').text();
+        $('#resumenDireccionFacturacion').append($resumenDireccionFacturacion);
+        $('#selectDireccionesFacturacion').change(function(){
+            $resumenDireccionFacturacion = $('#selectDireccionesFacturacion option:selected').text();
+            $('#resumenDireccionFacturacion').text('');
+            $('#resumenDireccionFacturacion').append($resumenDireccionFacturacion);
+        });
     
         // Calculamos los resultados de los importes a la página de resumen
         $resultado=0;
@@ -362,17 +399,148 @@
             $('#resumen').removeClass().addClass('tab-pane fade in active');
         });
 
-        /************** FUNCIONES AL CLICAR LAS TABS *******************/
-
-        /*$('#tabcesta').click(){
-            if($('#tabcesta').hasClass('disabled')){
-
+        /************** FUNCIONES AL CLICAR LAS TABS O LOS BOTONES DE SIGUIENTE *******************/
+        
+        $('#tabcesta').click(function(){
+            if(!$(this).hasClass('disabled')){
+                $('#cesta').removeClass().addClass('tab-pane fade in active');
+                $('#tabcesta').children().attr('aria-expanded',true);
+                $('#tabcesta').removeClass().addClass('col-lg-3 active');
+                if(!$('#tabenvioypago').hasClass('disabled')){
+                    $('#envioypago').removeClass().addClass('tab-pane fade');
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabresumen').hasClass('disabled')){
+                    $('#resumen').removeClass().addClass('tab-pane fade');
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                     $('#tabresumen').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                     $('#tabresumen').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabfinalizar').hasClass('disabled')){
+                    $('#finalizar').removeClass().addClass('tab-pane fade');
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3 disabled');
+                }
+            }else{
+                $('#tabcesta').children().attr('aria-expanded',false);
+                $('#tabcesta').removeClass().addClass('col-lg-3 disabled');
             }
-        };*/
+        });
+        $('#tabenvioypago').click(function(){
+            if(!$(this).hasClass('disabled')){
+                $('#envioypago').removeClass().addClass('tab-pane fade in active');
+                $('#tabenvioypago').children().attr('aria-expanded',true);
+                $('#tabenvioypago').removeClass().addClass('col-lg-3 active');
+                if(!$('#tabcesta').hasClass('disabled')){
+                    $('#cesta').removeClass().addClass('tab-pane fade');
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabresumen').hasClass('disabled')){
+                    $('#resumen').removeClass().addClass('tab-pane fade');
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                     $('#tabresumen').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                     $('#tabresumen').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabfinalizar').hasClass('disabled')){
+                    $('#finalizar').removeClass().addClass('tab-pane fade');
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3 disabled');
+                }
+            }else{
+                $('#tabenvioypago').children().attr('aria-expanded',false);
+                $('#tabenvioypago').removeClass().addClass('col-lg-3 disabled');
+            }
+        });
+        $('#tabresumen').click(function(){
+            if(!$(this).hasClass('disabled')){
+                $('#resumen').removeClass().addClass('tab-pane fade in active');
+                $('#tabresumen').children().attr('aria-expanded',true);
+                $('#tabresumen').removeClass().addClass('col-lg-3 active');
+                if(!$('#tabcesta').hasClass('disabled')){
+                    $('#cesta').removeClass().addClass('tab-pane fade');
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabenvioypago').hasClass('disabled')){
+                    $('#envioypago').removeClass().addClass('tab-pane fade');
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabfinalizar').hasClass('disabled')){
+                    $('#finalizar').removeClass().addClass('tab-pane fade');
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabfinalizar').children().attr('aria-expanded',false);
+                    $('#tabfinalizar').removeClass().addClass('col-lg-3 disabled');
+                }
+            }else{
+                $('#tabresumen').children().attr('aria-expanded',false);
+                $('#tabresumen').removeClass().addClass('col-lg-3 disabled');
+            }
+        });
+        $('#tabfinalizar').click(function(){
+            if(!$(this).hasClass('disabled')){
+                $('#finalizar').removeClass().addClass('tab-pane fade in active');
+                $('#tabfinalizar').children().attr('aria-expanded',true);
+                $('#tabfinalizar').removeClass().addClass('col-lg-3 active');
+                if(!$('#tabcesta').hasClass('disabled')){
+                    $('#cesta').removeClass().addClass('tab-pane fade');
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabcesta').children().attr('aria-expanded',false);
+                    $('#tabcesta').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabenvioypago').hasClass('disabled')){
+                    $('#envioypago').removeClass().addClass('tab-pane fade');
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabenvioypago').children().attr('aria-expanded',false);
+                    $('#tabenvioypago').removeClass().addClass('col-lg-3 disabled');
+                }
+                if(!$('#tabresumen').hasClass('disabled')){
+                    $('#resumen').removeClass().addClass('tab-pane fade');
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                    $('#tabresumen').removeClass().addClass('col-lg-3');
+                }else{
+                    $('#tabresumen').children().attr('aria-expanded',false);
+                    $('#tabresumen').removeClass().addClass('col-lg-3 disabled');
+                }
+            }else{
+                $('#tabfinalizar').children().attr('aria-expanded',false);
+                $('#tabfinalizar').removeClass().addClass('col-lg-3 disabled');
+            }
+        });
 
         /*************** FUNCIONES DE LA FICHA DEL PRODUCTO ***************/
 
-        // Funciones que deshabilita el botón si no hay comentario o valoración
+        // Funciones que deshabilitan los botones si no hay comentario o valoración
         $('#comentario').blur(function(){
             $comentario=$('#comentario').val();
             if($comentario==""||$comentario==undefined){

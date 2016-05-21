@@ -64,7 +64,7 @@
 							<button type="button" class="btn btn-lg btn-primary dropdown-toggle carritoBtn" data-toggle="dropdown" data-hover="dropdown" role="button">
 								<i class="fa fa-shopping-cart">&nbsp</i>
 								<%if (carrito != undefined){%>
-									<span class="badge"><%= carrito.length%></span>
+									<span id="cantidadProductosCarritoMenu" class="badge"><%= carrito.length%></span>
 								<%}%>
 							</button>
 						<% } %>
@@ -107,7 +107,7 @@
                                         <tr>
                                             <td colspan="5">
                                             	<a href="/user/home/pedido">
-                                                	<button class="btn btn-default" type="button">Realizar Pedido</button>
+                                                	<button id="botonRealizarPedido" class="btn btn-default" type="button">Realizar Pedido</button>
                                                 </a>
                                             </td>
                                         </tr>
