@@ -15,9 +15,6 @@ html {
   border-radius: 3px;
   line-height: 28px;
 }
-/* .cantidad::-webkit-inner-spin-button{
-  display: none;
-} */
 #formFormularioAdminAnadir{
   position: relative;
   margin-top: 20px;
@@ -31,11 +28,11 @@ html {
 .thumbnail{
   height: 410px;
 }
-/*.borderless td, .borderless th {
-  border: none;
-}*/
 #titulo{
   text-transform:capitalize;
+  font-family: AlKafont;
+  color: #286090;
+  filter:contrast(200%);
 }
 #footer {
   position: absolute;
@@ -75,6 +72,10 @@ a {
 @font-face {
   font-family: fontAlKa;
   src: url("/fonts/13misa/13_Misa.TTF");
+}
+@font-face {
+  font-family: AlKafont;
+  src: url("/fonts/Minecraft.ttf");
 }
 #AlKa{
   font-family: fontAlKa;

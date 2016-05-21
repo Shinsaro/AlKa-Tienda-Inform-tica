@@ -270,7 +270,7 @@ module.exports = function(app,passport){
 										targetas:"/user/home/category/targetas graficas",
 										placaBase:"/user/home/category/placa base",
 										procesadores:"/user/home/category/procesadores",
-										configura: "/user/home/category/configura tu pc"
+										configura: "/user/home/configura tu pc"
 									});
 								}else{
 									console.log('Error');
@@ -417,7 +417,7 @@ module.exports = function(app,passport){
 										targetas:"/user/home/category/targetas graficas",
 										placaBase:"/user/home/category/placa base",
 										procesadores:"/user/home/category/procesadores",
-										configura: "/user/home/category/configura tu pc"
+										configura: "/user/home/configura tu pc"
 									});
 								}else{
 									console.log('Error');
@@ -467,7 +467,7 @@ module.exports = function(app,passport){
 								targetas:"/user/home/category/targetas graficas",
 								placaBase:"/user/home/category/placa base",
 								procesadores:"/user/home/category/procesadores",
-								configura: "/user/home/category/configura tu pc"
+								configura: "/user/home/configura tu pc"
 							});
 						});
 					});
@@ -560,7 +560,7 @@ module.exports = function(app,passport){
 						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores",
-						configura: "/user/home/category/configura tu pc"
+						configura: "/user/home/configura tu pc"
 					});
 				});
 			});
@@ -690,7 +690,7 @@ module.exports = function(app,passport){
 							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
 							procesadores:"/user/home/category/procesadores",
-							configura: "/user/home/category/configura tu pc"
+							configura: "/user/home/configura tu pc"
 		    			});
 		    		}
 		    	});
@@ -733,7 +733,7 @@ module.exports = function(app,passport){
 							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
 							procesadores:"/user/home/category/procesadores",
-							configura: "/user/home/category/configura tu pc"
+							configura: "/user/home/configura tu pc"
 		    			});
 		    		}
 	    		});
@@ -774,7 +774,7 @@ module.exports = function(app,passport){
 							targetas:"/user/home/category/targetas graficas",
 							placaBase:"/user/home/category/placa base",
 							procesadores:"/user/home/category/procesadores",
-							configura: "/user/home/category/configura tu pc"
+							configura: "/user/home/configura tu pc"
 		    			});
 		    		}
 	    		});
@@ -816,7 +816,7 @@ module.exports = function(app,passport){
 						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores",
-						configura: "/user/home/category/configura tu pc"
+						configura: "/user/home/configura tu pc"
 	    			});
 	    		}
     		});
@@ -856,7 +856,7 @@ module.exports = function(app,passport){
 						targetas:"/user/home/category/targetas graficas",
 						placaBase:"/user/home/category/placa base",
 						procesadores:"/user/home/category/procesadores",
-						configura: "/user/home/category/configura tu pc"
+						configura: "/user/home/configura tu pc"
 					});
 		    	});
 			});
@@ -902,7 +902,7 @@ module.exports = function(app,passport){
 								targetas:"/user/home/category/targetas graficas",
 								placaBase:"/user/home/category/placa base",
 								procesadores:"/user/home/category/procesadores",
-								configura: "/user/home/category/configura tu pc"
+								configura: "/user/home/configura tu pc"
 							});
 						});
 			    	});
@@ -919,11 +919,12 @@ module.exports = function(app,passport){
 		} else {
 			req.flash('info', 'Producto creado con exito. Ahora asignale una imagen');
 		}
-		var descripcionArray = req.body.descripcion.split("\r\n");
+		var caracteristicasArray = req.body.caracteristicas.split("\r\n");
         Productos.findOne({nombre:req.body.nombre},function (err,Producto){
         	if (!Producto){
         		var nombre = req.body.nombre,
-	        		descripcion = descripcionArray,
+	        		descripcion = req.body.descripcion,
+	        		caracteristicas = caracteristicasArray,
 	        		precio = req.body.precio,
 	        		marca = req.body.marca,
 					tipo  = req.body.tipo,
@@ -932,20 +933,21 @@ module.exports = function(app,passport){
 					if (Marca){
 						var producto = new Productos ({
 							nombre: req.body.nombre,
-							descripcion: descripcionArray,
+							descripcion: req.body.descripcion,
+							caracteristicas : caracteristicasArray,
 							precio: req.body.precio,
 							marca : Marca._id,
 							valoracion: 0,
 							tipo : req.body.tipo,
 							foto: null
 						});
-						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: ""},function (err,ProductoAñadido){
+						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: "", caracteristicas : caracteristicas},function (err,ProductoAñadido){
 							if (!err)
 								res.redirect('back');
-						});
-						Productos.findOne({nombre:req.body.nombre},function (err,ProductoCreado){
-							Marcas.update({_id:Marca._id},{$push : {idProducto : ProductoCreado._id}},function(err,result){
-								console.log("añadido el nuevo producto a la marca");
+							Productos.findOne({nombre:ProductoAñadido.nombre},function (err,ProductoCreado){
+								Marcas.update({_id:Marca._id},{$push : {idProducto : ProductoCreado._id}},function(err,result){
+									console.log("añadido el nuevo producto a la marca");
+								});
 							});
 						});
 					} else {
@@ -1031,7 +1033,8 @@ module.exports = function(app,passport){
 	                if(req.user!=undefined){
 	                    var idUsuario = req.user._id,
 	                        idProducto = productoFicha._id;
-                        // Compruebo si el usuario ha valorado el producto de la ficha/********************************************************************/
+                        /********************************************************************/
+                        // Compruebo si el usuario ha valorado el producto de la ficha
                         productoFicha.valoracion.forEach(function(valoracion){
                             if(valoracion.usuario!=undefined && valoracion.usuario.equals(idUsuario)){
                                 valoracionUsuario=valoracion.valor;

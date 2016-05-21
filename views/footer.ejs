@@ -75,24 +75,26 @@
         $('.selectpicker').selectpicker({
           style: 'btn-primary',
         });
-        $precio = 0, $totalProducto = 0, $cantidad = 0, $totalProductoFinal = 0, $str = 0;
+        $precio = 0, $totalProducto = 0, $cantidad = 0, $totalProductoFinal = 0, $str = 0, $cantidadActualizada = 0;
         $('.fa-minus').click(function(){
             if ($(this).parent().next().val() > 0){
                 $cantidad = $(this).parent().next().val() - 1;
             }
             $(this).parent().next().val($cantidad);
+            $cantidadActualizada = $(this).parent().next().val();
             $precio = Number($(this).parent().parent().parent().next().find('select').val());
-            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
-            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
-            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($str);
+            $totalProducto = parseFloat($precio) * parseFloat($cantidadActualizada);
+            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($totalProducto.toFixed(2)+"€");
+            $('.calcularTotal').trigger("click");
         });
         $('.fa-plus').click(function(){
             $cantidad = Number($(this).parent().prev().val()) + 1;
             $(this).parent().prev().val($cantidad);
+            $cantidadActualizada = Number($(this).parent().prev().val());
             $precio = Number($(this).parent().parent().parent().next().find('select').val());
-            $totalProducto = parseFloat($precio) * parseFloat($cantidad);
-            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProducto).toFixed(2) + '">' + Number($totalProducto).toFixed(2) + '€</label>';
-            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($str);
+            $totalProducto = parseFloat($precio) * parseFloat($cantidadActualizada);
+            $(this).parent().parent().parent().next().next().find('.precioTotalProducto').html($totalProducto.toFixed(2)+"€");
+            $('.calcularTotal').trigger("click");
         });
         $("select").change(function() {
             $precio = Number($(this).val());
@@ -102,13 +104,16 @@
             if ($('.precioTotalProducto').val() != undefined){
                 $(this).parent().parent().parent().next().html($str);
             }
+            $('.calcularTotal').trigger("click");
         });
+        $('.calcularTotal').hide();
         $('.calcularTotal').click(function(){
             $('.precioTotalProducto').each(function(){
                 $totalProductoFinal += parseFloat($(this).text());
             });
-            $str = '<label class="label label-primary precioTotalProducto" style="font-size: 15px" value="' + Number($totalProductoFinal).toFixed(2) + '">' + Number($totalProductoFinal).toFixed(2) + '€</label>';
+            $str = '<label class="label label-primary precioTotal" style="font-size: 15px" value="' + $totalProductoFinal.toFixed(2) + '">' + $totalProductoFinal.toFixed(2) + '€</label>';
             $(this).parent().next().html($str);
+            $totalProductoFinal = 0;
         });        
         
         /*********** FUNCIONES DE MODAL PRODUCTO **********/
