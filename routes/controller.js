@@ -1578,14 +1578,18 @@ module.exports = function(app,passport){
     
     guardarPedido = function(req,res){
         // Declaración de variables a utilizar
-        var idUsuario = req.user._id;
-        var idProductos = [];
-        var cantidadProductos = [], arrayNombresProductos = [];
+        var idUsuario = req.user._id,
+            idProductos = [],
+            cantidadProductos = [],
+            arrayNombresProductos = [];
         
         // Actualizando el pedido del carrito como finalizado
         Carrito.update({idUsuario: idUsuario, finalizar: false},
-                       { $set: {finalizar: true}},
-                       { multi: true },
+                        { 
+                            $set: {finalizar: true}, 
+                            $currentDate: {fechaCreacionCarrito: true}
+                        },
+                        { multi: true },
                         function(err, result){
                             if(!err){
                                 console.log('Actualizando el pedido del carrito como finalizado');
@@ -1671,6 +1675,83 @@ module.exports = function(app,passport){
 			res.redirect('back');
 		});
     };
+    
+    misPedidos = function(req, res){
+         var idUsuario = req.user._id,
+             idProductos = [],
+             cantidadProductos = [],
+             arrayNombresProductos = [],
+             fechas = [],
+             auxFecha = true;
+        //
+        Productos.find(function (err,ProductosTienda){
+	        for (var i = 0; i < ProductosTienda.length; i++ ){
+				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+			}
+            // Buscando los productos del carrito de este usuario
+	        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarrito){
+	            if (!err) {
+	                productosCarrito.forEach(function(producto){
+	                    idProductos.push(producto.idProducto);
+	                    cantidadProductos.push(producto.cantidad);
+                        fechas.forEach(function(fecha){
+                            if(fecha!=undefined && fecha==producto.fechaCreacionCarrito){
+                                auxFecha = false;
+                            }
+                        });
+                        if(auxFecha){
+                            fechas.push(producto.fechaCreacionCarrito);
+                        }
+	                });
+	                var cantidades = cantidadProductos;
+	                // Busco la información de los productos según el id del usuario
+	                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+	                    if(!err){
+	                        console.log('buscando productos añadidos al pedido envio y pago');
+	                        // Mostrando información de usuario
+	                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+	                            if(!err){
+	                                console.log('Mostrando información usuario');
+	                                // Envío toda la información a la página con los cambios hechos
+	                                res.render('misPedidos', {
+	                                    alias:req.user.alias,
+	                                    home: "/user/home",
+	                                    titulo: "AlKa - Mis pedidos",
+	                                    ram: "/user/home/category/ram",
+	                                    hdd: "/user/home/category/disco duro",
+	                                    cajas:"/user/home/category/cajas",
+	                                    fuentes:"/user/home/category/fuentes",
+	                                    targetas:"/user/home/category/targetas graficas",
+	                                    componentes: "/user/home/category/componentes",
+	                                    placaBase:"/user/home/category/placa base",
+	                                    procesadores:"/user/home/category/procesadores",
+	                                    configura: "/user/home/configura tu pc",
+	                                    productosLista : arrayNombresProductos,
+	                                    modal:"modal",
+	                                    nameTarget:"#profileModal",
+	                                    entrarSalir: "Mi perfil",
+	                                    messageDangerRegistrar: req.flash('signupMessage'),
+	                                    messageSuccessRegistrar: req.flash('signupMessage'),
+										messageDangerLogin: req.flash('loginMessage'),
+	                                    cantidad: cantidades,
+	                                    carrito: ProductosPedido,
+	                                    usuario: usuario,
+                                        fechas: fechas
+	                                });
+	                            }else{
+	                                console.log('Error al buscar el usuario');
+	                            }
+	                        });
+	                    }else{
+	                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
+	                    }
+	                });
+	            } else {
+	                console.log('Error al buscar los productos '+err);
+	            }
+	        });
+        });
+    };
 
     app.get('/',indexWeb);
 	app.get('/home',indexWeb);
@@ -1712,6 +1793,7 @@ module.exports = function(app,passport){
     app.all('/home/:producto',fichaProducto);
     app.post('/user/home/:producto/comentario',isLoggedIn,comentario);
     app.post('/user/home/:producto/valoracion',isLoggedIn,valoracion);
+    app.get('/user/home/mispedidos',isLoggedIn,misPedidos);
 
 };
 function isLoggedIn(req, res, next) {

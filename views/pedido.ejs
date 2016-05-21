@@ -6,7 +6,7 @@
 <body data-spy="scroll" data-target="#navbar-example">
 	<%- include ./menu %>
     <div class="panel panel-primary">
-        <div class="panel-body text-center" style="margin-top:4%">
+        <div class="panel-body text-center">
             <h1>Realizando pedido</h1>
         </div>
     </div>
@@ -47,33 +47,31 @@
                         </thead>
                         <tbody>
                             <% for(var i=0; i<carrito.length; i++){ %>
-                            <!--<form action="/user/home/quitarProductoCarrito" method="POST">-->
-                                <tr>
-                                    <td class="form-group">
-                                        <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
-                                            <span class="glyphicon glyphicon-chevron-down"></span>
-                                            &nbsp;
-                                        </a>
-                                        <h5><%= carrito[i].nombre %></h5>
+                            <tr>
+                                <td class="form-group">
+                                    <a id="informacionProducto" class="detail-icon abrir-info" title="descripción" style="float:left;">
+                                        <span class="glyphicon glyphicon-chevron-down"></span>
+                                        &nbsp;
+                                    </a>
+                                    <h5><%= carrito[i].nombre %></h5>
 
-                                        <div class="panel panel-default descripcion">
-                                            <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
-                                            <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
-                                        </div>
-                                    </td>
-                                    <td class="form-group">
-                                        <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
-                                        <input class="hidden" name="idProductoCarrito" type="text" value="<%= carrito[i]._id %>"/>
-                                    </td>
-                                    <td class="precio"><%= carrito[i].precio %></td>
-                                    <td class="totalProducto"></td>
-                                    <td style="width:5px">
-                                        <button type="button" class="btn btn-danger btn-xs quitarProductoPedido" title="quitar">
-                                            <span class="glyphicon glyphicon-trash"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                            <!--</form>-->
+                                    <div class="panel panel-default descripcion">
+                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                    </div>
+                                </td>
+                                <td class="form-group">
+                                    <input class="cantidad" name="cantidades" type="text" value="<%= cantidad[i] %>" size="2"/>
+                                    <input class="hidden" name="idProductoCarrito" type="text" value="<%= carrito[i]._id %>"/>
+                                </td>
+                                <td class="precio"><%= carrito[i].precio %></td>
+                                <td class="totalProducto"></td>
+                                <td style="width:5px">
+                                    <button type="button" class="btn btn-danger btn-xs quitarProductoPedido" title="quitar">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
                             <% } %>
                         </tbody>
                         <tfoot>
@@ -101,11 +99,11 @@
                     </div>
                     <div class="panel-body">
                         <div class="container">
-                            <div id="infoDatosPersonales" class="container col-md-3"  style="padding: 2%">
+                            <div id="infoDatosPersonales" class="container col-md-3"  style="padding-left: 7%; padding-bottom: 7%; padding-right: 17%;">
                                 <p>
                                     Nombre<br>
                                     <% if(usuario.nombre!=undefined && usuario.nombre!=''){ %>
-                                    <label><%= usuario.nombre %></label>
+                                    <label id="nombreUsuario"><%= usuario.nombre %></label>
                                     <% }else{ %>
                                     <i>No has guardado tu nombre</i>
                                     <% } %>
@@ -113,7 +111,7 @@
                                 <p>
                                     Apellidos<br>
                                     <% if(usuario.apellidos!=undefined && usuario.apellidos!=''){ %>
-                                    <label><%= usuario.apellidos %></label>
+                                    <label id="apellidosUsuario"><%= usuario.apellidos %></label>
                                     <% }else{ %>
                                     <i>No has guardado tus apellidos</i>
                                     <% } %>
@@ -121,7 +119,7 @@
                                 <p>
                                     Teléfono<br>
                                     <% if(usuario.telefono!=undefined && usuario.telefono!=''){ %>
-                                    <label><%= usuario.telefono %></label>
+                                    <label id="telefonoUsuario"><%= usuario.telefono %></label>
                                     <% }else{ %>
                                     <i>No has guardado tu teléfono</i>
                                     <% } %>
@@ -180,7 +178,7 @@
                             </h4>
                             <div id="infoDireccionEnvio" class="container-fluid col-sm-10 col-md-3">
                                 <% if(usuario.direccionEnvio.calle != undefined && usuario.direccionEnvio.calle!=''){ %>
-                                    <p>C/ <%= usuario.direccionEnvio.calle %>,
+                                    <p id="direccionEnvioUsuario">C/ <%= usuario.direccionEnvio.calle %>,
                                         <%= usuario.direccionEnvio.numero %>, 
                                         <%= usuario.direccionEnvio.piso %>º - 
                                         <%= usuario.direccionEnvio.puerta %>ª</p>
@@ -322,10 +320,10 @@
                                 <% if(usuario.metodoPago!=undefined && usuario.metodoPago!=''){ %>
                                     <% if(usuario.metodoPago == 'visa'){ %>
                                         <p>El cobro se efecturá al número de cuenta:</p>
-                                        <label><%= usuario.numeroCuenta %></label>
+                                        <label id="numeroCuentaUsuario"><%= usuario.numeroCuenta %></label>
                                         <% }else if(usuario.metodoPago == 'paypal'){ %>
                                         <p>El cobro se efectuará con la siguiente cuanta de PayPal:</p><br>
-                                        <label><%= usuario.cuentaPaypal %></label>
+                                        <label id="cuentaPaypalUsuario"><%= usuario.cuentaPaypal %></label>
                                     <% } %>
                                 <% }else{ %>
                                     <div class="alert alert-warning" role="alert">
@@ -464,7 +462,7 @@
                                 <% for(var i=0; i<carrito.length; i++){ %>
                                 <tr>
                                     <td>
-                                        <label><h5 name="nombreProducto"><%= carrito[i].nombre %></h5></label><br>
+                                        <label class="text-primary"><h5 name="nombreProducto"><%= carrito[i].nombre %></h5></label><br>
                                         <div class="panel panel-default">
                                             <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
                                             <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
@@ -517,9 +515,11 @@
                         <span class="glyphicon glyphicon-ok" aria-hidden="true" ></span>
 						<h3>¡Enhorabuena! Tu compra ha sido realizada con éxito.</h3>
                         <br>
-                        <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm">
-                            revisa tus compras
-                        </button>
+                        <a href="/user/home/mispedidos">
+							<button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm">
+                                revisa tus pedidos
+                            </button>	
+				        </a>
                         <a id="compraFinalizada" href="/user/home">
                             <button type="button" id="guardarMetodoPago" class="btn btn-primary btn-sm">
                                 vuelve al inicio

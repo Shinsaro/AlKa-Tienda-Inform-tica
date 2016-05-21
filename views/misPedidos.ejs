@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<%- include ./header %>
+</head>
+<body data-spy="scroll" data-target="#navbar-example">
+	<%- include ./menu %>
+    <div class=" col-md-10 col-md-offset-1">
+        <div class="panel panel-primary">
+            <div class="panel-body text-center">
+                <h1>Mis pedidos</h1>
+            </div>
+        </div>
+        <% for(var j=0; j<fechas.length; j++){ %>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <%= fechas[j] %>
+                </h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12">
+                <label><h4 class="text-default">Datos de Compra</h4></label>
+                    <table class="table table-condensed" table-responsive>
+                        <thead>
+                            <tr>
+                                <th>Artículo</th>
+                                <th>Uds.</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i<carrito.length; i++){ %>
+                            <tr>
+                                <td>
+                                    <label class="text-primary"><h5 name="nombreProducto"><%= carrito[i].nombre %></h5></label><br>
+                                    <div class="panel panel-default">
+                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
+                                    </div>
+                                </td>
+                                <td class="resumenCantidad" name="resumenCantidad"><%= cantidad[i] %></td>
+                                <td class="resumenPrecio" name="resumenPrecio"><%= carrito[i].precio %></td>
+                                <td class="resumentTotalProducto" name="resumentTotalProducto"></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td><h4>Importe Total</h4></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h4 id="resumenTotalCarrito" name="importeSingastos" style="float:left"></h4>
+                                    <h4 style="float:left">€</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><h3>Importe Total</h3>
+                                    <i><h5>más gastos de envío (5,00€)</h5></i>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <h3 id="resumenTotalMasGastos" name="importeConGastos" style="float:left"></h3>
+                                    <h3 style="float:left">€</h3>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+    <%- include("./footer") %>
+    </body>
+</html>
