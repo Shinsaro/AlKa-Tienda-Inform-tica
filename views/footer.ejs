@@ -32,7 +32,24 @@
 	</div>
 </div>
 <div id="footer">
-		<div class="container">
+        <ul class='social_bookmarks'>
+            <li class='icontwitter'>
+                <a href='http://twitter.com/usuario'>
+                    Twitter
+                </a>
+            </li>
+            <li class='iconfacebook'>
+                <a href='http://facebook.com/usuario'>
+                    Facebook
+                </a>
+            </li>
+            <li class='icongplus'>
+                <a href='http://plus.google.com/+usuario/about'>
+                    Google Plus
+                </a>
+            </li>
+        </ul>
+		<div>
 			<p class="footer-block">Quienes somos.</p>
 			<p class="footer-block">Contacta con nosotros</p>
 		</div>
@@ -184,11 +201,11 @@
             ].join('\n'),
             suggestion: function(productos){
                 var producto = productos.split("¬");
-                return '<a href="/producto/' + producto[0] + '"><p><img src="/images/fotosProductos/' + producto[0]+ ".jpg" +'" width="25%" height="25%"><strong>' + producto[0] + '</strong></p></a>';
+                return '<a href="/home/' + producto[0] + '"><p><img src="/images/fotosProductos/' + producto[0]+ ".jpg" +'" width="25%" height="25%"><strong>' + producto[0] + '</strong></p></a>';
             }
           }
         }).on('typeahead:selected', function (obj, datum) {
-            $('form').get(0).setAttribute('action',"/producto/" + datum)
+            $('form').get(0).setAttribute('action',"/home/" + datum)
         });
         
         /*********** FUNCIONES DEL PEDIDO ***********/

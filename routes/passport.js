@@ -49,10 +49,10 @@ module.exports = function(passport) {
                     return done(err);
                 // miramos si existe un usuario con ese correo.
                 if (user) {
-                    return done(null, false, req.flash('signupMessage', 'El correo ya esta en uso.'));
+                    return done(null, false, req.flash('signupMessageFail', 'El correo ya esta en uso.'));
                 } else {
                     // si no hay un usuario con ese correo lo crea
-                    req.flash('signupMessage', 'Registrado correctamente ahora puedes loguearte.');
+                    req.flash('signupMessageOk', 'Registrado correctamente ahora puedes loguearte.');
                     var usuarioNuevo = new User(req.body);
                     usuarioNuevo.foto = "/images/fotosPerfilUsuarios/default.png";
                     usuarioNuevo.correo = correo;

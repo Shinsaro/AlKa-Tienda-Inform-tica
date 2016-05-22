@@ -7,13 +7,7 @@ var mongoose = require('mongoose');
 module.exports = function(app,passport){
 	indexWeb = function (req,res){
 		var arrayNombresProductos = [];
-		Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
-			if (arrayValoraciones == undefined) {
-				var arrayValoraciones = [];
-			}
-			for (var x = 0; x < ProductosTienda.length; x++){
-				arrayValoraciones.push(ProductosTienda[x].valoracion);
-			}
+		Productos.find().sort('-valoracion.valor').find({foto : {$ne : null}},function (err,ProductosTienda){
 			for (var i = 0; i < ProductosTienda.length; i++ ){
 				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 			}
@@ -26,12 +20,11 @@ module.exports = function(app,passport){
 					carrito: "",
 					productos: ProductosTienda,
 					productosLista : arrayNombresProductos,
-					valoraciones: arrayValoraciones,
 					modal:"modal",
 					nameTarget: "#myModal",
 					entrarSalir: "Log In",
-					messageDangerRegistrar: req.flash('signupMessage'),
-					messageSuccessRegistrar: req.flash('signupMessage'),
+					messageDangerRegistrar: req.flash('signupMessageFail'),
+					messageSuccessRegistrar: req.flash('signupMessageOk'),
 					messageDangerLogin: req.flash('loginMessage'),
 					componentes: "/home/category/componentes",
 					ram: "/home/category/ram",
@@ -51,7 +44,7 @@ module.exports = function(app,passport){
 	indexWebLogin = function (req,res){
 		if (req.user.admin == true){
 			var arrayNombresProductos = [];
-			Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
+			Productos.find().sort('+valoracion.valor').find({foto : {$ne : null}},function (err,ProductosTienda){
 				for (var i = 0; i < ProductosTienda.length; i++ ){
 					arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 				}
@@ -63,8 +56,8 @@ module.exports = function(app,passport){
 					productosLista : arrayNombresProductos,
 					nameTarget:"#profileModal",
 					entrarSalir: "Mi perfil",
-					messageDangerRegistrar: req.flash('signupMessage'),
-					messageSuccessRegistrar: req.flash('signupMessage'),
+					messageDangerRegistrar: req.flash('signupMessageFail'),
+					messageSuccessRegistrar: req.flash('signupMessageOk'),
 					messageDangerLogin: req.flash('loginMessage'),
 					componentes: "/user/home/category/componentes",
 					ram: "/user/home/category/ram",
@@ -88,7 +81,7 @@ module.exports = function(app,passport){
 					idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 				}
 				Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
-					Productos.find(function (err,ProductosTienda){
+					Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
 						if (arrayValoraciones == undefined) {
 							var arrayValoraciones = [];
 						}
@@ -107,12 +100,11 @@ module.exports = function(app,passport){
 								productos: ProductosTienda,
 								productosLista : arrayNombresProductos,
 								carrito: ProductosCarrito,
-								valoraciones: arrayValoraciones,
 								modal:"modal",
 								nameTarget:"#profileModal",
 								entrarSalir: "Mi perfil",
-								messageDangerRegistrar: req.flash('signupMessage'),
-								messageSuccessRegistrar: req.flash('signupMessage'),
+								messageDangerRegistrar: req.flash('signupMessageFail'),
+								messageSuccessRegistrar: req.flash('signupMessageOk'),
 								messageDangerLogin: req.flash('loginMessage'),
 								componentes: "/user/home/category/componentes",
 								ram: "/user/home/category/ram",
@@ -175,14 +167,13 @@ module.exports = function(app,passport){
 								productosLista : arrayNombresProductos,
 								marcas: MarcasTienda,
 								marcasMarcadas: arrayMarcasMarcadas,
-								valoraciones: arrayValoraciones,
 								accionFiltrar: req.url,
 								titulo:tituloSeccion,
 								modal:"modal",
 								nameTarget:"#myModal",
 								entrarSalir: "Log In",
-								messageDangerRegistrar: req.flash('signupMessage'),
-								messageSuccessRegistrar: req.flash('signupMessage'),
+								messageDangerRegistrar: req.flash('signupMessageFail'),
+								messageSuccessRegistrar: req.flash('signupMessageOk'),
 								messageDangerLogin: req.flash('loginMessage'),
 								componentes: "/home/category/componentes",
 								ram: "/home/category/ram",
@@ -234,12 +225,6 @@ module.exports = function(app,passport){
 						tituloSeccion = req.params.producto.substring(0,1).toUpperCase() + req.params.producto.substring(1);
 						Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
 							Productos.find({tipo: req.params.producto,marca: {$in : arrayMarcasNombres},foto : {$ne : null}},function (err,ProductosMarcasTienda){
-								if (arrayValoraciones == undefined) {
-									var arrayValoraciones = [];
-								}
-								for (var x = 0; x < ProductosMarcasTienda.length; x++){
-									arrayValoraciones.push(ProductosMarcasTienda[x].valoracion);
-								}
 								for (var i = 0; i < ProductosTienda.length; i++ ){
 									arrayNombresProductos.push(ProductosTienda[i].nombre);
 								}
@@ -253,14 +238,13 @@ module.exports = function(app,passport){
 										carrito: ProductosCarrito,
 										marcas: MarcasTienda,
 										marcasMarcadas: arrayMarcasMarcadas,
-										valoraciones: arrayValoraciones,
 										accionFiltrar: req.url,
 										titulo:tituloSeccion,
 										modal:"modal",
 										nameTarget:"#profileModal",
 										entrarSalir: "Mi perfil",
-										messageDangerRegistrar: req.flash('signupMessage'),
-										messageSuccessRegistrar: req.flash('signupMessage'),
+										messageDangerRegistrar: req.flash('signupMessageFail'),
+										messageSuccessRegistrar: req.flash('signupMessageOk'),
 										messageDangerLogin: req.flash('loginMessage'),
 										componentes: "/user/home/category/componentes",
 										ram: "/user/home/category/ram",
@@ -323,14 +307,13 @@ module.exports = function(app,passport){
 								productosLista : arrayNombresProductos,
 								marcas: MarcasTienda,
 								marcasMarcadas: arrayMarcasMarcadas,
-								valoraciones: arrayValoraciones,
 								accionFiltrar: req.url,
 								titulo:"Componentes",
 								modal:"modal",
 								nameTarget:"#myModal",
 								entrarSalir: "Log In",
-								messageDangerRegistrar: req.flash('signupMessage'),
-								messageSuccessRegistrar: req.flash('signupMessage'),
+								messageDangerRegistrar: req.flash('signupMessageFail'),
+								messageSuccessRegistrar: req.flash('signupMessageOk'),
 								messageDangerLogin: req.flash('loginMessage'),
 								componentes: "/home/category/componentes",
 								ram: "/home/category/ram",
@@ -381,12 +364,6 @@ module.exports = function(app,passport){
 						}
 						Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
 							Productos.find({marca: {$in : arrayMarcasNombres},foto : {$ne : null}},function (err,ProductosMarcasTienda){
-								if (arrayValoraciones == undefined) {
-									var arrayValoraciones = [];
-								}
-								for (var x = 0; x < ProductosMarcasTienda.length; x++){
-									arrayValoraciones.push(ProductosMarcasTienda[x].valoracion);
-								}
 								for (var i = 0; i < ProductosTienda.length; i++ ){
 									arrayNombresProductos.push(ProductosTienda[i].nombre);
 								}
@@ -399,15 +376,14 @@ module.exports = function(app,passport){
 										productosLista : arrayNombresProductos,
 										marcas: MarcasTienda,
 										marcasMarcadas: arrayMarcasMarcadas,
-										valoraciones: arrayValoraciones,
 										accionFiltrar: req.url,
 										carrito: ProductosCarrito,
 										titulo:"Componentes",
 										modal:"modal",
 										nameTarget:"#profileModal",
 										entrarSalir: "Mi perfil",
-										messageDangerRegistrar: req.flash('signupMessage'),
-										messageSuccessRegistrar: req.flash('signupMessage'),
+										messageDangerRegistrar: req.flash('signupMessageFail'),
+										messageSuccessRegistrar: req.flash('signupMessageOk'),
 										messageDangerLogin: req.flash('loginMessage'),
 										componentes: "/user/home/category/componentes",
 										ram: "/user/home/category/ram",
@@ -456,8 +432,8 @@ module.exports = function(app,passport){
 								modal:"modal",
 								nameTarget:"#profileModal",
 								entrarSalir: "Mi perfil",
-								messageDangerRegistrar: req.flash('signupMessage'),
-								messageSuccessRegistrar: req.flash('signupMessage'),
+								messageDangerRegistrar: req.flash('signupMessageFail'),
+								messageSuccessRegistrar: req.flash('signupMessageOk'),
 								messageDangerLogin: req.flash('loginMessage'),
 								componentes: "/user/home/category/componentes",
 								ram: "/user/home/category/ram",
@@ -483,8 +459,8 @@ module.exports = function(app,passport){
 						modal:"modal",
 						nameTarget:"#myModal",
 						entrarSalir: "Log In",
-						messageDangerRegistrar: req.flash('signupMessage'),
-						messageSuccessRegistrar: req.flash('signupMessage'),
+						messageDangerRegistrar: req.flash('signupMessageFail'),
+						messageSuccessRegistrar: req.flash('signupMessageOk'),
 						messageDangerLogin: req.flash('loginMessage'),
 						componentes: "/home/category/componentes",
 						ram: "/home/category/ram",
@@ -549,8 +525,8 @@ module.exports = function(app,passport){
 						modal:"modal",
 						nameTarget: "#profileModal",
 						entrarSalir: "Mi perfil",
-						messageDangerRegistrar: req.flash('signupMessage'),
-						messageSuccessRegistrar: req.flash('signupMessage'),
+						messageDangerRegistrar: req.flash('signupMessageFail'),
+						messageSuccessRegistrar: req.flash('signupMessageOk'),
 						messageDangerLogin: req.flash('loginMessage'),
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
@@ -679,8 +655,8 @@ module.exports = function(app,passport){
 		    				alias: req.user.alias,
 		    				nameTarget:"#profileModal",
 							entrarSalir: "Mi perfil",
-							messageDangerRegistrar: req.flash('signupMessage'),
-							messageSuccessRegistrar: req.flash('signupMessage'),
+							messageDangerRegistrar: req.flash('signupMessageFail'),
+							messageSuccessRegistrar: req.flash('signupMessageOk'),
 							messageDangerLogin: req.flash('loginMessage'),
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
@@ -722,8 +698,8 @@ module.exports = function(app,passport){
 		    				alias: req.user.alias,
 		    				nameTarget:"#profileModal",
 							entrarSalir: "Mi perfil",
-							messageDangerRegistrar: req.flash('signupMessage'),
-							messageSuccessRegistrar: req.flash('signupMessage'),
+							messageDangerRegistrar: req.flash('signupMessageFail'),
+							messageSuccessRegistrar: req.flash('signupMessageOk'),
 							messageDangerLogin: req.flash('loginMessage'),
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
@@ -763,8 +739,8 @@ module.exports = function(app,passport){
 		    				alias: req.user.alias,
 		    				nameTarget:"#profileModal",
 							entrarSalir: "Mi perfil",
-							messageDangerRegistrar: req.flash('signupMessage'),
-							messageSuccessRegistrar: req.flash('signupMessage'),
+							messageDangerRegistrar: req.flash('signupMessageFail'),
+							messageSuccessRegistrar: req.flash('signupMessageOk'),
 							messageDangerLogin: req.flash('loginMessage'),
 							componentes: "/user/home/category/componentes",
 							ram: "/user/home/category/ram",
@@ -805,8 +781,8 @@ module.exports = function(app,passport){
 						entrarSalir: "Mi perfil",
 						messageDanger: req.flash('danger'),
 						messageSuccess: req.flash('info'),
-						messageDangerRegistrar: req.flash('signupMessage'),
-						messageSuccessRegistrar: req.flash('signupMessage'),
+						messageDangerRegistrar: req.flash('signupMessageFail'),
+						messageSuccessRegistrar: req.flash('signupMessageOk'),
 						messageDangerLogin: req.flash('loginMessage'),
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
@@ -845,8 +821,8 @@ module.exports = function(app,passport){
 						alias: req.user.alias,
 						nameTarget:"#profileModal",
 						entrarSalir: "Mi perfil",
-						messageDangerRegistrar: req.flash('signupMessage'),
-						messageSuccessRegistrar: req.flash('signupMessage'),
+						messageDangerRegistrar: req.flash('signupMessageFail'),
+						messageSuccessRegistrar: req.flash('signupMessageOk'),
 						messageDangerLogin: req.flash('loginMessage'),
 						componentes: "/user/home/category/componentes",
 						ram: "/user/home/category/ram",
@@ -891,8 +867,8 @@ module.exports = function(app,passport){
 								alias: req.user.alias,
 								nameTarget:"#profileModal",
 								entrarSalir: "Mi perfil",
-								messageDangerRegistrar: req.flash('signupMessage'),
-								messageSuccessRegistrar: req.flash('signupMessage'),
+								messageDangerRegistrar: req.flash('signupMessageFail'),
+								messageSuccessRegistrar: req.flash('signupMessageOk'),
 								messageDangerLogin: req.flash('loginMessage'),
 								componentes: "/user/home/category/componentes",
 								ram: "/user/home/category/ram",
@@ -927,8 +903,7 @@ module.exports = function(app,passport){
 	        		caracteristicas = caracteristicasArray,
 	        		precio = req.body.precio,
 	        		marca = req.body.marca,
-					tipo  = req.body.tipo,
-					valoracion = 0;
+					tipo  = req.body.tipo;
 				Marcas.findOne({nombre: req.body.marca},function (err,Marca){
 					if (Marca){
 						var producto = new Productos ({
@@ -937,11 +912,10 @@ module.exports = function(app,passport){
 							caracteristicas : caracteristicasArray,
 							precio: req.body.precio,
 							marca : Marca._id,
-							valoracion: 0,
 							tipo : req.body.tipo,
 							foto: null
 						});
-						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, valoracion : valoracion, tipo : tipo, foto: "", caracteristicas : caracteristicas},function (err,ProductoAñadido){
+						producto.save({nombre: nombre, descripcion: descripcion, precio: precio,marca: marca, tipo : tipo, foto: "", caracteristicas : caracteristicas},function (err,ProductoAñadido){
 							if (!err)
 								res.redirect('back');
 							Productos.findOne({nombre:ProductoAñadido.nombre},function (err,ProductoCreado){
@@ -1081,8 +1055,8 @@ module.exports = function(app,passport){
 	                                                    modal:"modal",
 	                                                    nameTarget:"#profileModal",
 	                                                    entrarSalir: "Mi perfil",
-	                                                    messageDangerRegistrar: req.flash('signupMessage'),
-	                                                    messageSuccessRegistrar: req.flash('signupMessage'),
+	                                                    messageDangerRegistrar: req.flash('signupMessageFail'),
+	                                                    messageSuccessRegistrar: req.flash('signupMessageOk'),
 														messageDangerLogin: req.flash('loginMessage'),
 	                                                    cantidad: cantidades,
 	                                                    carrito: ProductosPedido,
@@ -1126,8 +1100,8 @@ module.exports = function(app,passport){
 	                                            modal:"modal",
 	                                            nameTarget:"#myModal",
 	                                            entrarSalir: "Log In",
-	                                            messageDangerRegistrar: req.flash('signupMessage'),
-	                                            messageSuccessRegistrar: req.flash('signupMessage'),
+	                                            messageDangerRegistrar: req.flash('signupMessageFail'),
+	                                            messageSuccessRegistrar: req.flash('signupMessageOk'),
 												messageDangerLogin: req.flash('loginMessage'),
 	                                            carrito: "",
 	                                            productoFicha: productoFicha,
@@ -1297,8 +1271,8 @@ module.exports = function(app,passport){
 		                                modal:"modal",
 		                                nameTarget:"#profileModal",
 		                                entrarSalir: "Mi perfil",
-		                                messageDangerRegistrar: req.flash('signupMessage'),
-		                                messageSuccessRegistrar: req.flash('signupMessage'),
+		                                messageDangerRegistrar: req.flash('signupMessageFail'),
+		                                messageSuccessRegistrar: req.flash('signupMessageOk'),
 										messageDangerLogin: req.flash('loginMessage'),
 		                                cantidad: cantidades,
 		                                carrito: ProductosPedido,
@@ -1399,8 +1373,8 @@ module.exports = function(app,passport){
                                             modal:"modal",
                                             nameTarget:"#profileModal",
                                             entrarSalir: "Mi perfil",
-                                            messageDangerRegistrar: req.flash('signupMessage'),
-	                                		messageSuccessRegistrar: req.flash('signupMessage'),
+                                            messageDangerRegistrar: req.flash('signupMessageFail'),
+	                                		messageSuccessRegistrar: req.flash('signupMessageOk'),
 											messageDangerLogin: req.flash('loginMessage'),
                                             cantidad: cantidades,
                                             carrito: ProductosPedido,
@@ -1589,8 +1563,8 @@ module.exports = function(app,passport){
         // Actualizando el pedido del carrito como finalizado
         Carrito.update({idUsuario: idUsuario, finalizar: false},
                         { 
-                            $set: {finalizar: true}, 
-                            $currentDate: {fechaCreacionCarrito: true}
+                            $set: {finalizar: true, fechaCreacionCarrito : new Date()} 
+                            /*$currentDate: {fechaCreacionCarrito: true}*/
                         },
                         { multi: true },
                         function(err, result){
@@ -1638,8 +1612,8 @@ module.exports = function(app,passport){
 	                                    modal:"modal",
 	                                    nameTarget:"#profileModal",
 	                                    entrarSalir: "Mi perfil",
-	                                    messageDangerRegistrar: req.flash('signupMessage'),
-	                                    messageSuccessRegistrar: req.flash('signupMessage'),
+	                                    messageDangerRegistrar: req.flash('signupMessageFail'),
+	                                    messageSuccessRegistrar: req.flash('signupMessageOk'),
 										messageDangerLogin: req.flash('loginMessage'),
 	                                    cantidad: cantidades,
 	                                    carrito: ProductosPedido,
@@ -1685,6 +1659,8 @@ module.exports = function(app,passport){
              cantidadProductos = [],
              arrayNombresProductos = [],
              fechas = [],
+             arrayProductosYaComprados = [],
+             j = 0,
              auxFecha = true;
         //
         Productos.find(function (err,ProductosTienda){
@@ -1692,66 +1668,73 @@ module.exports = function(app,passport){
 				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 			}
             // Buscando los productos del carrito de este usuario
-	        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarrito){
-	            if (!err) {
-	                productosCarrito.forEach(function(producto){
-	                    idProductos.push(producto.idProducto);
-	                    cantidadProductos.push(producto.cantidad);
-                        fechas.forEach(function(fecha){
-                            if(fecha!=undefined && fecha==producto.fechaCreacionCarrito){
-                                auxFecha = false;
-                            }
-                        });
-                        if(auxFecha){
-                            fechas.push(producto.fechaCreacionCarrito);
-                        }
-	                });
-	                var cantidades = cantidadProductos;
-	                // Busco la información de los productos según el id del usuario
-	                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-	                    if(!err){
-	                        console.log('buscando productos añadidos al pedido envio y pago');
-	                        // Mostrando información de usuario
-	                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
-	                            if(!err){
-	                                console.log('Mostrando información usuario');
-	                                // Envío toda la información a la página con los cambios hechos
-	                                res.render('misPedidos', {
-	                                    alias:req.user.alias,
-	                                    home: "/user/home",
-	                                    titulo: "AlKa - Mis pedidos",
-	                                    ram: "/user/home/category/ram",
-	                                    hdd: "/user/home/category/disco duro",
-	                                    cajas:"/user/home/category/cajas",
-	                                    fuentes:"/user/home/category/fuentes",
-	                                    targetas:"/user/home/category/targetas graficas",
-	                                    componentes: "/user/home/category/componentes",
-	                                    placaBase:"/user/home/category/placa base",
-	                                    procesadores:"/user/home/category/procesadores",
-	                                    configura: "/user/home/configura tu pc",
-	                                    productosLista : arrayNombresProductos,
-	                                    modal:"modal",
-	                                    nameTarget:"#profileModal",
-	                                    entrarSalir: "Mi perfil",
-	                                    messageDangerRegistrar: req.flash('signupMessage'),
-	                                    messageSuccessRegistrar: req.flash('signupMessage'),
-										messageDangerLogin: req.flash('loginMessage'),
-	                                    cantidad: cantidades,
-	                                    carrito: ProductosPedido,
-	                                    usuario: usuario,
-                                        fechas: fechas
-	                                });
-	                            }else{
-	                                console.log('Error al buscar el usuario');
-	                            }
-	                        });
-	                    }else{
-	                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
-	                    }
-	                });
-	            } else {
-	                console.log('Error al buscar los productos '+err);
-	            }
+	        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarritoTrue){
+	        	Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarritoFalse){
+		            if (!err) {
+		                productosCarritoTrue.forEach(function(producto){
+		                    idProductos.push(producto.idProducto);
+		                    cantidadProductos.push(producto.cantidad);
+	                        for (var k = 0; k < fechas.length; k++){
+	                        	if (k > 0){
+		                        	if (fechas[i] == fechas[i-1]){
+		                            	auxFecha = true;
+		                            } else {
+		                            	auxFecha = false;
+		                            }
+		                        }
+	                        }
+	                        if(auxFecha){
+	                            fechas.push(producto.fechaCreacionCarrito);
+	                        }
+		                });
+		                var cantidades = cantidadProductos;
+		                // Busco la información de los productos según el id del usuario
+		                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+		                    if(!err){
+		                        console.log('buscando productos añadidos al pedido envio y pago');
+		                        // Mostrando información de usuario
+		                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+		                            if(!err){
+		                                console.log('Mostrando información usuario');
+		                                // Envío toda la información a la página con los cambios hechos
+		                                res.render('misPedidos', {
+		                                    alias:req.user.alias,
+		                                    home: "/user/home",
+		                                    titulo: "AlKa - Mis pedidos",
+		                                    ram: "/user/home/category/ram",
+		                                    hdd: "/user/home/category/disco duro",
+		                                    cajas:"/user/home/category/cajas",
+		                                    fuentes:"/user/home/category/fuentes",
+		                                    targetas:"/user/home/category/targetas graficas",
+		                                    componentes: "/user/home/category/componentes",
+		                                    placaBase:"/user/home/category/placa base",
+		                                    procesadores:"/user/home/category/procesadores",
+		                                    configura: "/user/home/configura tu pc",
+		                                    productosLista : arrayNombresProductos,
+		                                    modal:"modal",
+		                                    nameTarget:"#profileModal",
+		                                    entrarSalir: "Mi perfil",
+		                                    messageDangerRegistrar: req.flash('signupMessageFail'),
+		                                    messageSuccessRegistrar: req.flash('signupMessageOk'),
+											messageDangerLogin: req.flash('loginMessage'),
+		                                    cantidad: cantidades,
+		                                    carritoTrue: ProductosPedido,
+		                                    carrito: productosCarritoFalse,
+		                                    usuario: usuario,
+	                                        fechas: fechas
+		                                });
+		                            }else{
+		                                console.log('Error al buscar el usuario');
+		                            }
+		                        });
+		                    }else{
+		                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
+		                    }
+		                });
+		            } else {
+		                console.log('Error al buscar los productos '+err);
+		            }
+		        });
 	        });
         });
     };

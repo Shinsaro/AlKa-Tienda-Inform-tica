@@ -31,19 +31,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% for(var i=0; i<carrito.length; i++){ %>
-                            <tr>
-                                <td>
-                                    <label class="text-primary"><h5 name="nombreProducto"><%= carrito[i].nombre %></h5></label><br>
-                                    <div class="panel panel-default">
-                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
-                                        <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
-                                    </div>
-                                </td>
-                                <td class="resumenCantidad" name="resumenCantidad"><%= cantidad[i] %></td>
-                                <td class="resumenPrecio" name="resumenPrecio"><%= carrito[i].precio %></td>
-                                <td class="resumentTotalProducto" name="resumentTotalProducto"></td>
-                            </tr>
+                            <% for(var i=0; i<carritoTrue.length; i++){ %>
+                                <tr>
+                                    <td>
+                                        <label class="text-primary"><h5 name="nombreProducto"><%= carritoTrue[i].nombre %></h5></label><br>
+                                        <div class="panel panel-default">
+                                            <img class="img-rounded" src="<%= carritoTrue[i].foto %>" height="50" width="50" style="float:left">
+                                            <div class="panel-body" style="float:left; width: 550px;"><%= carritoTrue[i].descripcion %></div>
+                                        </div>
+                                    </td>
+                                    <td class="resumenCantidad" name="resumenCantidad"><%= cantidad[i] %></td>
+                                    <td class="resumenPrecio" name="resumenPrecio"><%= carritoTrue[i].precio %></td>
+                                    <td class="resumentTotalProducto" name="resumentTotalProducto"></td>
+                                </tr>
                             <% } %>
                         </tbody>
                         <tfoot>
