@@ -56,7 +56,7 @@
                                     <h5><%= carrito[i].nombre %></h5>
 
                                     <div class="panel panel-default descripcion">
-                                        <img class="img-rounded" src="<%= carrito[i].foto %>" height="50" width="50" style="float:left">
+                                        <img class="img-rounded" src="<%= carritoPedido[i].foto %>" height="50" width="50" style="float:left">
                                         <div class="panel-body" style="float:left; width: 550px;"><%= carrito[i].descripcion %></div>
                                     </div>
                                 </td>
@@ -102,7 +102,7 @@
                             <div id="infoDatosPersonales" class="container col-md-3"  style="padding-left: 7%; padding-bottom: 7%; padding-right: 17%;">
                                 <p>
                                     Nombre<br>
-                                    <% if(usuario.nombre!=undefined && usuario.nombre!=''){ %>
+                                    <% if(usuario.nombre!=undefined){ %>
                                     <label id="nombreUsuario"><%= usuario.nombre %></label>
                                     <% }else{ %>
                                     <i>No has guardado tu nombre</i>
@@ -110,7 +110,7 @@
                                 </p>
                                 <p>
                                     Apellidos<br>
-                                    <% if(usuario.apellidos!=undefined && usuario.apellidos!=''){ %>
+                                    <% if(usuario.apellidos!=undefined){ %>
                                     <label id="apellidosUsuario"><%= usuario.apellidos %></label>
                                     <% }else{ %>
                                     <i>No has guardado tus apellidos</i>
@@ -118,7 +118,7 @@
                                 </p>
                                 <p>
                                     Teléfono<br>
-                                    <% if(usuario.telefono!=undefined && usuario.telefono!=''){ %>
+                                    <% if(usuario.telefono!=undefined){ %>
                                     <label id="telefonoUsuario"><%= usuario.telefono %></label>
                                     <% }else{ %>
                                     <i>No has guardado tu teléfono</i>
@@ -154,7 +154,7 @@
                                         </span>
                                         guarda
                                     </button>
-                                    <button type="button" id="cancelarModificacionDatosPersonales" class="btn btn-primary btn-xs">
+                                    <button type="submit" id="cancelarModificacionDatosPersonales" class="btn btn-primary btn-xs">
                                         <span class="glyphicon glyphicon-remove">
                                         </span>
                                         cancela
@@ -177,7 +177,7 @@
                                 Dirección de envío
                             </h4>
                             <div id="infoDireccionEnvio" class="container-fluid col-sm-10 col-md-3">
-                                <% if(usuario.direccionEnvio.calle != undefined && usuario.direccionEnvio.calle!=''){ %>
+                                <% if(usuario.direccionEnvio.calle != undefined){ %>
                                     <p id="direccionEnvioUsuario">C/ <%= usuario.direccionEnvio.calle %>,
                                         <%= usuario.direccionEnvio.numero %>, 
                                         <%= usuario.direccionEnvio.piso %>º - 
@@ -226,7 +226,7 @@
                                         </span>
                                         guarda
                                     </button>
-                                    <button type="button" id="cancelarModificacionDireccionEnvio" class="btn btn-primary  btn-xs">
+                                    <button type="submit" id="cancelarModificacionDireccionEnvio" class="btn btn-primary  btn-xs">
                                         <span class="glyphicon glyphicon-remove">
                                         </span>
                                         cancela
@@ -317,7 +317,7 @@
                         </h4>
                         <div class="container">
                             <div id="infoMetodoPago" class="col-md-3">
-                                <% if(usuario.metodoPago!=undefined && usuario.metodoPago!=''){ %>
+                                <% if(usuario.metodoPago!=undefined){ %>
                                     <% if(usuario.metodoPago == 'visa'){ %>
                                         <p>El cobro se efecturá al número de cuenta:</p>
                                         <label id="numeroCuentaUsuario"><%= usuario.numeroCuenta %></label>
