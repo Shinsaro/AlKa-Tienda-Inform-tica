@@ -7,7 +7,9 @@ var mongoose = require('mongoose');
 module.exports = function(app,passport){
 	indexWeb = function (req,res){
 		var arrayNombresProductos = [];
+		//Realizo una consulta a la base de datos y la ordeno según valoración.
 		Productos.find().sort('-valoracion.valor').find({foto : {$ne : null}},function (err,ProductosTienda){
+			//Recorro los productos de la tienda y los pongo en un array para poder usarlo en el search del header.
 			for (var i = 0; i < ProductosTienda.length; i++ ){
 				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 			}
@@ -42,6 +44,7 @@ module.exports = function(app,passport){
 		});
 	}
 	indexWebLogin = function (req,res){
+		//Compruebo si el usuario es el administrador y si lo es le cargo su panel de control
 		if (req.user.admin == true){
 			var arrayNombresProductos = [];
 			Productos.find().sort('+valoracion.valor').find({foto : {$ne : null}},function (err,ProductosTienda){
@@ -72,19 +75,23 @@ module.exports = function(app,passport){
 				});
 			});
 		} else {
+			//Si no es un administrador le dirigo a la pagina principal pero ya logueado
 			var arrayNombresProductos = [];
 			if (idProductoCarrito == undefined) {
 				var idProductoCarrito = [];
 			}
+			//Consulto los productos que tienes el usuario en el carro y le pusheo las _id a un array.
 			Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 				for (var i = 0; i < carritoUsuario.length; i++) {
 					idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
 				}
+				//Hago una busqueda de productos pero solo de los elementos que estan en el carro.
 				Productos.find({_id: {$in : idProductoCarrito}}, function (err,ProductosCarrito){
 					Productos.find().sort('-valoracion.valor').find({foto : {$ne : null}},function (err,ProductosTienda){
 						if (arrayValoraciones == undefined) {
 							var arrayValoraciones = [];
 						}
+						//Recorro los productos de la tienda y los pongo en un array para poder usarlo en el search del header.
 						for (var i = 0; i < ProductosTienda.length; i++ ){
 							arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 						}
@@ -123,8 +130,10 @@ module.exports = function(app,passport){
 	}
 	productosWeb = function (req,res){
 		var arrayMarcasNombres = [], arrayMarcasMarcadas = [], arrayNombresProductos = [];
+		//Consulto las marcas que tenermos en la tienda
 		Marcas.find(function (err,MarcasTienda){
 			arrayMarcasNombres = MarcasTienda;
+			//Consulto las marcas que han sido escogidas por el checkbox.
 			Marcas.find({nombre: {$in : req.body.marcas}},function (err,MarcasTiendaEscojidas){
 				console.log("MarcasTienda");
 				for (var j = 0; j < MarcasTiendaEscojidas.length; j++){
@@ -135,6 +144,7 @@ module.exports = function(app,passport){
 						arrayMarcasNombres.push(MarcasTiendaEscojidas[j]._id);
 					}
 				}
+				//Recorro las marchas de la tienda y luego las marcas escogidas y cuando coinciden añado check en su posición respectiva
 				for (var i = 0; i < MarcasTienda.length; i++) {
 					for (var k = 0; k < MarcasTiendaEscojidas.length; k++) {
 						if (MarcasTienda[i].nombre.indexOf(MarcasTiendaEscojidas[k].nombre) > -1){
@@ -143,7 +153,9 @@ module.exports = function(app,passport){
 					}
 				}
 				tituloSeccion = req.params.producto.substring(0,1).toUpperCase() + req.params.producto.substring(1);
+				//Filtro los productos que no tienen foto para asi no mostrarlos.
 				Productos.find({foto : {$ne : null}},function (err,ProductosTienda){
+					//Consulto los productos que pertencen a la sección marcada del menu.
 					Productos.find({tipo: req.params.producto,marca: {$in : arrayMarcasNombres},foto : {$ne : null}},function (err,ProductosMarcasTienda){
 						if (arrayValoraciones == undefined) {
 							var arrayValoraciones = [];
@@ -195,6 +207,7 @@ module.exports = function(app,passport){
 		if (idProductoCarrito == undefined) {
 			var idProductoCarrito = [];
 		}
+		//Compruebo que el carrito del usuario no este finalizado
 		Carrito.find({idUsuario: req.user._id, finalizar:false}, function (err,carritoUsuario){
 			for (var i = 0; i < carritoUsuario.length; i++) {
 				idProductoCarrito.push(mongoose.Types.ObjectId(carritoUsuario[i].idProducto));
