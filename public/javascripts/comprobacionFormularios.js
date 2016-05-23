@@ -130,7 +130,7 @@ $(function(){
                         message: 'La calle no puede estar vacía.'
                     },
                     regexp: {
-                        regexp: '^([a-zA-Z]+( )?)+$',
+                        regexp: /^([a-zA-Z]+( )?)+$/,
                         message: 'El formato de la calle no es correcto.'
                     }
                 }
@@ -141,7 +141,7 @@ $(function(){
                         message: 'El número no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+(( )?-( )?[0-9]+)?$',
+                        regexp: /^[0-9]+(( )?-( )?[0-9]+)?$/,
                         message: 'El formato del número no es correcto.'
                     }
                 }
@@ -152,7 +152,7 @@ $(function(){
                         message: 'El piso no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+$',
+                        regexp: /^[0-9]+$/,
                         message: 'El formato del piso no es correcto.'
                     }
                 }
@@ -163,7 +163,7 @@ $(function(){
                         message: 'La puerta no puede estar vacía.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+$',
+                        regexp: /^[0-9]+$/,
                         message: 'El formato de la puerta no es correcto.'
                     }
                 }
@@ -174,7 +174,7 @@ $(function(){
                         message: 'El código postal no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]{5}$',
+                        regexp: /^[0-9]{5}$/,
                         message: 'El formato del código postal no es correcto.'
                     }
                 }
@@ -196,7 +196,7 @@ $(function(){
                         message: 'La calle no puede estar vacía.'
                     },
                     regexp: {
-                        regexp: '^([a-zA-Z]+( )?)+$',
+                        regexp: /^([a-zA-Z]+( )?)+$/,
                         message: 'El formato de la calle no es correcto.'
                     }
                 }
@@ -207,7 +207,7 @@ $(function(){
                         message: 'El número no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+(( )?-( )?[0-9]+)?$',
+                        regexp: /^[0-9]+(( )?-( )?[0-9]+)?$/,
                         message: 'El formato del número no es correcto.'
                     }
                 }
@@ -218,7 +218,7 @@ $(function(){
                         message: 'El piso no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+$',
+                        regexp: /^[0-9]+$/,
                         message: 'El formato del piso no es correcto.'
                     }
                 }
@@ -229,7 +229,7 @@ $(function(){
                         message: 'La puerta no puede estar vacía.'
                     },
                     regexp: {
-                        regexp: '^[0-9]+$',
+                        regexp: /^[0-9]+$/,
                         message: 'El formato de la puerta no es correcto.'
                     }
                 }
@@ -240,7 +240,7 @@ $(function(){
                         message: 'El código postal no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]{5}$',
+                        regexp: /^[0-9]{5}$/,
                         message: 'El formato del código postal no es correcto.'
                     }
                 }
@@ -272,7 +272,7 @@ $(function(){
                         message: 'El número de cuenta no puede estar vacío.'
                     },
                     regexp: {
-                        regexp: '^[0-9]{4}(-[0-9]{4}){3}$',
+                        regexp: /^[0-9]{4}(-[0-9]{4}){3}$/,
                         message: 'El formato de la cuenta no es correcto.'
                     }
                 }
