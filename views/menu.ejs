@@ -60,7 +60,7 @@
 					</div>
 					<div class="navbar-form navbar-left">
 						<button type="button" class="btn btn-primary btn-lg col-lg-offset-0 col-sm-offset-0 col-xs-offset-1" data-toggle="<%= modal %>" data-target="<%= nameTarget %>"><i class="fa fa-key"> <%= entrarSalir %></i></button>
-						<% if (entrarSalir != "Log In") { %>
+						<% if (entrarSalir != "Log In" && titulo != "AlKa - Mis pedidos") { %>
 							<button type="button" class="btn btn-lg btn-primary dropdown-toggle carritoBtn" data-toggle="dropdown" data-hover="dropdown" role="button">
 								<i class="fa fa-shopping-cart">&nbsp</i>
 								<%if (carrito != undefined){%>

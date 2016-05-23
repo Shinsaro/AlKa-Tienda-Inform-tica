@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<%- include ./header %>
+    <%- include ./header %>
 </head>
 <body data-spy="scroll" data-target="#navbar-example">
-	<%- include ./menu %>
+    <%- include ./menu %>
     <div class=" col-md-10 col-md-offset-1">
         <div class="panel panel-primary">
             <div class="panel-body text-center">
@@ -34,7 +34,6 @@
                             <tbody>
                                 <% var auxCarrito=carrito.length-1; %>
                                 <% for(var i=0; i<carrito.length; i++){ %>
-                                <p><%= carrito[auxCarrito]._id %></p>
                                     <% if(carritoFechas[i].fechaCreacionCarrito==fechas[j]){ %>
                                         <% if(carritoFechas[i].idProducto.toString()==carrito[auxCarrito]._id.toString()){ %>
                                             <tr>
