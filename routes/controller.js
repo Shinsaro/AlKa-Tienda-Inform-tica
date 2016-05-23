@@ -1313,99 +1313,201 @@ module.exports = function(app,passport){
             aux = 0,
             arrayNombresProductos = [];
         
-        // Elimino los productos del carrito que a eliminado el usuario en el pedido
-        Carrito.remove({idProducto: {$nin: idProductosCarrito}},function(err,result){
-            if(!err){
-                // Guardo las cantidades guardadas en el carrito
-                Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
-                    productosCarrito.forEach(function(producto){
-                        cantidades2.push(producto.cantidad);
-                    });
+        if(idProductosCarrito==undefined || idProductosCarrito.length==0){
+            idProductosCarrito = [];
+            Carrito.find({idUsuario: idUsuario, finalizar: false}, function(err, pedido){
+                pedido.forEach(function(producto){
+                    idProductosCarrito.push(producto.idProducto);
                 });
-                // Recorrido del carrito
-                Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
-                    // Por cada producto del carrito..
-                    productosCarrito.forEach(function(producto){
-                        // Creo variable con cantidades cambiadas por el usuario
-                        if (cantidades==undefined) {
-                            cantidades=cantidades2;
-                        }
-                        cantidadModificada = cantidades[aux];
-                        // Actualizo las cantidades
-                        Carrito.update({idProducto: producto.idProducto, idUsuario: idUsuario, finalizar: false},
-                                       { $set: {cantidad: cantidadModificada}},
-                            function(err,result){
-                                if(!err){
-                                    console.log('Cantidad del producto del carrito actualizada');
-                                }else{
-                                    console.log('Error al actualizar la cantidad del producto del carrito '+err);
-                                }
+                // Elimino los productos del carrito que a eliminado el usuario en el pedido
+                Carrito.remove({idUsuario: idUsuario, idProducto: {$nin: idProductosCarrito}},function(err,result){
+                    if(!err){
+                        // Guardo las cantidades guardadas en el carrito
+                        Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
+                            productosCarrito.forEach(function(producto){
+                                cantidades2.push(producto.cantidad);
+                            });
                         });
-                        aux++;
-                    });
-                    // Busco la información de los productos según el id del usuario
-                    Productos.find(function (err,ProductosTienda){
-                        for (var i = 0; i < ProductosTienda.length; i++ ){
-                            arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
-                        }
-                        Productos.find({_id: {$in: idProductosCarrito}},function (err,ProductosPedido){
-                            if(!err){
-                                console.log('Buscando productos añadidos al pedido envio y pago');
-                                //
-                                Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+                        // Recorrido del carrito
+                        Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
+                            // Por cada producto del carrito..
+                            productosCarrito.forEach(function(producto){
+                                // Creo variable con cantidades cambiadas por el usuario
+                                if (cantidades==undefined) {
+                                    cantidades=cantidades2;
+                                }
+                                cantidadModificada = cantidades[aux];
+                                // Actualizo las cantidades
+                                Carrito.update({idProducto: producto.idProducto, idUsuario: idUsuario, finalizar: false},
+                                               { $set: {cantidad: cantidadModificada}},
+                                    function(err,result){
+                                        if(!err){
+                                            console.log('Cantidad del producto del carrito actualizada');
+                                        }else{
+                                            console.log('Error al actualizar la cantidad del producto del carrito '+err);
+                                        }
+                                });
+                                aux++;
+                            });
+                            // Busco la información de los productos según el id del usuario
+                            Productos.find(function (err,ProductosTienda){
+                                for (var i = 0; i < ProductosTienda.length; i++ ){
+                                    arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+                                }
+                                Productos.find({_id: {$in: idProductosCarrito}},function (err,ProductosPedido){
                                     if(!err){
-                                        console.log('Mostrando información de usuario');
-                                        // Envío toda la información a la página con los cambios hechos
-                                        res.render('pedido', {
-                                            alias:req.user.alias,
-                                            home: "/user/home",
-                                            titulo: "AlKa - Pedido",
-                                            componentes: "/user/home/category/componentes",
-                                            ram: "/user/home/category/ram",
-                                            hdd: "/user/home/category/disco duro",
-                                            cajas:"/user/home/category/cajas",
-                                            fuentes:"/user/home/category/fuentes",
-                                            targetas:"/user/home/category/targetas graficas",
-                                            placaBase:"/user/home/category/placa base",
-                                            procesadores:"/user/home/category/procesadores",
-                                            configura: "/user/home/configura tu pc",
-                                            productosLista : arrayNombresProductos,
-                                            modal:"modal",
-                                            nameTarget:"#profileModal",
-                                            entrarSalir: "Mi perfil",
-                                            messageDangerRegistrar: req.flash('signupMessageFail'),
-	                                		messageSuccessRegistrar: req.flash('signupMessageOk'),
-											messageDangerLogin: req.flash('loginMessage'),
-                                            cantidad: cantidades,
-                                            carrito: ProductosPedido,
-                                            usuario: usuario,
-                                            ClaseCesta: "col-lg-3",
-                                            ClaseEnvioypago: "col-lg-3 active",
-                                            ClaseResumen: "col-lg-3 disabled",
-                                            ClaseFinalizar: "col-lg-3 disabled",
-                                            expandedCesta: false,
-                                            expandedEnvioypago: true,
-                                            expandedResumen: false,
-                                            expandedFinalizar: false,
-                                            activeinCesta: "tab-pane fade",
-                                            activeinEnvioypago: "tab-pane fade in active",
-                                            activeinResumen: "tab-pane fade",
-                                            activeinFinalizar: "tab-pane fade"
+                                        console.log('Buscando productos añadidos al pedido envio y pago');
+                                        //
+                                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+                                            if(!err){
+                                                console.log('Mostrando información de usuario');
+                                                // Envío toda la información a la página con los cambios hechos
+                                                res.render('pedido', {
+                                                    alias:req.user.alias,
+                                                    home: "/user/home",
+                                                    titulo: "AlKa - Pedido",
+                                                    componentes: "/user/home/category/componentes",
+                                                    ram: "/user/home/category/ram",
+                                                    hdd: "/user/home/category/disco duro",
+                                                    cajas:"/user/home/category/cajas",
+                                                    fuentes:"/user/home/category/fuentes",
+                                                    targetas:"/user/home/category/targetas graficas",
+                                                    placaBase:"/user/home/category/placa base",
+                                                    procesadores:"/user/home/category/procesadores",
+                                                    configura: "/user/home/configura tu pc",
+                                                    productosLista : arrayNombresProductos,
+                                                    modal:"modal",
+                                                    nameTarget:"#profileModal",
+                                                    entrarSalir: "Mi perfil",
+                                                    messageDangerRegistrar: req.flash('signupMessageFail'),
+                                                    messageSuccessRegistrar: req.flash('signupMessageOk'),
+                                                    messageDangerLogin: req.flash('loginMessage'),
+                                                    cantidad: cantidades,
+                                                    carrito: ProductosPedido,
+                                                    usuario: usuario,
+                                                    ClaseCesta: "col-lg-3",
+                                                    ClaseEnvioypago: "col-lg-3 active",
+                                                    ClaseResumen: "col-lg-3 disabled",
+                                                    ClaseFinalizar: "col-lg-3 disabled",
+                                                    expandedCesta: false,
+                                                    expandedEnvioypago: true,
+                                                    expandedResumen: false,
+                                                    expandedFinalizar: false,
+                                                    activeinCesta: "tab-pane fade",
+                                                    activeinEnvioypago: "tab-pane fade in active",
+                                                    activeinResumen: "tab-pane fade",
+                                                    activeinFinalizar: "tab-pane fade"
+                                                });
+                                            }else{
+                                                console.log('Error al buscar el usuario');
+                                            }
                                         });
                                     }else{
-                                        console.log('Error al buscar el usuario');
+                                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
                                     }
                                 });
-                            }else{
-                                console.log('Error al mostrar los productos añadidos al pedido. '+err);
-                            }
+                            });
+                        });
+                    }else{
+                        console.log('Error al Eliminar los productos del carrito que a eliminado el usuario en el pedido'+err);
+                    }
+                });
+            });
+        }else{
+            // Elimino los productos del carrito que a eliminado el usuario en el pedido
+            Carrito.remove({idProducto: {$nin: idProductosCarrito}},function(err,result){
+                if(!err){
+                    // Guardo las cantidades guardadas en el carrito
+                    Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
+                        productosCarrito.forEach(function(producto){
+                            cantidades2.push(producto.cantidad);
                         });
                     });
-                });
-            }else{
-                console.log('Error al Eliminar los productos del carrito que a eliminado el usuario en el pedido'+err);
-            }
-        });
+                    // Recorrido del carrito
+                    Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarrito){
+                        // Por cada producto del carrito..
+                        productosCarrito.forEach(function(producto){
+                            // Creo variable con cantidades cambiadas por el usuario
+                            if (cantidades==undefined) {
+                                cantidades=cantidades2;
+                            }
+                            cantidadModificada = cantidades[aux];
+                            // Actualizo las cantidades
+                            Carrito.update({idProducto: producto.idProducto, idUsuario: idUsuario, finalizar: false},
+                                           { $set: {cantidad: cantidadModificada}},
+                                function(err,result){
+                                    if(!err){
+                                        console.log('Cantidad del producto del carrito actualizada');
+                                    }else{
+                                        console.log('Error al actualizar la cantidad del producto del carrito '+err);
+                                    }
+                            });
+                            aux++;
+                        });
+                        // Busco la información de los productos según el id del usuario
+                        Productos.find(function (err,ProductosTienda){
+                            for (var i = 0; i < ProductosTienda.length; i++ ){
+                                arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
+                            }
+                            Productos.find({_id: {$in: idProductosCarrito}},function (err,ProductosPedido){
+                                if(!err){
+                                    console.log('Buscando productos añadidos al pedido envio y pago');
+                                    //
+                                    Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+                                        if(!err){
+                                            console.log('Mostrando información de usuario');
+                                            // Envío toda la información a la página con los cambios hechos
+                                            res.render('pedido', {
+                                                alias:req.user.alias,
+                                                home: "/user/home",
+                                                titulo: "AlKa - Pedido",
+                                                componentes: "/user/home/category/componentes",
+                                                ram: "/user/home/category/ram",
+                                                hdd: "/user/home/category/disco duro",
+                                                cajas:"/user/home/category/cajas",
+                                                fuentes:"/user/home/category/fuentes",
+                                                targetas:"/user/home/category/targetas graficas",
+                                                placaBase:"/user/home/category/placa base",
+                                                procesadores:"/user/home/category/procesadores",
+                                                configura: "/user/home/configura tu pc",
+                                                productosLista : arrayNombresProductos,
+                                                modal:"modal",
+                                                nameTarget:"#profileModal",
+                                                entrarSalir: "Mi perfil",
+                                                messageDangerRegistrar: req.flash('signupMessageFail'),
+                                                messageSuccessRegistrar: req.flash('signupMessageOk'),
+                                                messageDangerLogin: req.flash('loginMessage'),
+                                                cantidad: cantidades,
+                                                carrito: ProductosPedido,
+                                                usuario: usuario,
+                                                ClaseCesta: "col-lg-3",
+                                                ClaseEnvioypago: "col-lg-3 active",
+                                                ClaseResumen: "col-lg-3 disabled",
+                                                ClaseFinalizar: "col-lg-3 disabled",
+                                                expandedCesta: false,
+                                                expandedEnvioypago: true,
+                                                expandedResumen: false,
+                                                expandedFinalizar: false,
+                                                activeinCesta: "tab-pane fade",
+                                                activeinEnvioypago: "tab-pane fade in active",
+                                                activeinResumen: "tab-pane fade",
+                                                activeinFinalizar: "tab-pane fade"
+                                            });
+                                        }else{
+                                            console.log('Error al buscar el usuario');
+                                        }
+                                    });
+                                }else{
+                                    console.log('Error al mostrar los productos añadidos al pedido. '+err);
+                                }
+                            });
+                        });
+                    });
+                }else{
+                    console.log('Error al Eliminar los productos del carrito que a eliminado el usuario en el pedido'+err);
+                }
+            });
+        }
     };
     
     actualizarDatosPersonales = function(req,res){
@@ -1661,81 +1763,86 @@ module.exports = function(app,passport){
              fechas = [],
              arrayProductosYaComprados = [],
              j = 0,
-             auxFecha = true;
+             auxFecha = false;
         //
         Productos.find(function (err,ProductosTienda){
 	        for (var i = 0; i < ProductosTienda.length; i++ ){
 				arrayNombresProductos.push([ProductosTienda[i].nombre + "¬" + ProductosTienda[i].foto]);
 			}
             // Buscando los productos del carrito de este usuario
-	        Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarritoTrue){
-	        	Carrito.find({idUsuario: idUsuario, finalizar: false},function(err, productosCarritoFalse){
-		            if (!err) {
-		                productosCarritoTrue.forEach(function(producto){
-		                    idProductos.push(producto.idProducto);
-		                    cantidadProductos.push(producto.cantidad);
-	                        for (var k = 0; k < fechas.length; k++){
-	                        	if (k > 0){
-		                        	if (fechas[i] == fechas[i-1]){
-		                            	auxFecha = true;
-		                            } else {
-		                            	auxFecha = false;
-		                            }
-		                        }
-	                        }
-	                        if(auxFecha){
-	                            fechas.push(producto.fechaCreacionCarrito);
-	                        }
-		                });
-		                var cantidades = cantidadProductos;
-		                // Busco la información de los productos según el id del usuario
-		                Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
-		                    if(!err){
-		                        console.log('buscando productos añadidos al pedido envio y pago');
-		                        // Mostrando información de usuario
-		                        Usuarios.findOne({_id: idUsuario}, function(err,usuario){
-		                            if(!err){
-		                                console.log('Mostrando información usuario');
-		                                // Envío toda la información a la página con los cambios hechos
-		                                res.render('misPedidos', {
-		                                    alias:req.user.alias,
-		                                    home: "/user/home",
-		                                    titulo: "AlKa - Mis pedidos",
-		                                    ram: "/user/home/category/ram",
-		                                    hdd: "/user/home/category/disco duro",
-		                                    cajas:"/user/home/category/cajas",
-		                                    fuentes:"/user/home/category/fuentes",
-		                                    targetas:"/user/home/category/targetas graficas",
-		                                    componentes: "/user/home/category/componentes",
-		                                    placaBase:"/user/home/category/placa base",
-		                                    procesadores:"/user/home/category/procesadores",
-		                                    configura: "/user/home/configura tu pc",
-		                                    productosLista : arrayNombresProductos,
-		                                    modal:"modal",
-		                                    nameTarget:"#profileModal",
-		                                    entrarSalir: "Mi perfil",
-		                                    messageDangerRegistrar: req.flash('signupMessageFail'),
-		                                    messageSuccessRegistrar: req.flash('signupMessageOk'),
-											messageDangerLogin: req.flash('loginMessage'),
-		                                    cantidad: cantidades,
-		                                    carritoTrue: ProductosPedido,
-		                                    carrito: productosCarritoFalse,
-		                                    usuario: usuario,
-	                                        fechas: fechas
-		                                });
-		                            }else{
-		                                console.log('Error al buscar el usuario');
-		                            }
-		                        });
-		                    }else{
-		                        console.log('Error al mostrar los productos añadidos al pedido. '+err);
-		                    }
-		                });
-		            } else {
-		                console.log('Error al buscar los productos '+err);
-		            }
-		        });
-	        });
+            Carrito.find({idUsuario: idUsuario, finalizar: true},function(err, productosCarrito){
+                if (!err) {
+                    productosCarrito.forEach(function(producto){
+                        auxFecha=true;
+                        console.log(producto.idProducto);
+                        console.log(producto.fechaCreacionCarrito);
+                        idProductos.push(producto.idProducto);
+                        cantidadProductos.push(producto.cantidad);
+                        if(fechas.length != 0){
+                            for (var j=0; j<fechas.length; j++) {
+                                console.log('1');
+                                if(producto.fechaCreacionCarrito.toString()==fechas[j]){
+                                    console.log('2');
+                                    auxFecha=false;
+                                }
+                            }
+                        }else{
+                            auxFecha=true;
+                        }
+                        if(auxFecha){
+                            console.log('3');
+                            fechas.push(producto.fechaCreacionCarrito.toString());
+                        }
+                    });
+                    console.log(fechas);
+                    var cantidades = cantidadProductos;
+                    // Busco la información de los productos según el id del usuario
+                    Productos.find({_id: {$in: idProductos}},function (err,ProductosPedido){
+                        if(!err){
+                            console.log('buscando productos añadidos al pedido envio y pago');
+                            // Mostrando información de usuario
+                            Usuarios.findOne({_id: idUsuario}, function(err,usuario){
+                                if(!err){
+                                    console.log('Mostrando información usuario');
+                                    // Envío toda la información a la página con los cambios hechos
+                                    res.render('misPedidos', {
+                                        alias:req.user.alias,
+                                        home: "/user/home",
+                                        titulo: "AlKa - Mis pedidos",
+                                        ram: "/user/home/category/ram",
+                                        hdd: "/user/home/category/disco duro",
+                                        cajas:"/user/home/category/cajas",
+                                        fuentes:"/user/home/category/fuentes",
+                                        targetas:"/user/home/category/targetas graficas",
+                                        componentes: "/user/home/category/componentes",
+                                        placaBase:"/user/home/category/placa base",
+                                        procesadores:"/user/home/category/procesadores",
+                                        configura: "/user/home/configura tu pc",
+                                        productosLista : arrayNombresProductos,
+                                        modal:"modal",
+                                        nameTarget:"#profileModal",
+                                        entrarSalir: "Mi perfil",
+                                        messageDangerRegistrar: req.flash('signupMessageFail'),
+                                        messageSuccessRegistrar: req.flash('signupMessageOk'),
+                                        messageDangerLogin: req.flash('loginMessage'),
+                                        cantidad: cantidades,
+                                        carrito: ProductosPedido,
+                                        carritoFechas: productosCarrito,
+                                        usuario: usuario,
+                                        fechas: fechas
+                                    });
+                                }else{
+                                    console.log('Error al buscar el usuario');
+                                }
+                            });
+                        }else{
+                            console.log('Error al mostrar los productos añadidos al pedido. '+err);
+                        }
+                    });
+                } else {
+                    console.log('Error al buscar los productos '+err);
+                }
+            });
         });
     };
 
